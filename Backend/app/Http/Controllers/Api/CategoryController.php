@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function index(){
 
-        $categories = Category::with('providers.games', 'provider.categories','games.provider', 'games.categories')->orderBy('position')->get();
+        $categories = Category::with('providers.games', 'providers.categories','games.provider', 'games.categories')->orderBy('position')->get();
 
         return response()->json(['categories' => CategoryResource::collection($categories)]);
     }

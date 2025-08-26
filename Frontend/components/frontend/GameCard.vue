@@ -2,7 +2,7 @@
     <div class="flex flex-col bg-slate-200/60 dark:bg-gray-700 shadow-xl">
         <NuxtLink :to="game.link">
             <div class="width-full">
-                <img :src="game.thumbnail" :alt="game.english_name" class="w-full h-full">
+                <NuxtImg :src="game.thumbnail" :alt="game.english_name" class="w-full h-full" />
             </div>
         </NuxtLink>
 

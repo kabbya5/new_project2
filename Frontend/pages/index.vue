@@ -32,44 +32,6 @@
                     :title="category[name]"
                 />
             </div>
-
-
-            <div class="container mx-auto">
-                <h2 class="text-xl font-semibol tracking-wider"> Popular Game </h2>
-                <FrontendGamePopularGame/>
-                <div class="flex flex-wrap mt-2">
-                    <div @click="playGame(1)"
-                        class="game-item-sm group relative overflow-hidden w-32 h-32 shadow-md cursor-pointer flex items-center justify-center border border-gray-200 dark:border-gray-700">
-  
-                        <NuxtImg src="images/cricket.png" class="w-full h-full object-cover" />
-
-                        <p class="absolute inset-0 bg-gray-300/60 dark:bg-gray-900/60  bg-opacity-0 text-center flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            Cricket
-                        </p>
-                    </div>
-                
-
-                    <div @click="playGame(1)"
-                        class="game-item-sm group relative overflow-hidden w-32 h-32 shadow-md cursor-pointer flex items-center justify-center border border-gray-200 dark:border-gray-700">
-
-                        <NuxtImg src="images/cricket.png" class="w-full h-full object-cover" />
-
-                        <p class="absolute inset-0 bg-gray-300/60 dark:bg-gray-900/60  bg-opacity-0 text-center flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            Cricket
-                        </p>
-                    </div>
-
-                    <div @click="playGame(1)"
-                        class="game-item-sm group relative overflow-hidden w-32 h-32 shadow-md cursor-pointer flex items-center justify-center border border-gray-200 dark:border-gray-700">
-  
-                        <NuxtImg src="images/cricket.png" class="w-full h-full object-cover" />
-
-                        <p class="absolute inset-0 bg-gray-300/60 dark:bg-gray-900/60  bg-opacity-0 text-center flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            Cricket
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
