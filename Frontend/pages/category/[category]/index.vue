@@ -8,7 +8,7 @@
         <div v-else class="grid grid-cols-12 gap-4">
             <div class="col-span-4 lg:col-span-2" 
                 v-for="game in games" :key="game.id">
-                <FrontendGameCard :game="game"/>
+                <FrontendGameCard :game="game" class="w-full"/>
             </div>
         </div>
     </div>

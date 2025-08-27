@@ -100,6 +100,13 @@
 
   const navLinks = computed(() => [
     {
+      name:'slider',
+      title:'Slider',
+      icon:'fa-regular fa-images',
+      url:'/admin/slider',
+    },
+
+    {
       name:'category',
       title:'Category',
       icon:'fa-regular fa-calendar-days',

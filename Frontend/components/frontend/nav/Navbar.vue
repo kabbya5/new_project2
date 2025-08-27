@@ -37,7 +37,8 @@
 
   <!-- sidebar  -->
 
-  <FrontendNavSidebar v-if="toggleSidebar"/>
+  <FrontendNavSidebar v-if="toggleSidebar"  @close="toggleSidebar = false" />
+
 </template>
 
 <script setup lang="ts">

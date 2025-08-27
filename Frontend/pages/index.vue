@@ -41,11 +41,13 @@ import { useLoadingStore } from '~/stores/loading';
 import { useGameStore } from '~/stores/game';
 import { useCategoryStore } from '~/stores/category';
 import { useLocaleStore } from '~/stores/locale';
+import { useProviderStore } from '~/stores/provider';
 
 const loading = useLoadingStore();
 const gameStore = useGameStore();
 const categoryStore = useCategoryStore();
 const localeStore = useLocaleStore();
+const providerStore = useProviderStore();
 
 const name = computed(() => localeStore.getTranslate('name'))
 const recentlyPlay = computed(() => localeStore.getTranslate('recentlyPlay'))
@@ -55,6 +57,7 @@ const popularGame = computed(() => localeStore.getTranslate('popularGame'))
 onMounted(async () => {
     await categoryStore.fetchCategories();
     gameStore.fetchGames();
+    await providerStore.fetchProviders();
 })
 
 </script>

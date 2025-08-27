@@ -30,19 +30,22 @@ export const useLocaleStore = defineStore('locale', () => {
       name: 'english_name',
       recentlyPlay: 'Recently Play',
       gameCategory: 'Game Category',
-      popularGame: 'Popular Game'
+      popularGame: 'Popular Game',
+      gameProvider:'Provider',
     },
     bn: {
       name: 'bangla_name',
       recentlyPlay: 'সম্প্রতি খেলা',
       gameCategory: 'গেম বিভাগ',
-      popularGame: 'জনপ্রিয় গেম'
+      popularGame: 'জনপ্রিয় গেম',
+      gameProvider: 'প্রোভাইডার',
     },
     hi: {
       name: 'hindi_name',
       recentlyPlay: 'हाल ही में खेला',
       gameCategory: 'गेम श्रेणी',
-      popularGame: 'लोकप्रिय खेल'
+      popularGame: 'लोकप्रिय खेल',
+      gameProvider: 'प्रदाता',
     }
   }
 
