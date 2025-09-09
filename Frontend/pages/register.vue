@@ -42,6 +42,11 @@ import { useAuthStore } from '~/stores/auth';
 import { useErrorStore } from '~/stores/error';
 import type {SignUp} from '~/types/signup';
 
+
+definePageMeta({
+    middleware: 'auth'
+});
+
 const router = useRouter();
 
 const signupForm = ref<SignUp>({

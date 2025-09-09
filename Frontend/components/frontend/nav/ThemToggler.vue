@@ -1,6 +1,6 @@
 <template> 
     <button @click="toggle" class="cursor-pointer"> 
-        <i class="text-gray-900 dark:text-gray-100 text-[20px]"
+        <i class="text-gray-900 dark:text-gray-100 text-[16px]"
             :class="['fa-solid', theme.isDark ? 'fa-moon' : 'fa-sun']" />
     </button>
 </template>

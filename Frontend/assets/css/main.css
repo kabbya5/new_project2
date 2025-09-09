@@ -14,41 +14,8 @@
   color: #000; /* light mode text */
 }
 
-.dark .dp__input {
-  color: #fff; /* dark mode text */
-}
 
-/* Datepicker calendar menu */
-.dp__menu {
-  background-color: white !important;
-  color: #333;
-  font-family: var(--font-roboto);
-}
 
-.dark .dp__menu {
-  background-color: #1f2937; /* Tailwind's gray-800 */
-  color: white;
-}
-
-/* Calendar date cell hover & active style */
-.dp__cell_inner {
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.dp__cell_inner:hover {
-  background-color: #e5e7eb; /* gray-200 */
-}
-
-.dark .dp__cell_inner:hover {
-  background-color: #374151; /* gray-700 */
-}
-
-/* Placeholder color */
-.dp__input::placeholder {
-  color: #888;
-}
-
-.dark .dp__input::placeholder {
-  color: #ccc;
+button{
+  cursor: pointer;
 }

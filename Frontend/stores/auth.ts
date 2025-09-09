@@ -3,8 +3,6 @@ import { defineStore } from 'pinia';
 export const useAuthStore = defineStore('auth', () => {
 
     const isClient = process.client;
-
-    
     const token = ref<string | null>(null);
     const user = ref<object | null>(null);
 
@@ -67,12 +65,14 @@ export const useAuthStore = defineStore('auth', () => {
                 const storedUser = localStorage.getItem('user');
                 if (storedUser) {
                     const userData = JSON.parse(storedUser);
-                    return {
-                        name: userData.name ?? null,
-                        email: userData.email ?? null,
-                        id: userData.id ?? null,
-                        role: userData.role ?? null,
-                    };
+                    if(getToken()){
+                        return {
+                            name: userData.name ?? null,
+                            email: userData.email ?? null,
+                            id: userData.id ?? null,
+                            role: userData.role ?? null,
+                        };
+                    }
                 }
             } catch (error) {
                 console.error("Error getting user data:", error);

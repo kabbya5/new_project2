@@ -40,7 +40,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css','@fortawesome/fontawesome-free/css/all.min.css'],
   
   modules: ['@nuxt/image', '@pinia/nuxt', 'nuxt-charts', 'nuxt-swiper'],
-  plugins: ['~/plugins/vue-multiselect'],
+  plugins: ['~/plugins/vue-multiselect',],
 
   vite: {
     plugins: [

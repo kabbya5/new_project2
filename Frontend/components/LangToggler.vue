@@ -2,7 +2,8 @@
   <select
     v-model="selectedLocale"
     @change="changeLocale"
-    class="language-select bg-white dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600 px-3 py-1 rounded"
+    class="language-select bg-white dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600 
+      px-1 lg:px-3 lg:py-1 rounded"
   >
     <option v-for="lang in availableLocales" :key="lang.code" :value="lang.code">
       {{ lang.code.toUpperCase() }}

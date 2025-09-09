@@ -15,7 +15,6 @@
                         active-class="text-white bg-red-500">
                         <div class="flex items-center justify-center">
                             <img :src="provider.logo" alt="image" class="w-[20px] lg:w-[25px]">
-
                             <p class="ml-2 text-sm -mt-1 lg:text-lg">{{ provider[name] }}</p>
                         </div>
                     </NuxtLink>

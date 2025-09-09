@@ -9,6 +9,7 @@ const localeStore = useLocaleStore();
 const props = defineProps<{
     games: Game[],
     title: string,
+    link: string,
 }>()
 
 const name = computed(() => localeStore.getTranslate('name'))
@@ -39,14 +40,14 @@ const swiper = useSwiper(containerRef, {
   <ClientOnly>
     <div class="relative">
         <div class="flex justify-between align-items-center">
-            <h2 class="text-2xl font-bold"> {{ title }} </h2>
+            <NuxtLink :to="link" class="text-md lg:text-2xl font-bold border-b border-blue-500"> {{ title }} </NuxtLink>
             <div class="swiper-basic-buttons">
-                <button @click="swiper.prev()">
-                    <i class="fa-solid fa-arrow-left" /> 
+                <button @click="swiper.prev()" class="px-2 lg:px-4 lg:py-1">
+                    <i class="fa-solid fa-arrow-left text-[12px] lg:text-[16px]" /> 
                 </button>  
 
-                <button @click="swiper.next()"> 
-                   <i class="fa-solid fa-arrow-right" /> 
+                <button @click="swiper.next()" class="px-2 lg:px-4 lg:py-1"> 
+                   <i class="fa-solid fa-arrow-right text-[12px] lg:text-[16px]" /> 
                 </button>
             </div>
         </div>
@@ -57,10 +58,10 @@ const swiper = useSwiper(containerRef, {
         ref="containerRef"
         :loop="true"
         :slidesPerView="5"
-        :space-between="20"
+        :space-between="10"
         :autoplay="{ delay: 3000 }"
         :breakpoints="{
-            320: { slidesPerView: 2},
+            320: { slidesPerView: 3},
             400: { slidesPerView: 4},
             600: { slidesPerView: 3 },
             900: { slidesPerView: 4 },
@@ -73,20 +74,20 @@ const swiper = useSwiper(containerRef, {
           :key="index"
         >
             <div class="flex flex-col">
-                <NuxtLink :to="game.link">
+                <NuxtLink :to="`game/play/${game.id}`">
                     <div class="width-full">
                         <img :src="game.thumbnail" :alt="game.english_name" class="w-full h-full">
                     </div>
                 </NuxtLink>
 
                 <div class="flex flex-col p-2">
-                  <p class="capitalize text-[11px] lg:text-[14px] font-semibold">{{ game[name] }}</p>
+                  <p class="capitalize text-[10px] lg:text-[14px] font-semibold">{{ game[name] }}</p>
                   <NuxtLink v-if="game.provider" :to="`/category/${'provider'}/${game.provider.slug}`" 
-                      class="uppercase text-[12px] lg:text-[14px] font-bold  text-green-400 dark:text-orange-600 mt-1"> {{ game.provider[name] }} </NuxtLink> 
+                      class="uppercase text-[11px] lg:text-[13px] font-bold  text-green-400 dark:text-orange-600 mt-1"> {{ game.provider[name] }} </NuxtLink> 
                   
                   <div class="flex items-center flex-wrap mt-1">
                       <NuxtLink v-for="category in game.categories" :to="`/category/${category.slug}`" 
-                      class="uppercase text-[12px] font-bold text-orange-600 dark:text-green-400 mr-2"> {{ category[name] }} </NuxtLink> 
+                      class="uppercase text-[9px] lg:text-[13px] font-bold text-orange-600 dark:text-green-400 mr-2"> {{ category[name] }} </NuxtLink> 
                   </div>
                 </div>
             </div>
@@ -112,7 +113,6 @@ swiper-slide {
 .swiper-basic-buttons button{
     background-color: red;
     margin-left: 10px;
-    padding: 4px 10px;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;

@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed top-0 right-0 h-screen w-[250px] dark:bg-gray-800 text-white shadow-xl z-50" style="overflow: auto;">
+    <div class="fixed top-0 right-0 h-screen w-[250px] bg-gray-800 text-white shadow-xl z-50" style="overflow: auto;">
         <button @click="emit('close')"  class="absolute top-1 right-1 w-[30px] h-[30px] rounded-full bg-red-500">
             <i class="fa-solid fa-xmark"></i>
         </button> 
@@ -35,7 +35,7 @@
 
             <div class="flex flex-wrap justify-start gap-2 pt-3">
                 <NuxtLink v-for="provider in providerStore.providers" :key="provider.id"
-                    :to="`/category/${category}/${provider.slug}`" class="rounded-md  mb-2 py-1 px-2 md:py-2 px-4  border border-gray-300 
+                    :to="`/category/${category}/${provider.slug}`" class="rounded-md  mb-2 py-1 px-1 md:py-2 px-4  border border-gray-300 
                     dark:border-gray-900 transaction duration-300 hover:bg-red-500 hover:text-white"
                     active-class="text-white bg-red-500">
                     <div class="flex items-center justify-center">

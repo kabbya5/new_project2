@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { Slider } from '~/types/slider';
+const props = defineProps<{
+  sliders: Slider[];
+}>();
+
 const containerRef = ref(null)
-const slides = ref<{ image: string }[]>([
-  { image: '/images/slider_image_227058.jpg' },
-  { image: '/images/slider_image_227601.jpg' },
-  { image: '/images/slider3.jpg' }
-])
 
 const swiper = useSwiper(containerRef, {
   effect: 'creative',
@@ -44,10 +44,13 @@ const swiper = useSwiper(containerRef, {
         }"
       >
         <swiper-slide
-            v-for="(slide, index) in slides"
+            v-for="(slider, index) in props.sliders"
             :key="index"
             >
-            <img :src="slide.image" class="w-full h-full min-h-[300px] object-cover" />
+            <NuxtLink :to="`/slider/${slider.slug}`">
+              <img :src="slider.mobile_image" class="w-full md:hidden h-full min-h-[300px] object-cover" />
+              <img :src="slider.desktop_image" class="w-full hidden md:block h-full min-h-[300px] object-cover" />
+            </NuxtLink>
         </swiper-slide>
       </swiper-container>
     </div>

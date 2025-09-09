@@ -45,5 +45,13 @@ trait FileUploadTrait{
 
         return $path;
     }
+
+
+    public function deleteFile($file_path){
+        $fullPath = storage_path('app/public/' . $file_path);
+        if (file_exists($fullPath)) {
+            unlink($fullPath); // native PHP delete
+        }
+    }
 }
 

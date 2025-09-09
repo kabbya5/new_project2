@@ -3,7 +3,7 @@ import { useLoadingStore } from '~/stores/loading';
 import type { GameForm } from "~/types/gameForm";
 import type { Game } from '~/types/games';
 
-export const useGameStore = defineStore('game', {
+export const useRecentlyPlay = defineStore('recentlyPlay', {
   state: () => ({
     games: [] as Game[],
   }),
@@ -11,16 +11,16 @@ export const useGameStore = defineStore('game', {
   actions: {
     async fetchGames() {
       const loading = useLoadingStore(); 
-        loading.start('game');
+        loading.start('recentlyPlay');
         try{
-            const data = await useApiFetch('/games/index');
+            const data = await useApiFetch('games/recenly/play');
             if (data && data.games) {
                 this.games = data.games;
             }
         }catch(error){
             alert(error);
         }finally {
-            loading.stop('game');
+            loading.stop('recentlyPlay');
         }
     },
 
@@ -39,16 +39,5 @@ export const useGameStore = defineStore('game', {
           return false;
       }
     },
-
-    async playGame(id:number){
-        const loading = useLoadingStore(); 
-        loading.start('game');
-        try{
-           await useApiFetch('/game/play/' + id);
-        }catch(error){
-            alert(error);
-        }
-        loading.stop('game');
-    }
 }
 });

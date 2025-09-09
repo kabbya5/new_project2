@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col bg-slate-200/60 dark:bg-gray-700 shadow-xl">
-        <NuxtLink :to="game.link">
+        <NuxtLink :to="`game/play/${game.id}`">
             <div class="w-full">
                 <NuxtImg :src="game.thumbnail" :alt="game.english_name" class="w-full h-full" />
             </div>
