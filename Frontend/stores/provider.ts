@@ -40,12 +40,68 @@ export const useProviderStore = defineStore('provider',{
             }  
         },
 
-        getGameByProvider(slug: string) {
-        const provider = this.providers.find(provider => provider.slug === slug);
-            if (provider && provider.games) {
-                return Promise.resolve(provider.games);
+        async updateProvider(providerId: number, providerForm: FormData | ProviderForm) {
+            if (providerForm instanceof FormData) {
+                providerForm.append('_method', 'PUT');
             }
-            return Promise.resolve([]); 
+            try {
+                const response = await useApiFetch(`/admin/providers/update/${providerId}`, {
+                    method: 'POST', // অথবা 'PUT' যদি তোমার API তে PUT লাগে
+                    body: providerForm,
+                });
+
+                if (response && response.provider) {
+                    // store এর ভিতরে পুরোনো provider replace করা
+                    const index = this.providers.findIndex(p => p.id === providerId);
+                    if (index !== -1) {
+                        this.providers[index] = response.provider;
+                    }
+                }
+            } catch (error) {
+                alert(error);
+            }
+        },
+
+        async getGameByProvider(slug: string) {
+            const loading = useLoadingStore();
+            loading.start('games');
+
+            try {
+                const provider = this.providers.find(p => p.slug === slug);
+
+                if (provider && provider.games) {
+                    return provider.games;
+                }
+
+                return [];
+            } finally {
+                loading.stop('games'); // সবসময় বন্ধ হবে
+            }
+        },
+
+        findProvider(provider_id:number){
+            var provider = this.providers.find(prov => prov.id === provider_id);
+
+            if(provider){
+                return provider;
+            }
+        },
+
+        async findProviderByCategory(slug:string){
+            const loading = useLoadingStore(); 
+            loading.start('provider');
+            try{
+                const data = await useApiFetch('/game/category/providers/' + slug);
+                if (data && data.providers) {
+                    return data.providers;
+                }
+            }catch(error){
+                alert(error);
+            }finally {
+                loading.stop('provider');
+            } 
+
+            return [];
         }
     }
 })

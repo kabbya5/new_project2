@@ -3,31 +3,33 @@
         <div class="container mx-auto bg-white dark:bg-gray-800  p-3 lg:p-4">
             <div class="flex items-center">
                 <NuxtLink to="/" class="text-sm uppercase"> Home <i class="fa-solid fa-chevron-right text-[13px] mr-1"></i> </NuxtLink>
-                <NuxtLink :to="`/category/${category}`" class="uppercase text-sm"> {{ 'category' }} <i class="fa-solid fa-chevron-right text-[13px] mr-1"></i> </NuxtLink>
+                <NuxtLink :to="`/category/${category}`" class="uppercase text-sm"> {{ category}} <i class="fa-solid fa-chevron-right text-[13px] mr-1"></i> </NuxtLink>
                 <NuxtLink :to="`/category/${category}/${providerSlug}`" class="uppercase text-sm text-red-500"> {{ providerSlug }} </NuxtLink>
             </div>
 
             <div class="mt-3">
-                <div class="flex flex-wrap justify-start gap-2">
-                    <NuxtLink v-for="provider in providerStore.providers" :key="provider.id"
-                       :to="`/category/${category}/${provider.slug}`" class="rounded-md  mb-2 py-1 px-2 md:py-2 px-4  border border-gray-300 
-                        dark:border-gray-900 transaction duration-300 hover:bg-red-500 hover:text-white"
-                        active-class="text-white bg-red-500">
-                        <div class="flex items-center justify-center">
+                <div class="overflow-x-auto scrollbar-hide mt-3" style="scrollbar-width: 0;">
+                    <div class="flex space-x-2 lg:space-x-4">
+                       <NuxtLink v-for="provider in providers" :key="provider.id" style="min-width: fit-content;"
+                            :to="`/category/${category}/${provider.slug}`" :id="provider.slug"
+                            class="flex w-full items-center justify-center border border-slate-300 dark:border-slate-700 px-2 py-2 transition hover:bg-gray-300 hover:dark:bg-gray-900 hover:dark:text-white"
+                            active-class="text-white bg-red-500">
                             <img :src="provider.logo" alt="image" class="w-[20px] lg:w-[25px]">
-                            <p class="ml-2 text-sm -mt-1 lg:text-lg">{{ provider[name] }}</p>
-                        </div>
-                    </NuxtLink>
-                </div>
+                            <h2 class="text-sm ml-2 lg:text-xl font-semibold capitalize">
+                                {{ provider[name] }}
+                            </h2>
+                        </NuxtLink>
+                    </div>
+                </div> 
             </div>
         </div>
 
         <div class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
-        <LoadingSpinner v-if="loading.isLoading('game')" />
-            <div class="flex flex-wrap justify-between gap-2">
-                <div class="w-[120px] lg:w-[150px] mb-2 lg:mb-4" 
+            <LoadingSpinner v-if="loading.isLoading('games')" />
+            <div v-else class="grid grid-cols-12 gap-2 md:gap-4">
+                <div class="col-span-4 md:col-span-3 lg:col-span-2" 
                     v-for="game in games" :key="game.id">
-                    <FrontendGameCard v-if="game" :game="game"/>
+                    <FrontendGameCard :game="game" class="w-full h-full"/>
                 </div>
             </div>
         </div>
@@ -41,6 +43,7 @@ import { useProviderStore } from '~/stores/provider';
 import { useLocaleStore } from '~/stores/locale';
 
 import type { Game } from '~/types/games'; 
+import type { Provider } from '~/types/provider';
 
 const providerStore = useProviderStore();
 const loading = useLoadingStore();
@@ -48,20 +51,50 @@ const localeStore = useLocaleStore();
 
 const route = useRoute()
 const category = route.params.category
-const providerSlug = route.params.subcategory
+const providerSlug = route.params.subcategory;
 
+
+const providers = ref<Provider | null>(null)
 const games = ref<Game[]>([]);
 const name = computed(() => localeStore.getTranslate('name'))
 
 onMounted(async() => {
-  await providerStore.fetchProviders();
+    if(!providerStore.providers.length){
+        await providerStore.fetchProviders();
+    }
+    
+    providers.value = await providerStore.findProviderByCategory(category) || [];
 
-  if (providerSlug) {
-    games.value = await providerStore.getGameByProvider(providerSlug as string) || [];
-  }
-
-  console.log('games', games.value);
+    if (providerSlug) {
+        games.value = await providerStore.getGameByProvider(providerSlug) || [];
+        scrollToCategory(providerSlug)
+    }
 });
 
 
+function scrollToCategory(slug:string) {
+
+  nextTick(() => {
+    const el = document.getElementById(slug);
+    if (el) {
+      el.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center', 
+        block: "nearest",
+      });
+    }
+  });
+}
+
+
 </script>
+
+<style scoped>
+    .scrollbar-hide {
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+</style>

@@ -32,7 +32,9 @@ export const useAuthStore = defineStore('auth', () => {
             };
 
             localStorage.setItem('authToken', JSON.stringify(tokenData));
-            token.value = newToken; // Sync with reactive state
+            token.value = newToken;
+
+            console.log('token',newToken);
         }
     };
 
@@ -41,12 +43,10 @@ export const useAuthStore = defineStore('auth', () => {
             const tokenData = localStorage.getItem('authToken');
             if (tokenData) {
                 const parsedToken = JSON.parse(tokenData);
-                if (parsedToken.expiresAt > Date.now()) {
-                    token.value = parsedToken.value; // Update reactive state
-                    return parsedToken.value;
-                } else {
-                    clearToken(); // Token expired
-                }
+                
+                token.value = parsedToken.value; // Update reactive state
+                return parsedToken.value;
+               
             }
         }
         return null;
@@ -97,6 +97,20 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
+    const handleLogout = async (): Promise<void> => {
+        try{
+            const response = await useApiFetch(`/logout`,{
+                method:'POST',
+            });
+
+            if (response) {
+                clearAuthData();
+            }
+        } catch(error){
+            alert('Logout Faild');
+        }
+    }
+
     return {
         token,
         user,
@@ -106,5 +120,6 @@ export const useAuthStore = defineStore('auth', () => {
         getUser,
         clearToken,
         clearAuthData,
+        handleLogout,
     };
 });

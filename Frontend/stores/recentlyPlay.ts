@@ -26,15 +26,14 @@ export const useRecentlyPlay = defineStore('recentlyPlay', {
 
     async storeGame(gameForm:FormData | GameForm){
       try {
-          const response = await useApiFetch(`/admin/games/store`,{
-              method:'POST',
-              body:gameForm,
-          });
+            const response = await useApiFetch(`/admin/games/store`,{
+                method:'POST',
+                body:gameForm,
+            });
 
-          if (response && response.game) {
-              this.games.push(response.game);
-              return true;
-          }
+          if (response.success && response.game?.launch_url) {
+                navigateTo(response.game.launch_url, { external: true });
+            }
       }catch(error){
           return false;
       }

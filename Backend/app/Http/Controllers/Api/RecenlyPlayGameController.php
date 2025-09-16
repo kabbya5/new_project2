@@ -7,9 +7,17 @@ use App\Http\Resources\RecenlyPlayResoure;
 use App\Models\Game;
 use App\Models\RecenlyPlay;
 use Illuminate\Http\Request;
+use App\Services\GameService;
 
 class RecenlyPlayGameController extends Controller
 {
+    protected GameService $gameService;
+
+    public function __construct(GameService $gameService)
+    {
+        $this->gameService = $gameService;
+    }
+
     public function index(){
         $games = RecenlyPlay::with('game')->orderBy('updated_at','desc')->get();
 
@@ -19,6 +27,7 @@ class RecenlyPlayGameController extends Controller
     public function store($id)
     {
         $game = Game::findOrFail($id); // findOrFail ব্যবহার করা ভালো
+        $game->update(['popularity' => $game->popularity + 1]);
         $user_id = auth()->id();
 
         if(!$user_id){
@@ -38,9 +47,10 @@ class RecenlyPlayGameController extends Controller
         // relation load করা হচ্ছে
         $recentlyGame->load('game.provider', 'game.categories');
 
-        return response()->json([
-            'message' => 'Recently played game stored successfully!',
-            'game' => new RecenlyPlayResoure($recentlyGame), // এখানে ভুল ছিল
-        ]);
+        $data = $this->gameService->launchGame($game, $user_id);
+        return $data;
+
+
+       	return response()->json($data);
     }
 }

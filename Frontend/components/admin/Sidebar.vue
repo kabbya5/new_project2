@@ -30,7 +30,7 @@
                       class="menu flex justify-between items-center"
                       @click="toggleDropdown(link.name)"
                     >
-                      <NuxtLink :to="link.url" class="menu-item flex items-center w-full justify-between">
+                      <NuxtLink :to="link.url" class="menu-item flex items-center w-full justify-between" active-class="text-blue-600 font-bold">
                         <span class="space-x-3 py-1">
                           <i :icon="link.icon" :class="link.icon" />
                           <span>{{ link.name }}</span>
@@ -189,6 +189,11 @@ const uiSections = computed(() => [
 </script>
 
 <style scoped>
+
+.nuxt-link-active span{
+  color: blue !important;
+}
+
 #admin-sidebar {
   width: 230px !important;
 }

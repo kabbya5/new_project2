@@ -1,5 +1,5 @@
 <template>
-    <AdminProviderForm v-if="openModel" @close="openModel=false"/>
+    <AdminProviderForm v-if="isModalOpen" :providerId="currentId" @close="isModalOpen=false"/>
 
     <div class="bg-white dark:bg-gray-800 p-3">
         <div class="flex justify-between items-center">
@@ -14,9 +14,13 @@
 
         <div class="my-5">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
+                <LoadingSpinner v-if="loading.isLoading('provider')" />
+                <table v-else class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
                     <thead class="bg-gray-100 dark:bg-gray-900">
                     <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                            provider ID
+                        </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             English Name
                         </th>
@@ -35,13 +39,14 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             Image
                         </th>
-                        <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             Action
-                        </th> -->
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                     <tr v-for="provider in providerStore.providers" :key="provider.id">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ provider.provider_id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ provider.english_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ provider.bangla_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"> {{ provider.hindi_name }}</td>
@@ -53,11 +58,11 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
                             <img :src="provider.logo" :alt="provider.english_name" class="w-7">
                         </td>
-                        <!-- <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
-                                Edit
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button @click="createUpdateModal(provider.id)" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <i class="fa-solid fa-edit"></i>
                             </button>
-                        </td> -->
+                        </td>
                     </tr>
                     <!-- Repeat more rows as needed -->
                     </tbody>
@@ -68,27 +73,36 @@
 </template>
 
 <script setup lang="ts">
+
     import { useCategoryStore } from '~/stores/category';
     import { useProviderStore } from '~/stores/provider';
+    import { useLoadingStore } from '~/stores/loading';
 
     const categoryStore = useCategoryStore();
     const providerStore = useProviderStore();
+    const loading = useLoadingStore();
 
     definePageMeta({
         middleware:['auth', 'admin'],
         layout:'admin',
     })
 
-    const openModel = ref(false);
+    const isModalOpen = ref<boolean>(false);
+    const currentId = ref<number | null>(null);
 
     const createUpdateModal = (id:number|null = null) =>{
-        openModel.value = true;
+        currentId.value = id;
+        isModalOpen.value = true;
     }
 
     onMounted (async () =>{
-        await categoryStore.fetchCategories();
-        await providerStore.fetchProviders();
-        console.log('provider', providerStore.providers)
+        if(providerStore.providers.length === 0){
+            await providerStore.fetchProviders();
+        }
+
+        if(categoryStore.categories.length === 0){
+            await categoryStore.fetchCategories();
+        }
     })
 
 </script>

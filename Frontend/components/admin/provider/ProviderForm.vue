@@ -9,6 +9,16 @@
             </div>
             
             <form @submit.prevent="submitForm" class="p-6">
+                <div class="form-group mb-4">
+                    <label for="" class="text-lg"> Provider Id </label>
+                    <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                        placeholder="Provider Id" 
+                        v-model="form.provider_id"
+                          :class="errorStore.validationErrors.provider_id ? 'border-red-500' :'' ">
+                    
+                    <p v-if="errorStore.validationErrors.provider_id" class="text-red-500">  {{ errorStore.validationErrors.provider_id[0] }} </p>
+                </div>
+
                 <div class="form-group mb-3">
                     <label for="" class="text-lg"> English Name </label>
                     <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
@@ -72,7 +82,7 @@
                     <label for="" class="text-lg"> Provider Image </label>
                     <div class="flex">
                         <input type="file" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                            placeholder="En Name"
+                            placeholder="Enter Logo Path"
                             @change="handelImageUpload" 
                             :class="errorStore.validationErrors.image ? 'border-red-500' :'' ">
 
@@ -104,6 +114,7 @@
     const emit = defineEmits(['close']);
 
     const form = ref<ProviderForm> ({
+        provider_id: null,
         english_name:'',
         bangla_name:'',
         hindi_name:'',
@@ -113,20 +124,7 @@
     });
 
     const options = ref<any[]>([]);
-
-    watch(
-        () => categoryStore.categories,
-        (newCategories) => {
-            options.value = newCategories.map((category: Category) => ({
-            id: category.id,
-            english_name: category.english_name,
-            }))
-        },
-        { immediate: true }
-    )
-
-
-    const imagePreview = ref<string |null> (null);
+    const imagePreview = ref<string | null>(null);
 
     const handelImageUpload = (event:Event) =>{
         const file = (event.target as HTMLInputElement).files?.[0]
@@ -136,9 +134,23 @@
         }
     }
 
+    watch(
+        () => categoryStore.categories,
+        (newCategories) => {
+            options.value = newCategories.map((category: any) => ({
+                id: category.id,
+                english_name: category.english_name,
+            }))
+        },
+        { immediate: true }
+    )
+
+    const props = defineProps<{ providerId: number | null }>();
+
     const submitForm = async() => {
         try{
             const formData = new FormData();
+            formData.append('provider_id', form.value.provider_id ? String(form.value.provider_id) : '');
             formData.append('english_name', form.value.english_name);
             formData.append('bangla_name', form.value.bangla_name);
             formData.append('hindi_name',form.value.hindi_name);
@@ -151,8 +163,13 @@
             if(form.value.image){
                 formData.append('image', form.value.image);
             }
-            const isSuccess = await providerStore.storeProvider(formData);
-            if(isSuccess){
+            
+            if (props.providerId) {
+                await providerStore.updateProvider(props.providerId, formData);
+            } else {
+                await providerStore.storeProvider(formData);
+            }
+            if(!errorStore.message){
                 emit('close');
             }
             
@@ -160,6 +177,20 @@
             alert(error);
         }
     }
+
+    onMounted(() => {
+        if (props.providerId) {
+            const provider = providerStore.findProvider(props.providerId);
+            if(provider){
+                form.value.english_name = provider.english_name ?? null;
+                form.value.bangla_name = provider.bangla_name ?? null;
+                form.value.hindi_name = provider.hindi_name ?? null;
+                form.value.position = provider.position ?? null;
+                imagePreview.value = provider.logo ?? null;
+                form.value.categories = provider.categories ?? [];
+            }
+        }
+    });
 
 </script>
 

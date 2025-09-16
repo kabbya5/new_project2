@@ -91,7 +91,8 @@
         position: null,
     });
 
-    const imagePreview = ref<string |null> (null);
+    const props = defineProps<{ categoryId: number | null }>();
+    const imagePreview = ref<string | null>(null);
 
     const handelImageUpload = (event:Event) =>{
         const file = (event.target as HTMLInputElement).files?.[0]
@@ -113,11 +114,31 @@
             if(form.value.image){
                 formData.append('image', form.value.image);
             }
-            await categoryStore.storeCategory(formData);
-            emit('close');
+            
+            if (props.categoryId) {
+                await categoryStore.updateCategory(props.categoryId, formData);
+            } else {
+                await categoryStore.storeCategory(formData);
+            }
+            if(!errorStore.message){
+                emit('close');
+            }
         }catch(error){
             alert(error);
         }
     }
+
+    onMounted(() => {
+        if (props.categoryId) {
+            const category = categoryStore.findCategory(props.categoryId);
+            if(category){
+                form.value.english_name = category.english_name ?? null;
+                form.value.bangla_name = category.bangla_name ?? null;
+                form.value.hindi_name = category.hindi_name ?? null;
+                form.value.position = category.position ?? null;
+                imagePreview.value = category.image_url ?? null;
+            }
+        }
+    });
 
 </script>

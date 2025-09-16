@@ -20,6 +20,7 @@ class CategoryResource extends JsonResource
             'bangla_name' => $this->bangla_name,
             'hindi_name' => $this->hindi_name,
             'slug' => $this->slug,
+            'position' => $this->position,
             'image_url' => $this->image_url ? asset('storage/'. $this->image_url)  : null,
             'providers' => ProviderResource::collection($this->whenLoaded('providers')),
             'games' => GameResource::collection($this->whenLoaded('games')),

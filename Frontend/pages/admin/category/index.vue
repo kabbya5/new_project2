@@ -1,5 +1,5 @@
 <template>
-    <AdminCategoryForm v-if="openModel" @close="openModel=false"/>
+    <AdminCategoryForm v-if="isModalOpen" :categoryId="currentId" @close="isModalOpen=false"/>
 
     <div class="bg-white dark:bg-gray-800 p-3">
         <div class="flex justify-between items-center">
@@ -14,7 +14,8 @@
 
         <div class="my-5">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
+                <LoadingSpinner v-if="loading.isLoading('category')" />
+                <table v-else class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
                     <thead class="bg-gray-100 dark:bg-gray-900">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -31,9 +32,9 @@
                             Image
                         </th>
 
-                        <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             Action
-                        </th> -->
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -44,13 +45,16 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
                             <img :src="category.image_url" :alt="category.english_name" class="w-7">
                         </td>
-                        <!-- <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
-                                Edit
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button @click="createUpdateModal(category.id)" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <i class="fa-solid fa-edit"></i>
                             </button>
-                        </td> -->
+
+                            <!-- <button @click="deleteCategory(category.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <i class="fa-solid fa-trash"></i>
+                            </button> -->
+                        </td>
                     </tr>
-                    <!-- Repeat more rows as needed -->
                     </tbody>
                 </table>
             </div>
@@ -61,22 +65,36 @@
 <script setup lang="ts">
     import { AdminCategoryForm } from '#components';
     import { useCategoryStore } from '~/stores/category';
+    import { useLoadingStore } from '~/stores/loading';
 
     const categoryStore = useCategoryStore();
+    const loading = useLoadingStore();
 
     definePageMeta({
         middleware:['auth', 'admin'],
         layout:'admin',
     })
 
-    const openModel = ref(false);
+    const isModalOpen = ref<boolean>(false);
+    const currentId = ref<number | null>(null);
 
     const createUpdateModal = (id:number|null = null) =>{
-        openModel.value = true;
+        currentId.value = id;
+        isModalOpen.value = true;
     }
 
     onMounted (async () =>{
-        await categoryStore.fetchCategories();
+        if(categoryStore.categories.length === 0){
+            await categoryStore.fetchCategories();
+        } 
     })
+
+    // const deleteCategory = async(id:number) => {
+    //     const confirmed = confirm("Are you sure you want to delete this slider?");
+    //     if (!confirmed) {
+    //         return; 
+    //     }
+    //     await categoryStore.deleteCategory(id);
+    // }
 
 </script>

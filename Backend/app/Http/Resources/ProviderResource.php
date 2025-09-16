@@ -16,11 +16,12 @@ class ProviderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'provider_id' => $this->provider_id,
             'english_name' => $this->english_name,
             'bangla_name' => $this->bangla_name,
             'hindi_name' => $this->hindi_name,
             'slug' => $this->slug,
-            'logo' => $this->logo ? asset('storage/' . $this->logo) : null,
+            'logo' => $this->logo ? asset('storage/'. $this->logo)  : null,
             'position' => $this->position,
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'games' => GameResource::collection($this->whenLoaded('games')),

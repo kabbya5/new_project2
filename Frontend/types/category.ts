@@ -10,5 +10,5 @@ export interface Category{
     image_url:string,
     'slug':string,
     games?:Game[],
-    provider?:Provider[];
+    providers?:Provider[];
 }

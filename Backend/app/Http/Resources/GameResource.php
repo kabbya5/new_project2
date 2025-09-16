@@ -16,6 +16,7 @@ class GameResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'game_code' => $this->game_code,
             'provider_id' => $this->provider_id,
             'bangla_name' => $this->bangla_name,
             'english_name' => $this->english_name,
@@ -23,6 +24,7 @@ class GameResource extends JsonResource
             'position' => $this->position,
             'popularity' => $this->popularity,
             'url' => $this->url,
+            'image_url' => $this->image_url,
             'is_activce' => (bool) $this->is_active,
             'thumbnail' => $this->thumbnail ? asset('storage/'. $this->thumbnail)  : null,
             'provider' => new ProviderResource($this->whenLoaded('provider')),

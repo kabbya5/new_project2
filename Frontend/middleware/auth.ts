@@ -1,16 +1,22 @@
-import {defineNuxtRouteMiddleware, navigateTo} from 'nuxt/app';
-import {useAuthStore} from '~/stores/auth';
+import { defineNuxtRouteMiddleware, navigateTo } from 'nuxt/app'
+import { useAuthStore } from '~/stores/auth'
 
-export default defineNuxtRouteMiddleware((to, from) =>{
-  const authStore = useAuthStore();
-  const token = authStore.getToken();
+export default defineNuxtRouteMiddleware((to, from) => {
+  const authStore = useAuthStore()
+  const token = authStore.getToken()
+
   if (process.client) {
-    if (!token && to.path !== '/login') {
-      return navigateTo('/login');
+    // Guest allowed routes
+    const guestRoutes = ['/login', '/register']
+
+    // If no token and trying to access protected route → go to /login
+    if (!token && !guestRoutes.includes(to.path)) {
+      return navigateTo('/login')
     }
-  
-    if (token && to.path === '/login') {
-      return navigateTo('/');
+
+    // If logged in and trying to go to guest route → redirect home
+    if (token && guestRoutes.includes(to.path)) {
+      return navigateTo('/')
     }
   }
 })

@@ -70,12 +70,12 @@ class SliderController extends Controller
             $mobilePath = $this->storeFile($request->file('mobile_image'), 'slider');
         }
 
-        $slider = Slider::create([
+        $slider->update([
             'slider_name' => $request->slider_name,
             'status' => $request->status,
             'slider_content' => $request->slider_content,
-            'desktop_image' => $desktopPath ?? null,
-            'mobile_image' => $mobilePath ?? null,
+            'desktop_image' => $desktopPath ?? $slider->desktop_image,
+            'mobile_image' => $mobilePath ?? $slider->mobile_image,
         ]);
 
         return response()->json([

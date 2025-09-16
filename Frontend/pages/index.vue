@@ -4,23 +4,19 @@
     <FrontendHomeslider v-else :sliders="sliderStore.sliders"> </FrontendHomeslider>
     <div>
         <div class="bg-slate-200/60 dark:bg-gray-900 py-2 lg:py-4">
-            <!-- Provider  -->
+            <!-- Category  -->
             <div class="container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4">
-                <LoadingSpinner v-if="loading.isLoading('provider')" />
-                <FrontendCategoryHorizontalCategory v-else :title="gameProvider" :categories="providerStore.providers" :link="'category/providers/jili'"/>
+                <LoadingSpinner v-if="loading.isLoading('category')" />
+                <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categoryStore.categories[0]?.slug"/>
             </div>
-
+            
             <!-- Recently Play  -->
             <div v-if="getUser()?.id" class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
                 <LoadingSpinner v-if="loading.isLoading('recentlyPlay')" />
                 <FrontendGameSlider v-else :games="recentlyPlay.games" :title="recentlyPlayTitle" :link="'/resent/game'" />
             </div>
 
-            <!-- Category  -->
-            <div class="container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4">
-                <LoadingSpinner v-if="loading.isLoading('category')" />
-                <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :link="'category/slot'"/>
-            </div>
+            
 
             <!-- Popular Game  -->
 
@@ -81,7 +77,10 @@ onMounted(async () => {
        await recentlyPlay.fetchGames();
     }
 
-    gameStore.fetchGames();
+    if(!gameStore.games.length){
+        gameStore.fetchGames();
+    }
+    
 
     if(!categoryStore.categories.length){
         await categoryStore.fetchCategories();

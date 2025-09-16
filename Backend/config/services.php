@@ -34,13 +34,13 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-     'dstgame' => [
-        'api_url' => env('DSTGAME_API_URL', 'https://stagingapi.dstgaming.info'),
-        'bo_url' => env('DSTGAME_BO_URL', 'https://stagingag.dstgaming.info'),
-        'company_code' => env('DSTGAME_COMPANY_CODE', 'oneapi'),
-        'api_key' => env('DSTGAME_API_KEY', 'jr9ESLUC'),
-        'bo_username' => env('DSTGAME_BO_USERNAME', 'oneapiagent07'),
-        'bo_password' => env('DSTGAME_BO_PASSWORD', 'Rocky1122'),
+
+    'game' => [
+        'api_url' => env('GAME_URL', 'https://api.playfivers.com/api/v2'),
+        'agent_secret_key' => env('AGENT_SECRET_KEY', 'ef767696-7c3e-4712-8be7-1e96619d5d26'),
+        'agent_token' => env('AGENT_TOKEN', '2c075cd1-5a6f-4352-827c-aefbaea635be'),
+        'agent_password' => env('AGENT_PASSWORD', 'Luckbuzz2888@'),
+        'agent_code' => env('AGENT_CODE', 'Luckbuzz99jan'),
     ],
 
 ];

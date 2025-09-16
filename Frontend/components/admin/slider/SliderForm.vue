@@ -112,7 +112,6 @@
     import { useSliderStore } from '~/stores/sliderStore';
     import { useErrorStore } from '~/stores/error';
 
-
     const sliderStore = useSliderStore();
     const errorStore = useErrorStore();
     

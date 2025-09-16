@@ -24,6 +24,28 @@ export const useCategoryStore = defineStore('category',{
             }
         },
 
+        async updateCategory(categoryId: number, categoryForm: FormData | CategoryForm) {
+            if (categoryForm instanceof FormData) {
+                categoryForm.append('_method', 'PUT');
+            }
+            try {
+                const response = await useApiFetch(`/admin/categories/update/${categoryId}`, {
+                    method: 'POST', // অথবা 'PUT' যদি তোমার API তে PUT লাগে
+                    body: categoryForm,
+                });
+
+                if (response && response.category) {
+                    // store এর ভিতরে পুরোনো category replace করা
+                    const index = this.categories.findIndex(c => c.id === categoryId);
+                    if (index !== -1) {
+                        this.categories[index] = response.category;
+                    }
+                }
+            } catch (error) {
+                alert(error);
+            }
+        },
+
         async fetchCategories(){
             const loading = useLoadingStore(); 
             loading.start('category');
@@ -45,6 +67,14 @@ export const useCategoryStore = defineStore('category',{
                 return Promise.resolve(category.games);
             }
             return Promise.resolve([]); 
+        },
+
+        findCategory(category_id:number){
+            var category = this.categories.find(cat => cat.id === category_id);
+
+            if(category){
+                return category;
+            }
         }
     }
 })

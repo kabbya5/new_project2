@@ -1,7 +1,7 @@
 <template>
 
 <footer class="bg-slate-200/60 dark:bg-gray-900 mt-4">
-    <div class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
+    <div class="mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
         <div class="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
             <div>
                 <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Company</h2>
@@ -105,8 +105,62 @@
                 </a>
             </div>
         </div>
+    </div>
+
+    <!-- bottom footer -->
+
+    <div v-if="!authStore.token && showLoginBody" class="fixed bottom-0 left-0 w-full bg-black z-50">
+        <div class="flex md:hidden item-center justify-between">
+            <NuxtLink class="text-center w-full text-white py-2 text-[16px] tracking-[1px]" 
+                v-for="(item,index) in responsiveNavItems" :key="index" :to="item.link"
+                :class="index == 0 ? 'bg-blue-800' : 'bg-green-800'"> 
+                {{ item[name] }}
+            </NuxtLink>
         </div>
+    </div>
 </footer>
 </template>
+
+<script setup lang="ts">
+
+import { useLocaleStore } from '~/stores/locale';
+import {useAuthStore} from '~/stores/auth';
+
+const localeStore = useLocaleStore();
+const authStore = useAuthStore();
+const route = useRoute()
+
+
+const responsiveNavItems = [
+  {
+    english_name:'Login',
+    bangla_name: 'লগইন',
+    hindi_name: 'रजिस्टर',
+    link:'/login',
+  },
+
+  {
+    english_name: 'Sign Up',
+    bangla_name: 'সাইন আপ',
+    hindi_name: 'साइन अप',
+    link: '/register',
+  }
+
+]
+
+const name = computed(() => localeStore.getTranslate('name'))
+
+const showLoginBody = ref<boolean>(true);
+const guestRoutes = ['/login', '/register']
+
+watch(
+  () => route.path,
+  (newPath) => {
+    showLoginBody.value = !guestRoutes.includes(newPath)
+  },
+  { immediate: true }
+)
+
+</script>
 
 

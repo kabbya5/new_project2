@@ -1,8 +1,9 @@
 export interface ProviderForm{
+    provider_id:null|number,
     english_name:string,
     bangla_name:string,
     hindi_name:string,
-    image: File | null;
-    position:null |number;
-    categories: number[];
+    image: null | File,
+    position:null |number,
+    categories: number[],
 }

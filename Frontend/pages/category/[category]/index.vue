@@ -1,7 +1,7 @@
 <template> 
-    <div class="container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4">
+    <div class="container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4 mt-">
         <LoadingSpinner v-if="loading.isLoading('category')" />
-        <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :link="'category/slot'"/>
+        <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categorySlug"/>
     </div>
 
     <div class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
@@ -29,6 +29,7 @@ const loading = useLoadingStore();
 const categorySlug = useRoute().params.category;
 const games = ref<Game[]>([]);
 const gameCategory = computed(() => localeStore.getTranslate('gameCategory'))
+
 onMounted(async () => {
     if(!categoryStore.categories.length){
         await categoryStore.fetchCategories();

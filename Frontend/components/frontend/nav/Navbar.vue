@@ -23,7 +23,14 @@
               <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
             </li>
 
-        
+            <li v-if="!authStore.token" class="nav-link" v-for="(item,index) in responsiveNavItems" :key="index">
+              <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
+            </li>
+
+            <li class="nav-link">
+              <FrontendMessenger />
+            </li>
+
             <li class="nav-link"><LangToggler /></li>
 
             <li> 
@@ -77,8 +84,8 @@ import {useAuthStore} from '~/stores/auth';
 import { useLocaleStore } from '~/stores/locale';
 
 const localeStore = useLocaleStore();
-const {getUser} = useAuthStore();
-console.log(getUser());
+const authStore = useAuthStore();
+
 const toggleSidebar = ref(false);
 
 const navItems = [
@@ -109,19 +116,6 @@ const navItems = [
     bangla_name: 'dashboard',
     link:'/admin/dashboard'
   },
-  {
-    english_name:'Login',
-    bangla_name: 'লগইন',
-    hindi_name: 'रजिस्टर',
-    link:'/login',
-  },
-
-  {
-    english_name: 'Sign Up',
-    bangla_name: 'সাইন আপ',
-    hindi_name: 'साइन अप',
-    link: '/register',
-  }
 ]
 
 const responsiveNavItems = [

@@ -4,6 +4,7 @@ import type { Category } from "./category";
 
 export interface Game {
   id: number;
+  game_code: string;
   english_name: string;
   bangla_name: string;
   hindi_name: string;
@@ -13,4 +14,5 @@ export interface Game {
   position: number | null;
   provider: Provider | Provider;
   url: string | null;
+  image_url:string|null;
 }

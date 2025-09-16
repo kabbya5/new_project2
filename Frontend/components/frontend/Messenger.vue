@@ -1,6 +1,6 @@
 <template>
   <button 
-    class="text-gray-800 dark:text-gray-100 hover:bg-text-700 text-[16px] z-50"
+    class="text-gray-800 dark:text-gray-100 hover:bg-text-700 text-[16px] md:text-[25px] z-50"
     @click="openChat"
   >
     💬

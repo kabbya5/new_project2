@@ -1,49 +1,41 @@
 <template>
-    <div class="fixed top-0 right-0 h-screen w-[250px] bg-gray-800 text-white shadow-xl z-50" style="overflow: auto;">
-        <button @click="emit('close')"  class="absolute top-1 right-1 w-[30px] h-[30px] rounded-full bg-red-500">
-            <i class="fa-solid fa-xmark"></i>
-        </button> 
-        
-        <div class="px-3 py-2" @click="emit('close')">
-            <h2 class="text-md"> {{ gameCategory }}</h2>
+    <div class="fixed inset-0 bg-black/50 z-100" @click="$emit('close')">
+        <div class="w-fit bg-gray-800 text-white shadow-xl z-100" style="overflow: auto;" @click.stop>
+            <div class="flex overflow-auto h-full">
+                <ul class="w-[180px] ">
+                    <li v-for="(item,index) in navItems" :key="index" class="py-3 px-4 border-b border-gray-600 w-full">
+                        <NuxtLink :to="item.link" class="flex items-center" @click="$emit('close')">
+                           <i class="fa-solid fa-home ml-1"></i>  <p class="ml-3"> {{ item[name] }} </p>
+                        </NuxtLink>
+                    </li>
 
-            <div class="mt-3 flex flex-wrap">
-                <div class=" p-[3px]" 
-                    v-for="(category, index) in categoryStore.categories"
-                    :key="index">
+                    <li v-if="authStore.token" class="py-3 px-4 border-b border-gray-600 w-full">
+                        <button @click="logout()" class="flex items-center">
+                           <i class="fa-solid fa-sign-out ml-1"></i>  <p class="ml-3"> {{ logoutNav[name] }} </p>
+                        </button>
+                    </li>
 
-                    <NuxtLink 
-                        :to="`/category/${category.slug}`" 
-                        class="border-2 border-slate-200 flex flex-col lg:flex-row xl:flex-col items-center justify-center
-                            border px-2 py-1
-                            border-slate-300 dark:border-slate-700 transition duration-300 
-                            hover:bg-gray-300 hover:dark:bg-gray-900 hover:dark:text-white" 
-                        active-class="text-gray-600 bg-gray-300 dark:text-white dark:bg-gray-900 font-bold"
-                    >
-                        <img :src="category.image_url" :alt="category.englist_name" class="w-7">
+                    <li v-for="(category, index) in categoryStore.categories" :key="index"
+                        class="py-3 px-4 border-b border-gray-600 w-full" :class="category.slug == openCategorySlug ? 'bg-gray-700' : ''">
+                        <button @click="categoryProvider(category.slug)" class="flex items-center">
+                           <NuxtImg :src="category.image_url" class="mr-3 w-8 h-auto" />  {{ category[name] }}
+                         </button>
+                    </li>
 
-                        <h2 class="text-[13px] capitalize font-semibold lg:ml-2">
-                            {{ category[name] }}
-                        </h2>
-                    </NuxtLink>
-                </div>
-            </div>
-        </div>
+                    <li class="py-3 px-4 border-b border-gray-600">
+                        <LangToggler class="w-[80px] border-none text-md" />
+                    </li>
+                </ul>
 
-        <div class="px-3 py-1" @click="emit('close')">
-            <h2 class="text-md"> {{ gameProvider }}</h2>
-
-            <div class="flex flex-wrap justify-start gap-2 pt-3">
-                <NuxtLink v-for="provider in providerStore.providers" :key="provider.id"
-                    :to="`/category/${category}/${provider.slug}`" class="rounded-md  mb-2 py-1 px-1 md:py-2 px-4  border border-gray-300 
-                    dark:border-gray-900 transaction duration-300 hover:bg-red-500 hover:text-white"
-                    active-class="text-white bg-red-500">
-                    <div class="flex items-center justify-center">
-                        <img :src="provider.logo" alt="image" class="w-[20px] lg:w-[25px]">
-
-                        <p class="ml-2 capitalize text-[14px] -mt-1">{{ provider[name] }}</p>
-                    </div>
-                </NuxtLink>
+                <ul v-if="openCategorySlug" class="w-[110px] bg-gray-700 border-l border-gray-600 overflow-auto">
+                    <li v-for="(provider, index) in providers" :key="index"
+                        class="py-3 px-4 border-b border-gray-600 w-full">
+                        <NuxtLink  :to="`/category/${openCategorySlug}/${provider.slug}`"  class="flex flex-col justify-center items-center">
+                           <NuxtImg :src="provider.logo" class="w-auto h-[40px]" />  
+                           <p class="text-[14px]"> {{ provider[name] }} </p>
+                        </NuxtLink>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -56,18 +48,61 @@ const emit = defineEmits(["close"])
 import { useLocaleStore } from '~/stores/locale';
 import { useCategoryStore } from '~/stores/category';
 import { useProviderStore } from '~/stores/provider';
+import {useAuthStore} from '~/stores/auth';
+
+import type { Provider } from '~/types/provider';
 
 const categoryStore = useCategoryStore();
 const localeStore = useLocaleStore();
 const providerStore = useProviderStore();
+const authStore = useAuthStore();
+const {handleLogout} = authStore;
 
 const name = computed(() => localeStore.getTranslate('name'))
 const gameCategory = computed(() => localeStore.getTranslate('gameCategory'))
 const gameProvider = computed(() => localeStore.getTranslate('gameProvider'))
 
+const openCategorySlug = ref<null|string>(null)
+const providers = ref<Provider | null>(null)
+
+const navItems = [
+  {
+    english_name: 'Home',
+    bangla_name: 'হোম',
+    hindi_name: 'होम',
+    link: '/',
+  },
+
+  {
+    english_name: 'Profile',
+    bangla_name: 'প্রোফাইল',
+    hindi_name: 'प्रोफ़ाइल',
+    link: '/profile',
+  },
+];
+
+const logoutNav = {
+  english_name: 'Logout',
+  bangla_name: 'লগআউট',
+  hindi_name: 'लॉगआउट',
+};
+
 onMounted(async () => {
-    await categoryStore.fetchCategories();
-    await providerStore.fetchProviders();
+    if(!categoryStore.categories.length){
+        await categoryStore.fetchCategories();
+    } 
 })
+
+const categoryProvider = async(slug:string) =>{
+    providers.value = await providerStore.findProviderByCategory(slug);
+    openCategorySlug.value = slug;
+}
+
+const logout = async () => {
+  await handleLogout(); 
+  emit('close');        
+}
+
+
 
 </script>

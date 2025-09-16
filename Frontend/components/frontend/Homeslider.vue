@@ -28,28 +28,28 @@ const swiper = useSwiper(containerRef, {
 
 <template>
   <ClientOnly>
-    <div class="relative">
+    <div class="relative w-full h-full">
       <!-- Swiper Container -->
-      <swiper-container
+      <swiper-container class="w-full h-full"
         ref="containerRef"
         :loop="true"
         :init="false"
         :autoplay="{ delay: 3000 }"
         effect="creative"
         :pagination="true"
-        :navigation="true"
+        :navigation="false"
         :creative-effect="{
           prev: { shadow: true, translate: [0, 0, -400] },
           next: { shadow: true, translate: [0, 0, -400] }
         }"
       >
-        <swiper-slide
+        <swiper-slide class="w-full h-full"
             v-for="(slider, index) in props.sliders"
             :key="index"
             >
             <NuxtLink :to="`/slider/${slider.slug}`">
-              <img :src="slider.mobile_image" class="w-full md:hidden h-full min-h-[300px] object-cover" />
-              <img :src="slider.desktop_image" class="w-full hidden md:block h-full min-h-[300px] object-cover" />
+              <img :src="slider.mobile_image" class="w-full md:hidden h-[full] object-cover" />
+              <img :src="slider.desktop_image" class="w-full hidden md:block h-full object-cover" />
             </NuxtLink>
         </swiper-slide>
       </swiper-container>
@@ -57,7 +57,7 @@ const swiper = useSwiper(containerRef, {
   </ClientOnly>
 </template>
 
-<style lang="css">
+<style>
 swiper-slide {
   display: flex;
   justify-content: center;
@@ -67,4 +67,5 @@ swiper-slide {
   font-weight: bold;
   font-family: 'Roboto', sans-serif;
 }
+
 </style>

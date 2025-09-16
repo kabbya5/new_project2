@@ -1,5 +1,5 @@
 <template>
-    <AdminGameForm v-if="openModel" @close="openModel=false"/>
+    <AdminGameForm v-if="isModalOpen" :gameId="currentId" @close="isModalOpen=false"/>
 
     <div class="bg-white dark:bg-gray-800 p-3">
         <div class="flex justify-between items-center">
@@ -14,9 +14,12 @@
 
         <div class="my-5">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
+                <table class="w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
                     <thead class="bg-gray-100 dark:bg-gray-900">
                     <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                            Game Code
+                        </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             English Name
                         </th>
@@ -39,13 +42,14 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             Image
                         </th>
-                        <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                             Action
-                        </th> -->
+                        </th>
                     </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                     <tr v-for="game in gameStore.games" :key="game.id">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ game.game_code }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ game.english_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">{{ game.bangla_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"> {{ game.hindi_name }}</td>
@@ -57,15 +61,15 @@
                         <td v-if="game.provider" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300"> 
                             {{ game.provider.english_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
-                            <img :src="game.thumbnail" :alt="game.english_name" class="w-7">
+                            <NuxtImg :src="game.thumbnail ? game.thumbnail : game.image_url" :alt="game.english_name" class="w-7" />
                         </td>
-                        <!-- <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
-                                Edit
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button @click="createUpdateModal(game.id)" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <i class="fa-solid fa-edit"></i>
                             </button>
-                        </td> -->
+                        </td>
                     </tr>
-                    <!-- Repeat more rows as needed -->
+
                     </tbody>
                 </table>
             </div>
@@ -87,10 +91,12 @@
         layout:'admin',
     })
 
-    const openModel = ref(false);
+    const isModalOpen = ref<boolean>(false);
+    const currentId = ref<number | null>(null);
 
     const createUpdateModal = (id:number|null = null) =>{
-        openModel.value = true;
+        currentId.value = id;
+        isModalOpen.value = true;
     }
 
     onMounted (async () =>{

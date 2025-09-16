@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class RecenlyPlayResoure extends JsonResource
 {
     /**
@@ -12,10 +13,13 @@ class RecenlyPlayResoure extends JsonResource
      *
      * @return array<string, mixed>
      */
+
+
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->game->id,
+            'game_code' => $this->game->game_code,
             'provider_id' => $this->game->provider_id,
             'bangla_name' => $this->game->bangla_name,
             'english_name' => $this->game->english_name,

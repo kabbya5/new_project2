@@ -46,4 +46,36 @@ class CategoryController extends Controller
             'category' => new CategoryResource($category),
         ]);
     }
+
+    public function update(Request $request, Category $category){
+
+        $request->validate([
+            'english_name' => 'required|string',
+            'bangla_name' => 'required|string',
+            'hindi_name' => 'required|string',
+            'position' => 'nullable|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $imageUrl = null;
+
+        if ($request->hasFile('image')) {
+            $this->deleteFile($category->image_url);
+            $imageUrl = $this->storeFile($request->file('image'), 'category');
+        }
+
+
+        $category->update([
+            'image_url' => $imageUrl ?? $category->image_url,
+            'english_name' => $request->english_name,
+            'bangla_name' => $request->bangla_name,
+            'hindi_name' => $request->hindi_name,
+            'position' => $request->position,
+        ]);
+
+        return response()->json([
+            'message' => 'Category updated successfully!',
+            'category' => new CategoryResource($category),
+        ]);
+    }
 }
