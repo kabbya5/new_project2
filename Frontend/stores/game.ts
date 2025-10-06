@@ -6,22 +6,55 @@ import type { Game } from '~/types/games';
 export const useGameStore = defineStore('game', {
   state: () => ({
     games: [] as Game[],
+    pagination: {
+      current_page: 1,
+      last_page: 1,
+      per_page: 1,
+      total: 0,
+    }
   }),
 
   actions: {
-    async fetchGames() {
+    async fetchGames(
+      page = 1,
+      limit = 10,
+      search: string | null = null,
+      provider_id: number | null = null,
+      category_id: number | null = null
+    ) {
       const loading = useLoadingStore(); 
-        loading.start('game');
-        try{
-            const data = await useApiFetch('/games/index');
-            if (data && data.games) {
-                this.games = data.games;
-            }
-        }catch(error){
-            alert(error);
-        }finally {
-            loading.stop('game');
+      loading.start('game');
+
+      try {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString()
+        });
+
+        if (search) params.append('search', search);
+        if (provider_id) params.append('provider_id', provider_id.toString());
+        if (category_id) params.append('category_id', category_id.toString());
+
+        const data = await useApiFetch(`/games/index?${params.toString()}`);
+
+        if (data) {
+          if (data.games) this.games = data.games;
+
+          if (data.pagination) {
+            this.pagination = {
+              current_page: data.pagination.current_page,
+              last_page: data.pagination.last_page,
+              per_page: data.pagination.per_page,
+              total: data.pagination.total,
+            };
+          }
         }
+
+      } catch (error) {
+        alert(error);
+      } finally {
+        loading.stop('game');
+      }
     },
 
     async storeGame(gameForm:FormData | GameForm){

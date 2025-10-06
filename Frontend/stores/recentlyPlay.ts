@@ -9,11 +9,11 @@ export const useRecentlyPlay = defineStore('recentlyPlay', {
   }),
 
   actions: {
-    async fetchGames() {
-      const loading = useLoadingStore(); 
+    async fetchGames(page = 1, limit = 12) {
+        const loading = useLoadingStore(); 
         loading.start('recentlyPlay');
         try{
-            const data = await useApiFetch('games/recenly/play');
+            const data = await useApiFetch(`/games/recenly/play?page=${page}&limit=${limit}`);
             if (data && data.games) {
                 this.games = data.games;
             }

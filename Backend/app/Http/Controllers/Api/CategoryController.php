@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function index(){
 
-        $categories = Category::with('providers.games', 'providers.categories','games.provider', 'games.categories')->orderBy('position')->get();
+        $categories = Category::with('providers')->orderBy('position')->get();
 
         return response()->json(['categories' => CategoryResource::collection($categories)]);
     }
@@ -54,7 +54,7 @@ class CategoryController extends Controller
             'bangla_name' => 'required|string',
             'hindi_name' => 'required|string',
             'position' => 'nullable|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $imageUrl = null;

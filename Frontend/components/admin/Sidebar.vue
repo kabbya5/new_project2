@@ -3,10 +3,10 @@
         <!-- Sidebar -->
         <aside>
             <!-- Logo  -->
-            <div class="flex justify-center items-center border-b border-gray-300 dark:border-gray-700 py-3">
+            <NuxtLink to="/admin/dashboard" class="flex justify-center items-center border-b border-gray-300 dark:border-gray-700 py-3">
                 <img src="https://stackbros.in/darkone/assets/images/logo-dark.png" class="w-6 h-6" alt="Logo" />
                 <span class="font-bold text-lg">Darkone</span>
-            </div>
+            </NuxtLink>
     
             <!-- Menu -->
             <div class="text-xs px-3 py-2 uppercase text-gray-400 dark:text-gray-500">
@@ -107,6 +107,13 @@
     },
 
     {
+      name:'text',
+      title:'Moving Text',
+      icon:'fa-solid fa-text-width',
+      url:'/admin/text',
+    },
+
+    {
       name:'category',
       title:'Category',
       icon:'fa-regular fa-calendar-days',
@@ -126,12 +133,18 @@
       icon:'fa-solid fa-user',
       url:'/admin/game',
     },
+     {
+      name: 'currency',
+      title: 'Currency',
+      icon: 'fa-solid fa-coins',
+      url: '/admin/currency'
+    },
 
     {
-      name: 'ecommerce',
-      title: 'ecommerce',
-      icon: ['fas', 'house'],
-      url: '/fa/user'
+      name: 'agent',
+      title: 'Agent',
+      icon: 'fa-solid fa-user-secret',
+      url: '/admin/agent'
     },
   ])
   

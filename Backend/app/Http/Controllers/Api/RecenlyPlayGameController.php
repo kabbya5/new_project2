@@ -18,8 +18,9 @@ class RecenlyPlayGameController extends Controller
         $this->gameService = $gameService;
     }
 
-    public function index(){
-        $games = RecenlyPlay::with('game')->orderBy('updated_at','desc')->get();
+    public function index(Request $request){
+        $limit = $request->get('limit', 12);
+        $games = RecenlyPlay::with('game')->orderBy('updated_at','desc')->paginate($limit);
 
         return response()->json(['games' => RecenlyPlayResoure::collection($games)]);
     }
@@ -27,30 +28,47 @@ class RecenlyPlayGameController extends Controller
     public function store($id)
     {
         $game = Game::findOrFail($id); // findOrFail ব্যবহার করা ভালো
-        $game->update(['popularity' => $game->popularity + 1]);
         $user_id = auth()->id();
 
         if(!$user_id){
             return null;
         }
 
-        $recentlyGame = RecenlyPlay::updateOrCreate(
-            [
-                'user_id' => $user_id,
-                'game_id' => $game->id,
-            ],
-            [ 'updated_at' => now() ]
-        );
-
-        $recentlyGame->save();
-
-        // relation load করা হচ্ছে
-        $recentlyGame->load('game.provider', 'game.categories');
-
         $data = $this->gameService->launchGame($game, $user_id);
+        return $data;
+
+        if ($data['status'] === 1 && $data['launch_url']) {
+            $game->update(['popularity' => $game->popularity + 1]);
+
+            $recentlyGame = RecenlyPlay::where('user_id', $user_id)->where('game_id', $game->id)->first();
+
+            if($recentlyGame){
+                $recentlyGame->update(['updated_at' => now()]);
+            }else{
+                $recentlyGame = RecenlyPlay::create(
+                    [
+                        'user_id' => $user_id,
+                        'game_id' => $game->id,
+                        'updated_at' => now(),
+                    ],
+                );
+            }
+
+            $recentlyGame->load('game.provider', 'game.categories');
+
+        }
+
         return $data;
 
 
        	return response()->json($data);
+    }
+
+    public function playSports(){
+
+        $user_id = auth()->id;
+        return ['status' => 1,'launch_url' => 'https://www.youtube.com/'];
+        $data = $this->gameService->playSports($user_id);
+        return $data;
     }
 }

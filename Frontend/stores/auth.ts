@@ -10,14 +10,13 @@ export const useAuthStore = defineStore('auth', () => {
         const tokenData = localStorage.getItem('authToken');
         if (tokenData) {
             const parsedToken = JSON.parse(tokenData);
-            if (parsedToken.expiresAt > Date.now()) {
-                token.value = parsedToken.value;
-            } else {
-                localStorage.removeItem('authToken');
-            }
+            
+            token.value = parsedToken.value;
+           
         }
 
         const storedUser = localStorage.getItem('user');
+        
         if (storedUser) {
             user.value = JSON.parse(storedUser);
         }
@@ -59,26 +58,21 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
-    const getUser =  (): { name: string | null, email: string | null, id: number | null, role: string | null} => {
+    const getUser =  (): Object => {
         if (process.client) {
             try {
                 const storedUser = localStorage.getItem('user');
                 if (storedUser) {
                     const userData = JSON.parse(storedUser);
                     if(getToken()){
-                        return {
-                            name: userData.name ?? null,
-                            email: userData.email ?? null,
-                            id: userData.id ?? null,
-                            role: userData.role ?? null,
-                        };
+                        return userData;
                     }
                 }
             } catch (error) {
                 console.error("Error getting user data:", error);
             }
         }
-        return { name: null, email: null, id:null, role:null };
+        return { name: null, email: null, id:null, role:null, currency:null, balance:0,turnover:'00', phone:' '};
     };
 
     const clearToken = (): void => {
@@ -109,6 +103,25 @@ export const useAuthStore = defineStore('auth', () => {
         } catch(error){
             alert('Logout Faild');
         }
+    };
+
+    const recallUser = async() =>{
+        const loading = useLoadingStore(); 
+        loading.start('recall');
+        try{
+            const response = await useApiFetch('/me', {
+                method:'POST',
+            });
+
+            if(response.user){
+                setUser(response.user);
+                user.value = response.user;
+            }
+        }catch(err){
+            alert(err);
+        }
+
+        loading.stop('recall');
     }
 
     return {
@@ -121,5 +134,6 @@ export const useAuthStore = defineStore('auth', () => {
         clearToken,
         clearAuthData,
         handleLogout,
+        recallUser,
     };
 });

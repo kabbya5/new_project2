@@ -90,18 +90,36 @@ export const useProviderStore = defineStore('provider',{
         async findProviderByCategory(slug:string){
             const loading = useLoadingStore(); 
             loading.start('provider');
-            try{
-                const data = await useApiFetch('/game/category/providers/' + slug);
-                if (data && data.providers) {
-                    return data.providers;
-                }
-            }catch(error){
-                alert(error);
-            }finally {
-                loading.stop('provider');
-            } 
 
-            return [];
+            if(slug == 'sport'){
+                 try{
+                    const data = await useApiFetch('/game/sports-play/');
+
+                    if (data.status === 1 && data.launch_url) {
+                        window.open(data.launch_url, '_blank');
+                    }
+
+                }catch(error){
+                    alert(error);
+                }finally {
+                    loading.stop('provider');
+                } 
+            }else{
+                
+                try{
+                    const data = await useApiFetch('/game/category/providers/' + slug);
+
+                    if (data && data.providers) {
+                        return data.providers;
+                    }
+                }catch(error){
+                    alert(error);
+                }finally {
+                    loading.stop('provider');
+                } 
+
+                return [];
+            }
         }
     }
 })

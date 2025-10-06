@@ -7,7 +7,7 @@ import Topbar from '~/components/admin/Topbar.vue';
 <template>
     <div class="bg-slate-200/60 dark:bg-gray-900 text-gray-900 dark:text-gray-300">
         <div class="flex">
-            <Sidebar />
+            <Sidebar  />
             <div class="flex-1 flex flex-col">
                 <Topbar/> 
                 <main class="flex-1 p-4">

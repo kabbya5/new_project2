@@ -8,10 +8,12 @@ use App\Rules\PhoneNumberVerificationRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Services\TwilioService;
+use App\Traits\FileUploadTrait;
 use Carbon\Carbon;
 
 class AuthController extends Controller
 {
+    use FileUploadTrait;
     private TwilioService $twilio;
 
     public function __construct(TwilioService $twilio) {
@@ -29,12 +31,14 @@ class AuthController extends Controller
             'password' => 'required|min:8|confirmed'
         ]);
 
+        $refer_code = generate_random_key();
+
         $user = User::create([
             'name' => $request->user_name,
             'user_name' => $request->user_name,
             'email' => $request->email,
-            'refer_code' => $request->refer_code,
             'currency' => $request->currency,
+            'refer_code' => $refer_code,
             'phone' => $request->phone_number,
             'password' => Hash::make($request->password),
         ]);
@@ -47,6 +51,37 @@ class AuthController extends Controller
             'token'  => $token,
         ]);
 
+    }
+
+    public function updateProfile(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'phone_number' => 'required',
+            'email' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $user = User::find(auth()->id());
+
+        $imageUrl = null;
+        $refer_code = generate_random_key();
+
+        if ($request->hasFile('image')) {
+            $this->deleteFile($user->image_url);
+            $imageUrl = $this->storeFile($request->file('image'), 'profile', 400, 400);
+        }
+
+        $user->update([
+            'name' => $request->name,
+            'phone' => $request->phone_number,
+            'image_url' => $imageUrl,
+            'refer_code' => $user->refer_code ?? $refer_code,
+        ]);
+
+        return response()->json([
+            'message' => 'User registred successfully',
+            'user' => $user,
+        ]);
     }
 
     private function sendVerificationCode($phone)
@@ -166,4 +201,11 @@ class AuthController extends Controller
         ], 401);
     }
 
+    public function me(){
+        $auth_id = auth()->id();
+        $user = User::find($auth_id);
+        return response()->json([
+            'user' => $user,
+        ]);
+    }
 }

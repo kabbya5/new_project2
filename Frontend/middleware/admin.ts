@@ -1,16 +1,27 @@
+import { defineNuxtRouteMiddleware, navigateTo } from 'nuxt/app'
+import { useAuthStore } from '~/stores/auth'
 
-import { defineNuxtRouteMiddleware, navigateTo } from 'nuxt/app';
-import { useAuthStore } from '~/stores/auth';
+export default defineNuxtRouteMiddleware((to) => {
+  const authStore = useAuthStore()
+  const token = authStore.getToken()
 
-export default defineNuxtRouteMiddleware(() => {
-  const authStore = useAuthStore();
+  // guest routes
+  const guestRoutes = ['/login', '/register']
 
-  const user = authStore.getUser();
-  const role = user?.role;
+  if (process.client) {
+    if (!token && !guestRoutes.includes(to.path)) {
+      return navigateTo(`/login?redirect=${to.fullPath}`)
+    }
 
-  if (process.client && !user) {
-    if (role !== 'admin') {
-      return navigateTo('/unauthorized');
+    // যদি শুধু token থাকে, তবে reload-এ current page allow করো
+    if (token && guestRoutes.includes(to.path)) {
+      const redirectPath = to.query.redirect || '/'
+      return navigateTo(redirectPath as string)
+    }
+
+    // admin route guard
+    if (token && authStore.user && authStore.user.role !== 'admin' && to.path.startsWith('/admin')) {
+      return navigateTo('/')
     }
   }
-});
+})

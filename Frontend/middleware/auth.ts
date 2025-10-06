@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     // If no token and trying to access protected route → go to /login
     if (!token && !guestRoutes.includes(to.path)) {
-      return navigateTo('/login')
+      return navigateTo(`/login?redirect=${to.fullPath}`)
     }
 
     // If logged in and trying to go to guest route → redirect home

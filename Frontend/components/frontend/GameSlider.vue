@@ -87,9 +87,8 @@ const playGame = async(id:number) =>{
         :autoplay="{ delay: 3000 }"
         :breakpoints="{
             320: { slidesPerView: 3},
-            400: { slidesPerView: 4},
-            600: { slidesPerView: 3 },
-            900: { slidesPerView: 4 },
+            600: { slidesPerView: 4 },
+            900: { slidesPerView: 5 },
             1124: { slidesPerView: 6 },
             1600:{slidesPerView:8}
         }"
@@ -101,7 +100,7 @@ const playGame = async(id:number) =>{
             <div class="flex flex-col">
                 <button @click="playGame(game.id)">
                     <div class="width-full">
-                        <img :src="game.thumbnail ? game.thumbnail : game.image_url" :alt="game.english_name" class="w-full h-full">
+                        <img :src="game.thumbnail ? game.thumbnail : game.image_url" :alt="game.english_name" class="w-full h-[120px] lg:h-full">
                     </div>
                 </button>
 

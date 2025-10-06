@@ -3,39 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\GameService;
+use App\Jobs\ProcessWebhook;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
-    public GameService $gameService;
+    public function handle(Request $request){
+        try {
+            $webhookData = $request->all();
+            $after_balance = $webhookData['slot']['user_after_balance'];
 
-    public function __construct(GameService $gameService) {
-        $this->gameService = $gameService;
-    }
+            ProcessWebhook::dispatch($webhookData);
 
-    public function balance(){
-        $user_id = 3;
-
-        if(!$user_id){
-            return [];
+            return response()->json(['msg' => 'success', 'balance' => $after_balance], 200);
+        } catch (\Exception $e) {
+            Log::error("Error handling webhook: " . $e->getMessage());
+            return response()->json(['status' => 'error'], 500);
         }
 
-        $data = $this->gameService->balance($user_id);
-
-        return $data;
-    }
-
-    public function transaction(){
-
-        $user_id = auth()->user_id;
-
-        if(!$user_id){
-            return [];
-        }
-
-        $data = $this->gameService->transaction($user_id);
-
-        return $data;
     }
 }

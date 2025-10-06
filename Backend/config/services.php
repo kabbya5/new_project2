@@ -43,4 +43,9 @@ return [
         'agent_code' => env('AGENT_CODE', 'Luckbuzz99jan'),
     ],
 
+    'lpg' => [
+        'app_id'     => env('PAYMENT_APP_ID', 'MJL3061'),
+        'secret_key' => env('PAYMENT_SECRET_KEY', 'tFjw42bi7G7xy6cAzgByIheSmRs0zorT'),
+        'base_url'   => env('PAYMENT_BASE_URL', 'https://www.lg-pay.com/api'),
+    ],
 ];

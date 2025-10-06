@@ -21,9 +21,32 @@ class GameController extends Controller
     }
 
 
-    public function index(){
-        $games = Game::with('categories', 'provider')->orderBy('popularity','desc')->take(300)->get();
-        return response()->json(['games' => GameResource::collection($games)]);
+    public function index(Request $request){
+
+        $limit = $request->limit;
+
+        $search = $request->search;
+        $provider_id = (int) $request->provider_id;
+
+        $games = Game::with('provider')->orderBy('popularity','desc')
+            ->when($search, function($q) use($search){
+                $q->where(function($q2) use($search) {
+                    $q2->where('english_name', 'like', '%'.$search.'%')
+                    ->orWhere('game_code', 'like', '%'.$search.'%');
+                });
+            })->when($provider_id, function($q) use($provider_id){
+                $q->where('provider_id', $provider_id);
+            })
+            ->paginate($limit);
+        return response()->json([
+            'games' => GameResource::collection($games),
+            'pagination' => [
+                'current_page' => $games->currentPage(),
+                'last_page'    => $games->lastPage(),
+                'per_page'     => $games->perPage(),
+                'total'        => $games->total(),
+            ]
+        ]);
     }
 
     public function store(Request $request){

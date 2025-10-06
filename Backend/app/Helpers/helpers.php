@@ -13,3 +13,15 @@ if (!function_exists('generate_random_key')) {
         return substr($pool, 0, $length);
     }
 }
+
+if(!function_exists('percentance_calculator')){
+    function percentance_calculator($data1, $data2){
+        if($data2 > 0){
+            $percentageChange = (($data1 - $data2) / $data2) * 100;
+        } else {
+            $percentageChange = 100;
+        }
+
+        return $percentageChange;
+    }
+}

@@ -1,7 +1,7 @@
 <template>
     <div class="fixed inset-0 bg-black/50 z-100" @click="$emit('close')">
         <div class="w-fit bg-gray-800 text-white shadow-xl z-100" style="overflow: auto;" @click.stop>
-            <div class="flex overflow-auto h-full">
+            <div class="flex overflow-auto h-screen">
                 <ul class="w-[180px] ">
                     <li v-for="(item,index) in navItems" :key="index" class="py-3 px-4 border-b border-gray-600 w-full">
                         <NuxtLink :to="item.link" class="flex items-center" @click="$emit('close')">
@@ -36,6 +36,7 @@
                         </NuxtLink>
                     </li>
                 </ul>
+                
             </div>
         </div>
     </div>

@@ -8,11 +8,8 @@
             <i class="fa-solid fa-bars text-[25px]"></i>
           </button>
             
-          <NuxtLink to="/" class="ml-4">
-              <!-- Light mode logo -->
-              <NuxtImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR9M6lKsVmjtOUiyN9cVfo93ZktWoZbSTqkOoAI9-k17L3n7yTVuP-X8qdtBS14HlZcQc&usqp=CAU" alt="Logo" class="block dark:hidden h-10 lg:h-14 w-auto" />
-              <!-- Dark mode logo -->
-              <NuxtImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR9M6lKsVmjtOUiyN9cVfo93ZktWoZbSTqkOoAI9-k17L3n7yTVuP-X8qdtBS14HlZcQc&usqp=CAU" alt="Logo" class="hidden dark:block h-10 lg:h-14 w-auto" />
+          <NuxtLink to="/" class="ml-10 -mt-1">
+             <NuxtImg class="w-[90px]" src="logo.png" />
           </NuxtLink>
         </div>
 
@@ -25,6 +22,13 @@
 
             <li v-if="!authStore.token" class="nav-link" v-for="(item,index) in responsiveNavItems" :key="index">
               <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
+            </li>
+
+            <li v-else class="nav-link" v-if="authStore.getUser()?.name">
+              <NuxtLink to="/profile" class="text-gray-700 dark:text-white"> 
+                <i class="fa-solid fa-user"></i>
+                <span class="uppper ml-2 uppercase"> {{authStore.getUser()?.currency }} {{authStore.user?.balance }}</span>
+              </NuxtLink>
             </li>
 
             <li class="nav-link">
@@ -55,16 +59,23 @@
 
             <li class="nav-link">
               <NuxtLink to="/">
-                <h2 class="text-gray-800 dark:text-gray-100"> Luckbuzz99 </h2>
+                <NuxtImg class="w-[90px]" src="logo.png" />
               </NuxtLink>
-            
             </li>
 
-            
-      
-            <li class="nav-link"><ThemToggler /></li>
-            <li class="nav-link">
-              <FrontendMessenger />
+            <li>
+              <ul class="flex space-x-2">
+                <li class="nav-link" v-if="authStore.getUser()?.name">
+                  <NuxtLink to="/profile" class="text-gray-700 text-sm dark:text-white"> 
+                    <i class="fa-solid fa-user"></i>
+                    <span class="uppper ml-2 uppercase"> {{authStore.getUser()?.currency }} {{userBalance}}</span>
+                  </NuxtLink>
+                </li>
+                <li class="nav-link"><ThemToggler /></li>
+                <li class="nav-link">
+                  <FrontendMessenger />
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -136,6 +147,13 @@ const responsiveNavItems = [
 ]
 
 const name = computed(() => localeStore.getTranslate('name'))
+const userBalance = computed(() => authStore.user?.balance ?? 0)
+
+onMounted(() =>{
+  if(authStore.token){
+    authStore.recallUser();
+  }
+});
 
 </script>
 

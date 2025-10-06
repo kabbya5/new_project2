@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Currency;
 use App\Models\Game;
 use App\Models\User;
 use GuzzleHttp\Client;
@@ -66,9 +67,8 @@ class GameService
     }
 
     public function launchGame(Game $game, $user_id): array  {
-        $balance = $this->balance($user_id);
         $user = User::find($user_id);
-        $user->update(['balance' => $balance]);
+        $currency = Currency::where('currency_code',$user->currency)->first();
 
         try {
             $response = $this->client->post($this->config['api_url'].'/game_launch', [
@@ -81,7 +81,37 @@ class GameService
                     'user_code'     => $user->user_name, // $user_code,
                     'game_code'     => $game->game_code,
                     'game_original' => true,
-                    "user_balance"  => $user->balance,
+                    "user_balance"  => $user->balance ? $user->balance / $currency->brl_rate : 0,
+                    'lang'          => 'en',
+                ],
+            ]);
+        } catch (Exception $e) {
+            return [
+                'status' => 0,
+                'msg'    => 'Error launching game: ' . $e->getMessage(),
+            ];
+        }
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function playSports($user_id): array  {
+
+        $user = User::find($user_id);
+        $currency = Currency::where('currency_code',$user->currency)->first();
+
+        try {
+            $response = $this->client->post($this->config['api_url'].'/game_launch', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'agentToken'    => $this->config['agent_token'],
+                    'secretKey'    =>  $this->config['agent_secret_key'],
+                    'user_code'     => $user->user_name, // $user_code,
+                    'game_code'     => 'sport',
+                    'game_original' => true,
+                    "user_balance"  => $user->balance ? $user->balance / $currency->brl_rate : 0,
                     'lang'          => 'en',
                 ],
             ]);

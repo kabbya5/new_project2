@@ -33,6 +33,11 @@ class ProviderController extends Controller
 
     public function categoryProviders($slug){
         $category = Category::with('providers')->where('slug', $slug)->first();
+
+        if (!$category) {
+            return true;
+        }
+
         if($category){
             $providers = $category->providers;
             return response()->json(['providers' => ProviderResource::collection($providers)]);
