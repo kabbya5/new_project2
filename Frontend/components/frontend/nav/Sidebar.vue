@@ -5,7 +5,7 @@
                 <ul class="w-[180px] ">
                     <li v-for="(item,index) in navItems" :key="index" class="py-3 px-4 border-b border-gray-600 w-full">
                         <NuxtLink :to="item.link" class="flex items-center" @click="$emit('close')">
-                           <i class="fa-solid fa-home ml-1"></i>  <p class="ml-3"> {{ item[name] }} </p>
+                           <i class="ml-1" :class="item.icon"></i>  <p class="ml-3"> {{ item[name] }} </p>
                         </NuxtLink>
                     </li>
 
@@ -22,7 +22,7 @@
                          </button>
                     </li>
 
-                    <li class="py-3 px-4 border-b border-gray-600">
+                    <li class="py-3 mb-6 px-4 border-b border-gray-600">
                         <LangToggler class="w-[80px] border-none text-md" />
                     </li>
                 </ul>
@@ -72,6 +72,7 @@ const navItems = [
     bangla_name: 'হোম',
     hindi_name: 'होम',
     link: '/',
+    icon:'fa-solid fa-home',
   },
 
   {
@@ -79,6 +80,7 @@ const navItems = [
     bangla_name: 'প্রোফাইল',
     hindi_name: 'प्रोफ़ाइल',
     link: '/profile',
+    icon: 'fa-solid fa-user-nurse'
   },
 ];
 

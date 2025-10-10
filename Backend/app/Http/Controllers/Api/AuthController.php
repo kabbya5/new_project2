@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Rules\PhoneNumberVerificationRule;
 use Illuminate\Http\Request;
@@ -32,6 +34,16 @@ class AuthController extends Controller
         ]);
 
         $refer_code = generate_random_key();
+        $agent_refer_code = $request->refer_code;
+
+        if($agent_refer_code){
+            $agent = User::where('refer_code', $agent_refer_code)->first();
+            if($agent->role == 'user'){
+                $other_refer_id = $agent->id;
+            }else{
+                $affiliate_refer_id = $agent->id;
+            }
+        }
 
         $user = User::create([
             'name' => $request->user_name,
@@ -39,9 +51,21 @@ class AuthController extends Controller
             'email' => $request->email,
             'currency' => $request->currency,
             'refer_code' => $refer_code,
+            'other_refer_id' => $other_refer_id ?? null,
+            'affiliate_refer_id' => $affiliate_refer_id ?? null,
             'phone' => $request->phone_number,
             'password' => Hash::make($request->password),
         ]);
+
+        // Transaction::crate([
+        //     'user_id' => $user->id,
+        //     'transaction_sn' => 'TXN'.time().rand(1000,9999),
+        //     'type' => 'bonus',
+        //     'amount' => 0.00,
+        //     'status' => 'success',
+        //     'provider' => 'System',
+        //     'remark' => 'Bonus for new user registration'
+        // ]);
 
         $token = $user->createToken('authentication')->plainTextToken;
 
@@ -80,8 +104,38 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User registred successfully',
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::find(auth()->id());
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'message' => 'Old password does not match',
+                'errors' => [
+                    'old_password' => ['Old password does not match'],
+                ],
+            ], 422);
+        }
+
+        $token = $user->createToken('authentication')->plainTextToken;
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'user' => new UserResource($user),
+            'token' => $token,
+        ], 200);
     }
 
     private function sendVerificationCode($phone)
@@ -205,7 +259,7 @@ class AuthController extends Controller
         $auth_id = auth()->id();
         $user = User::find($auth_id);
         return response()->json([
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 }

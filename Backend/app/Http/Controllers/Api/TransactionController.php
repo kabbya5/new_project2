@@ -230,51 +230,115 @@ class TransactionController extends Controller
 
     public function adminTransactions(Request $request){
         $limit = $request->limit;
-        $page = $request->page;
         $type = $request->type;
-        $month = $request->months;
-        $years = $request->years;
-        $form_date = $request->form_date;
+        $month = $request->month;
+        $years = $request->year;
+        $from_date = $request->from_date;
         $to_date = $request->to_date;
         $user_id = $request->user_id;
+        $status = $request->status;
 
-        if($limit == 1){
-            $transactions = Transaction::where('status', 'success')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereIn('type', ['deposit', 'withdraw', 'refer_bonous'])->latest()
-            ->get();
+        $from_date = $from_date
+            ? Carbon::parse($from_date)->format('Y-m-d')
+            : Carbon::now()->startOfMonth()->format('Y-m-d');
 
-            return  response()->json([
-                'transactions' => TransactionResource::collection($transactions)
-            ]);
-        }
+        $to_date = $to_date
+            ? Carbon::parse($to_date)->format('Y-m-d')
+            : Carbon::now()->endOfMonth()->format('Y-m-d');
 
-        $transactions = Transaction::whereIn('type', ['deposit', 'withdraw'])->latest()
-            ->when($user_id, function($q) use ($user_id){
-                $q->where('user_id', $user_id);
-            })->paginate($limit);
+        $data = Transaction::query()
+            ->when($user_id, function($query) use ($user_id){
+                $query->where('user_id', $user_id);
+            })
+            ->when($status, function($query) use ($status){
+                $query->where('status', $status);
+            })
+            ->when($type, function($query) use ($type){
+                if($type == 'all_bonus'){
+                    $query->whereIn('type',['bonus','refer_bonus']);
+                }elseif($type == 'all_transaction'){
+                    $query->whereIn('type',['deposit','withdraw']);
+                }else{
+                    $query->where('type', $type);
+                }
+            })
+            ->when($month, function($query) use ($month){
+                $query->whereMonth('created_at', $month);
+            })
+            ->when($years, function($query) use ($years){
+                $query->whereYear('created_at', $years);
+            })
+            ->when($from_date && $to_date, function($query) use ($from_date, $to_date){
+                $query->whereBetween('created_at', [$from_date, $to_date]);
+            })->when($from_date && !$to_date, function($query) use ($from_date){
+                $query->whereDate('created_at', '>=', $from_date);
+            })->when(!$from_date && $to_date, function($query) use ($to_date){
+                $query->whereDate('created_at', '<=', $to_date);
+            })
+            ->paginate($limit);
+
 
         return response()->json([
-            'transactions' => TransactionResource::collection($transactions)
+            'transactions' => TransactionResource::collection($data),
+            'pagination' => [
+                'current_page' => $data->currentPage(),
+                'last_page'    => $data->lastPage(),
+                'per_page'     => $data->perPage(),
+                'total'        => $data->total(),
+            ]
         ]);
     }
 
-    public function transactionData()
+    public function transactionData(Request $request)
     {
-        $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
+        $limit = $request->limit;
+        $page = $request->page;
+        $type = $request->type;
+        $month = $request->month;
+        $years = $request->year;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $user_id = $request->user_id;
+        $status = $request->status;
 
-        $data = DB::table('transactions')
-            ->select(
-                DB::raw('DATE(created_at) as date'),
-                DB::raw('SUM(CASE WHEN type = "deposit" THEN amount ELSE 0 END) as deposit'),
-                DB::raw('SUM(CASE WHEN type = "withdraw" THEN amount ELSE 0 END) as withdraw')
-            )
-            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy('date')
-            ->get();
+        return $from_date;
 
-        return response()->json(['data' => $data]);
+
+        $data = Transaction::query()
+            ->when($user_id, function($query) use ($user_id){
+                $query->where('user_id', $user_id);
+            })
+            ->when($status, function($query) use ($status){
+                $query->where('status', $status);
+            })
+            ->when($type, function($query) use ($type){
+                $query->where('type', $type);
+            })
+            ->when($month, function($query) use ($month){
+                $query->whereMonth('created_at', $month);
+            })
+            ->when($years, function($query) use ($years){
+                $query->whereYear('created_at', $years);
+            })
+            ->when($from_date && $to_date, function($query) use ($from_date, $to_date){
+                $query->whereBetween('created_at', [$from_date, $to_date]);
+            })->when($from_date && !$to_date, function($query) use ($from_date){
+                $query->whereDate('created_at', '>=', $from_date);
+            })->when(!$from_date && $to_date, function($query) use ($to_date){
+                $query->whereDate('created_at', '<=', $to_date);
+            })
+            ->paginate($limit);
+
+
+
+        return response()->json([
+            'transactions' => TransactionResource::collection($data),
+            'pagination' => [
+                'current_page' => $data->currentPage(),
+                'last_page'    => $data->lastPage(),
+                'per_page'     => $data->perPage(),
+                'total'        => $data->total(),
+            ]
+        ]);
     }
 }

@@ -13,7 +13,7 @@ export const useGameStore = defineStore('game', {
       total: 0,
     }
   }),
-
+  
   actions: {
     async fetchGames(
       page = 1,

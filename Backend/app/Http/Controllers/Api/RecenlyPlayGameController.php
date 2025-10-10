@@ -20,7 +20,7 @@ class RecenlyPlayGameController extends Controller
 
     public function index(Request $request){
         $limit = $request->get('limit', 12);
-        $games = RecenlyPlay::with('game')->orderBy('updated_at','desc')->paginate($limit);
+        $games = RecenlyPlay::with('game')->where('user_id', auth()->id())->orderBy('updated_at','desc')->paginate($limit);
 
         return response()->json(['games' => RecenlyPlayResoure::collection($games)]);
     }
@@ -35,7 +35,6 @@ class RecenlyPlayGameController extends Controller
         }
 
         $data = $this->gameService->launchGame($game, $user_id);
-        return $data;
 
         if ($data['status'] === 1 && $data['launch_url']) {
             $game->update(['popularity' => $game->popularity + 1]);
@@ -55,19 +54,15 @@ class RecenlyPlayGameController extends Controller
             }
 
             $recentlyGame->load('game.provider', 'game.categories');
-
         }
 
         return $data;
-
 
        	return response()->json($data);
     }
 
     public function playSports(){
-
         $user_id = auth()->id;
-        return ['status' => 1,'launch_url' => 'https://www.youtube.com/'];
         $data = $this->gameService->playSports($user_id);
         return $data;
     }

@@ -4,18 +4,18 @@
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
         <h1 class="font-semibold text-gray-800 dark:text-gray-100 text-center sm:text-left">
-            Transaction Records
+            Bonus
         </h1>
 
         <div class="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-2">
             <select
-              v-model="type"
-              @change="search"
-              class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-              <option value="deposit">Deposit</option>
-              <option value="withdraw"> Withdraw </option>
-              <option value="all_transaction"> All </option>
+            v-model="type"
+            @change="search"
+            class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+            <option value="bonus">Bonus</option>
+            <option value="refer_bonus">Refer Bonus</option>
+            <option value="all_bonus">All </option>
             </select>
 
             <input
@@ -56,7 +56,6 @@
               <th class="text-center px-6 py-3">Type</th>
               <th class="text-center px-6 py-3"> Created At </th>
               <th class="text-right px-6 py-3"> Amount</th>
-              <th class="text-center px-6 py-3">  Status </th>
               <th class="text-center px-6 py-3"> Provider</th>
               <th class="text-left px-6 py-3"> Remark </th>
             </tr>
@@ -92,6 +91,7 @@
                   {{ transaction.type }}
                 </span>
               </td>
+
               <td class="text-center px-6 py-3">
                 <span
                   class="px-2 py-1 text-xs font-semibold rounded-full">
@@ -101,15 +101,6 @@
 
               <td class="text-right px-6 py-3">
                 {{ transaction.amount.toLocaleString() }} <span class="uppercase"> {{authStore.user?.currency }}</span>
-              </td>
-
-              <td class="text-center px-6 py-3">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full" 
-                  :class="{
-                    'bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-200': transaction.status === 'pending',
-                    'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200': transaction.status === 'success',
-                    'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200': transaction.status === 'failed'
-                  }">{{ transaction.status }}</span>
               </td>
 
               <td class="text-center px-6 py-3">
@@ -160,8 +151,8 @@ const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
 const from_date = ref(formatDate(firstDay));
 const to_date = ref(formatDate(lastDay));
-const status = ref('all');
-const type = ref('all_transaction');
+
+const type = ref('all_bonus');
 
 async function fetchPosts() {
     await transactionStore.fetchTransaction(
@@ -173,7 +164,6 @@ async function fetchPosts() {
         null,
         from_date.value,
         to_date.value,
-        status.value,
     );
 }
 
@@ -187,7 +177,6 @@ const search = (async() => {
         null,
         from_date.value,
         to_date.value,
-        status.value,
     );
 })
 

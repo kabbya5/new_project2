@@ -44,7 +44,7 @@
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {{ email }} ({{ optional }})</label>
-                        <input v-model="signupForm.email" type="email" class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200" required 
+                        <input v-model="signupForm.email" type="email" class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                         :class="errorStore.validationErrors.email ? 'border-red-500' :'' ">
                         
                         <p v-if="errorStore.validationErrors.email" class="text-red-500">  {{ errorStore.validationErrors.email[0] }} </p>
@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-
+const route = useRoute();
 import { useLocaleStore } from '~/stores/locale';
 import type {SignUp} from '~/types/signup';
 
@@ -137,6 +137,7 @@ definePageMeta({
 });
 
 const router = useRouter();
+const refCode = route.query.ref || null;
 
 const showReferInput = ref<boolean>(false)
 const showPasswordForm = ref<boolean>(false)
@@ -205,6 +206,10 @@ const submit = async () => {
     formData.append('refer_code', String(signupForm.value.refer_code ?? ''));
     formData.append('password', String(signupForm.value.password ?? ''));
     formData.append('password_confirmation', String(signupForm.value.password_confirmation ?? ''));
+
+    if(refCode){
+      formData.append('refer_code', String(refCode));
+    }
 
     if(selectedCurrency){
       formData.append('currency',selectedCurrency.value.value);

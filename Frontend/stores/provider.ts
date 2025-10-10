@@ -90,8 +90,8 @@ export const useProviderStore = defineStore('provider',{
         async findProviderByCategory(slug:string){
             const loading = useLoadingStore(); 
             loading.start('provider');
-
-            if(slug == 'sport'){
+            
+            if(slug == 'sports'){
                  try{
                     const data = await useApiFetch('/game/sports-play/');
 
@@ -105,20 +105,24 @@ export const useProviderStore = defineStore('provider',{
                     loading.stop('provider');
                 } 
             }else{
-                
-                try{
-                    const data = await useApiFetch('/game/category/providers/' + slug);
 
-                    if (data && data.providers) {
-                        return data.providers;
-                    }
-                }catch(error){
-                    alert(error);
-                }finally {
-                    loading.stop('provider');
-                } 
+              try{
+                  const data = await useApiFetch('/game/category/providers/' + slug);
 
-                return [];
+                  if (data.status === 1 && response.game_url) {
+                      window.open(response.game_url, '_blank');
+                  }
+
+                  if (data && data.providers) {
+                      return data.providers;
+                  }
+              }catch(error){
+                  alert(error);
+              }finally {
+                  loading.stop('provider');
+              } 
+
+              return [];
             }
         }
     }

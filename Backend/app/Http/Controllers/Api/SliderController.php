@@ -47,7 +47,7 @@ class SliderController extends Controller
 
         return response()->json([
             'message' => 'Slider created successfully',
-            'slider' => $slider
+            'slider' => new SliderResoource($slider)
         ]);
     }
 
@@ -80,7 +80,7 @@ class SliderController extends Controller
 
         return response()->json([
             'message' => 'Slider created successfully',
-            'slider' => $slider
+            'slider' => new SliderResoource($slider)
         ]);
     }
 

@@ -29,6 +29,8 @@ export const useLocaleStore = defineStore('locale', () => {
     en: {
       image:'Image',
       updateProfile:'Update Profile',
+      updatePassword:'Update Password',
+      oldPassword:'Old Password',
       nameInput:'Name',
       name: 'english_name',
       recentlyPlay: 'Recently Play',
@@ -56,6 +58,8 @@ export const useLocaleStore = defineStore('locale', () => {
     bn: {
       image:'ইমেজ',
       updateProfile: 'প্রোফাইল আপডেট করুন',
+      updatePassword:'পাসওয়ার্ড আপডেট করুন',
+      oldPassword:'পুরানো পাসওয়ার্ড',
       nameInput: 'নাম',
       name: 'bangla_name',
       recentlyPlay: 'সম্প্রতি খেলা',
@@ -83,6 +87,8 @@ export const useLocaleStore = defineStore('locale', () => {
     hi: {
       image:'छवि',
       updateProfile: 'प्रोफ़ाइल अपडेट करें',
+      updatePassword:'पासवर्ड अपडेट करें',
+      oldPassword:'पुराना पासवर्ड',
       nameInput: 'नाम',
       name: 'hindi_name',
       recentlyPlay: 'हाल ही में खेला',

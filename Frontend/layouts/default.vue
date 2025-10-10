@@ -5,7 +5,7 @@
     <FrontendNavNavbar />
   </header>
 
-  <main class="bg-slate-200/60 dark:bg-gray-900 text-gray-900 dark:text-gray-100 mt mt-10 md:mt-14">
+  <main class="bg-slate-200/60 dark:bg-gray-900 text-gray-900 dark:text-gray-100 mt mt-10 md:mt-14 min-h-screen">
     <slot class="" />
     <FrontendFooter/>
   </main>

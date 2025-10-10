@@ -5,12 +5,12 @@ export const useTransactionStore = defineStore("transaction", {
     transactions: [] as any[],   // transaction list
     loading: false,              // loading state
     error: null as string | null,// error message
-    pagination: {                // pagination info
-      page: 1,
-      limit: 1,
+    pagination: {
+      current_page: 1,
+      last_page: 1,
+      per_page: 1,
       total: 0,
-      total_page:0,
-    },
+    }
   }),
 
   actions: {
@@ -23,6 +23,7 @@ export const useTransactionStore = defineStore("transaction", {
       month: number | null = null,
       from_date: string | null = null,
       to_date: string | null = null,
+      status: string | null = null,
     ) {
         this.loading = true;
         this.error = null;
@@ -43,11 +44,16 @@ export const useTransactionStore = defineStore("transaction", {
                 query,
             });
 
-            this.transactions = res.transactions || [];
-            this.pagination.page = page;
-            this.pagination.limit = limit;
-            this.pagination.total = res.total || 0;
-            this.pagination.total_page = res.total_page;
+            if (res.transactions) this.transactions = res.transactions;
+
+            if (res.pagination) {
+              this.pagination = {
+                current_page: res.pagination.current_page,
+                last_page: res.pagination.last_page,
+                per_page: res.pagination.per_page,
+                total: res.pagination.total,
+              };
+            }
         } catch (err: any) {
             alert("Failed to fetch transactions");
         } finally {

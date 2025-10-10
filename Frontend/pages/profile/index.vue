@@ -8,9 +8,9 @@
             <div class="flex justify-between items-center mb-4 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                 <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Profile</h1>
                 <div class="relative">
-                    <button class="p-2 rounded-full bg-white dark:bg-gray-800 shadow">
+                    <!-- <button class="p-2 rounded-full bg-white dark:bg-gray-800 shadow">
                         <i class="fas fa-bell text-gray-600 dark:text-gray-300"></i>
-                    </button>
+                    </button> -->
                     <!-- <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">52</span> -->
                 </div>
             </div>
@@ -18,23 +18,27 @@
             <!-- Profile Card -->
             <div class="card rounded-2xl px-4 mb-4">
                 <div class="flex items-center mb-6">
-                    <div class="h-16 w-16 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white text-2xl font-bold">
+                    <div v-if="authStore.user?.image_url" class="h-16 w-16 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white text-2xl font-bold">
+                        <NuxtImg :src="authStore.user?.image_url" class="rounded-full h-16 w-16"></NuxtImg>
+                    </div>
+
+                    <div v-else class="h-16 w-16 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center text-white text-2xl font-bold">
                       {{ authStore.user?.user_name.charAt(0).toUpperCase() }}
                     </div>
                     <div class="ml-4">
                         <h2 class="text-xl font-bold text-gray-800 dark:text-white"> {{ authStore.user?.name }} </h2>
-                        <p class="text-gray-600 dark:text-gray-400"> Member since: 2025-05-13 </p>
+                        <p class="text-gray-600 dark:text-gray-400"> Member since: {{ authStore.user?.created_at }} </p>
                     </div>
                 </div>
 
                 <!-- Withdrawal & Deposit -->
                 <div class="flex justify-between mb-4">
 
-                    <NuxtLink to="/profile/withdrow" class="flex-1 mr-2 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium flex items-center justify-center">
+                    <NuxtLink to="/profile/withdrow" class="flex-1 mr-2 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium flex items-center justify-center">
                         <i class="fas fa-arrow-up mr-2"></i> Withdrawal
                     </NuxtLink>
 
-                    <NuxtLink to="/profile/deposite" class="flex-1 ml-2 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-medium flex items-center justify-center">
+                    <NuxtLink to="/profile/deposite" class="flex-1 ml-2 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-medium flex items-center justify-center">
                         <i class="fas fa-arrow-down mr-2"></i> Deposit
                     </NuxtLink>
 
@@ -43,7 +47,7 @@
                 <!-- Wallet Info -->
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-3">Main Wallet</h3>
-                    <div class="bg-gray-200 dark:bg-gray-700 rounded-lg p-4 mb-2">
+                    <div class="bg-gray-200 dark:bg-gray-700 rounded-lg px-2 py-2 mb-2">
                         <div class="flex justify-between">
                             <span class="text-gray-600 dark:text-gray-400">Balance</span>
                             <div @click="recallBalance" class="cursor-pointer">
@@ -52,6 +56,43 @@
                             </div>
                             
                         </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white"> Your Referral Link  <span class="text-green-500 text-sm"> (Code: {{ authStore.user?.refer_code }}) </span> </h3>
+                        <button
+                            @click="openModal = true"
+                            class="bg-blue-600 text-white px-2 py-1 rounded-full hover:bg-blue-700 transition-all duration-200 shadow-sm active:scale-95"
+                            title="Share"
+                            >
+                            <i class="fa-solid fa-share text-sm"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex">
+                        <input
+                            v-if="referralUrl"
+                            type="text"
+                            :value="referralUrl"
+                            readonly
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        />
+                        <button
+                            v-if="referralUrl"
+                            @click="copyRefer"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-r-lg border border-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        >
+                            Copy
+                        </button>
+                        <input
+                            v-else
+                            type="text"
+                            value="No referral code available"
+                            readonly
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
+                        />
                     </div>
                 </div>
 
@@ -69,6 +110,8 @@
                     </div>
                 </div>
 
+                
+
                 <!-- Menu Options -->
                 <div class="space-y-3">
                     <NuxtLink to="profile/edit" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
@@ -79,14 +122,30 @@
                         <i class="fas fa-chevron-right text-gray-400"></i>
                     </NuxtLink>
                     
-                    <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                    <NuxtLink to="profile/bonus" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
                         <div class="flex items-center">
-                            <i class="fas fa-shield-alt text-green-500 mr-3"></i>
-                            <span class="text-gray-800 dark:text-white">Login & Security</span>
+                            <i class="fa-solid fa-coins text-green-500 mr-3"></i>
+                            <span class="text-gray-800 dark:text-white"> Refer Bonus </span>
                         </div>
                         <i class="fas fa-chevron-right text-gray-400"></i>
-                    </div>
-                    
+                    </NuxtLink>
+
+                    <NuxtLink to="profile/transaction" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-receipt text-orange-500 mr-3"></i>
+                            <span class="text-gray-800 dark:text-white">Transaction Records</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </NuxtLink>
+
+                    <NuxtLink to="profile/changePassword" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-green-500 mr-3"></i>
+                            <span class="text-gray-800 dark:text-white"> Login & Security </span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </NuxtLink>
+
                     <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
                         <div class="flex items-center">
                             <i class="fas fa-check-circle text-purple-500 mr-3"></i>
@@ -95,15 +154,49 @@
                         <i class="fas fa-chevron-right text-gray-400"></i>
                     </div>
                     
-                    <NuxtLink to="profile/transaction" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                        <div class="flex items-center">
-                            <i class="fas fa-receipt text-orange-500 mr-3"></i>
-                            <span class="text-gray-800 dark:text-white">Transaction Records</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-gray-400"></i>
-                    </NuxtLink>
+                    
                 </div>
             </div>
+
+            <div
+      v-if="openModal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      @click.self="openModal = false"
+    >
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg max-w-sm w-full">
+        <h2 class="text-lg font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">
+          Share this link
+        </h2>
+
+        <div class="flex justify-center gap-4 flex-wrap">
+          <a
+            v-for="item in socials"
+            :key="item.id"
+            :href="generateShareUrl(item.id)"
+            target="_blank"
+            class="flex flex-col items-center gap-2 p-3 rounded-xl text-white w-20 hover:opacity-90 transition"
+            :class="{
+              'bg-blue-600': item.id === 'facebook',
+              'bg-sky-500': item.id === 'twitter',
+              'bg-blue-400': item.id === 'telegram',
+              'bg-green-500': item.id === 'whatsapp',
+              'bg-blue-500': item.id === 'messenger',
+            }"
+          >
+            <Icon :name="item.icon" size="24" />
+            <span class="text-sm">{{ item.label }}</span>
+          </a>
+        </div>
+
+        <!-- Close button -->
+        <button
+          @click="openModal = false"
+          class="mt-6 block w-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg py-2 hover:bg-gray-400 dark:hover:bg-gray-600 transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
 
             <!-- Bottom Navigation -->
             <!-- <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg rounded-t-2xl">
@@ -137,26 +230,70 @@
 
 <script setup lang="ts">
 
+useHead({
+  title: 'LuckBuzz99 - Play Multiple Betting Games Online',
+  meta: [
+    { name: 'description', content: 'LuckBuzz99 is your ultimate platform to play multiple online betting games safely and enjoyably.' },
+    { property: 'og:title', content: 'LuckBuzz99 - Play Multiple Betting Games Online' },
+    { property: 'og:description', content: 'LuckBuzz99 is your ultimate platform to play multiple online betting games safely and enjoyably.' },
+    { property: 'og:image', content: 'https://luckbuzz99.com/logo.png'}, // Replace with your real image
+    { property: 'og:url', content: 'https://luckbuzz99.com' },
+    { property: 'og:type', content: 'website' },
+    
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'LuckBuzz99 - Play Multiple Betting Games Online' },
+    { name: 'twitter:description', content: 'LuckBuzz99 is your ultimate platform to play multiple online betting games safely and enjoyably.' },
+    { name: 'twitter:image', content: 'https://luckbuzz99.com/og-image.jpg' }, // Replace with your real image
+  ],
+})
+
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'auth',
 })
 
 import { useAuthStore } from '~/stores/auth';
 import { useTransactionStore } from '~/stores/transaction';
 
-
 const transactionStore = useTransactionStore();
 const authStore = useAuthStore()
 
-
+// Socials
 const socials = ref([
-  { id: 'facebook', label: 'Facebook', icon: 'i-fa6-brands:facebook' },
-  { id: 'twitter', label: 'Twitter', icon: 'i-fa6-brands:x-twitter' },
-  { id: 'telegram', label: 'Telegram', icon: 'i-fa6-brands:telegram' },
-  { id: 'whatsapp', label: 'Whatsapp', icon: 'i-fa6-brands:whatsapp' },
+  { id: 'facebook', label: 'Facebook', icon: 'fa-brands fa-facebook-f' },
+  { id: 'messenger', label: 'Messenger', icon: 'fa-brands fa-facebook-messenger' },
+  { id: 'twitter', label: 'Twitter', icon: 'fa-brands fa-x-twitter' },
+  { id: 'telegram', label: 'Telegram', icon: 'fa-brands fa-telegram' },
+  { id: 'whatsapp', label: 'WhatsApp', icon: 'fa-brands fa-whatsapp' },
 ])
 
+// Generate share URL
+const generateShareUrl = (platform) => {
+  const url = encodeURIComponent(referralUrl.value)
+  const text = encodeURIComponent("Join me using my referral link!")
+
+  switch (platform) {
+    case 'facebook':
+      return `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    case 'messenger':
+      return `fb-messenger://share/?link=${url}`
+    case 'twitter':
+      return `https://twitter.com/intent/tweet?url=${url}&text=${text}`
+    case 'telegram':
+      return `https://t.me/share/url?url=${url}&text=${text}`
+    case 'whatsapp':
+      return `https://api.whatsapp.com/send?text=${text}%20${url}`
+    default:
+      return '#'
+  }
+}
+
 const baseUrl = ref('');
+const openModal = ref(false);
+
+const referralUrl = computed(() =>
+  authStore.user?.refer_code ? `${baseUrl.value}/register?ref=${authStore.user.refer_code}` : ''
+)
+
 const showAmount = ref<boolean>(false);
 
 onMounted(() => {
@@ -170,9 +307,7 @@ const recallBalance = () =>{
     showAmount.value = !showAmount.value;
 }
 
-const referralUrl = computed(() =>
-  authStore.user?.refer_code ? `${baseUrl.value}/register?ref=${authStore.user.refer_code}` : ''
-)
+
 
 const copyRefer = async () => {
   if (referralUrl.value) {

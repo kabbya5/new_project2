@@ -135,6 +135,7 @@ const submit = async () => {
     });
 
     if(response.user){
+      authStore.setUser(response.user);
       await router.push('/profile');
     }
   } catch (error) {

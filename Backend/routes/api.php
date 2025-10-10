@@ -43,11 +43,12 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::post('/logout', [AuthController::class,'logout']);
     Route::post('/me', [AuthController::class,'me']);
     Route::post('/update/profile', [AuthController::class,'updateProfile']);
+    Route::post('/update/password', [AuthController::class,'changePassword']);
 
     Route::controller(RecenlyPlayGameController::class)->group(function(){
         Route::get('/games/recenly/play','index');
         Route::get('game/play/{id}', 'store');
-        Route::get('/game/play/sports-play', 'playSports');
+        Route::get('/game/sports-play', 'playSports');
     });
 
     Route::controller(TransactionController::class)->group(function(){
@@ -92,8 +93,6 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
 
     Route::controller(AdminDashboardController::class)->group(function(){
         Route::get('/dashboard/top/content', 'topContent');
-        Route::put('/sliders/update/{slider}', 'update');
-        Route::delete('/sliders/delete/{slider}', 'destroy');
     });
 
     Route::controller(TransactionController::class)->group(function(){
