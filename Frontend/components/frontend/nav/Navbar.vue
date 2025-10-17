@@ -25,10 +25,10 @@
             </li>
 
             <li v-else class="nav-link" v-if="authStore.getUser()?.name">
-              <NuxtLink to="/profile" class="text-gray-700 dark:text-white"> 
+              <p class="text-gray-700 dark:text-white"> 
                 <i class="fa-solid fa-user"></i>
                 <span class="uppper ml-2 uppercase"> {{authStore.getUser()?.currency }} {{authStore.user?.balance }}</span>
-              </NuxtLink>
+              </p>
             </li>
 
             <li class="nav-link">
@@ -66,10 +66,10 @@
             <li>
               <ul class="flex space-x-2">
                 <li class="nav-link" v-if="authStore.getUser()?.name">
-                  <NuxtLink to="/profile" class="text-gray-700 text-sm dark:text-white"> 
+                  <p class="text-gray-700 text-sm dark:text-white"> 
                     <i class="fa-solid fa-user"></i>
                     <span class="uppper ml-2 uppercase"> {{authStore.getUser()?.currency }} {{userBalance}}</span>
-                  </NuxtLink>
+                  </p>
                 </li>
                 <li class="nav-link"><ThemToggler /></li>
                 <li class="nav-link">

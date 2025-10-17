@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 
 export const useTransactionStore = defineStore("transaction", {
   state: () => ({
-    transactions: [] as any[],   // transaction list
-    loading: false,              // loading state
-    error: null as string | null,// error message
+    transactions: [] as any[],   
+    loading: false,              
+    error: null as string | null,
     pagination: {
       current_page: 1,
       last_page: 1,
@@ -18,7 +18,6 @@ export const useTransactionStore = defineStore("transaction", {
       page = 1,
       limit: number = 1,
       type: null| string = null,
-      user_id: null|number,
       year: number | null = null,
       month: number | null = null,
       from_date: string | null = null,
@@ -33,7 +32,6 @@ export const useTransactionStore = defineStore("transaction", {
 
         try {
             const query: any = {page,limit,type};
-            if (user_id) query.user_id = user_id;
             if (year) query.year = year;
             if (month) query.month = month;
             if (from_date) query.from_date = from_date;

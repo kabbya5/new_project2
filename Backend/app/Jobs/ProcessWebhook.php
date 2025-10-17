@@ -37,16 +37,7 @@ class ProcessWebhook implements ShouldQueue
             $user = User::where('user_name', $data['user_code'])->first();
             $game = Game::where('game_code', $data['slot']['game_code'])->first();
 
-            $amount = $data['slot']['user_after_balance'];
-
             if ($user && $game) {
-                $currency = Currency::where('currency_code',$user->currency)->first();
-                $win = $data['slot']['bet'];
-                $user->update([
-                    'balance' => $amount * $currency->brl_rate,
-                    'turnover' => $user->turnover > 0 ? $user->turnover - ($win * $currency->brl_rate) : 0,
-                ]);
-
                 $transaction = GameTransaction::create([
                     'user_id' => $user->id,
                     'provider' => $data['slot']['provider_code'],

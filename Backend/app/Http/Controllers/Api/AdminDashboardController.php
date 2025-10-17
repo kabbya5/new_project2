@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\User;
+use BcMath\Number;
 use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
@@ -31,13 +32,13 @@ class AdminDashboardController extends Controller
 
         return response()->json([
             'users' => $users->count(),
-            'usersPercentage' => $usersPercentage,
-            'withdraws' => $withdraws,
-            'withdrawPercentage' => $withdrawPercentage,
-            'deposites' => $deposites,
-            'depositesPercentage' => $depositesPercentage,
-            'profits' => $profits,
-            'profitsPercentage' => $profitsPercentage,
+            'usersPercentage' => number_format($usersPercentage,2),
+            'withdraws' => number_format($withdraws,2),
+            'withdrawPercentage' => number_format($withdrawPercentage,2),
+            'deposites' => number_format($deposites,2),
+            'depositesPercentage' => number_format($depositesPercentage,2),
+            'profits' => number_format($profits,2),
+            'profitsPercentage' => number_format($profitsPercentage,2),
         ]);
     }
 

@@ -17,7 +17,7 @@ export const useGameStore = defineStore('game', {
   actions: {
     async fetchGames(
       page = 1,
-      limit = 10,
+      limit = 48,
       search: string | null = null,
       provider_id: number | null = null,
       category_id: number | null = null

@@ -2,15 +2,17 @@
 <template>
     <LoadingSpinner v-if="loading.isLoading('slider')" />
     <FrontendHomeslider v-else :sliders="sliderStore.sliders"> </FrontendHomeslider>
-    <div class="my-4">
-        <div class="bg-slate-200/60 dark:bg-gray-900">
-            <div  class="container mx-auto bg-white dark:bg-gray-800 px-3 lg:px-4">
+    
+    <LoadingSpinner v-if="loading.isLoading('slider')" />
+    <div v-else class="my-4">
+        <div class="bg-red-800 dark:bg-green-800">
+            <div class="container mx-auto bg-red-900 dark:bg-green-900 px-3 lg:px-4">
                 <FrontendMovingText />
             </div>
         </div>
     </div>
     <!-- <div v-if="authStore.token">
-        <div class="bg-slate-200/60 dark:bg-gray-900 md:hidden py-1">
+        <div class="bg-red-800 dark:bg-green-800 md:hidden py-1">
             <div class="container mx-auto">
                 <div class="flex items-center justify-center space-x-4">
                 
@@ -44,13 +46,13 @@
     <div>
         <div class="py-2 lg:py-4">
             <!-- Category  -->
-            <div class="container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4">
-                <LoadingSpinner v-if="loading.isLoading('category')" />
-                <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categoryStore.categories[0]?.slug"/>
+            <LoadingSpinner v-if="loading.isLoading('category')" />
+            <div v-else class="container mx-auto bg-red-900 dark:bg-green-900 p-3 lg:p-4">
+                <FrontendCategoryHorizontalCategory :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categoryStore.categories[0]?.slug"/>
             </div>
             
             <!-- Recently Play  -->
-            <div v-if="authStore.getUser()?.id" class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
+            <div v-if="authStore.getUser()?.id" class="container mx-auto my-4 bg-red-900 dark:bg-green-900 p-3 lg:p-4">
                 <LoadingSpinner v-if="loading.isLoading('recentlyPlay')" />
                 <div v-else class="grid grid-cols-12 gap-4">
                     <div class="col-span-12 flex items-center justify-between">
@@ -80,7 +82,7 @@
 
             <!-- Popular Game  -->
 
-            <div class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
+            <div class="container mx-auto my-4 bg-red-900 dark:bg-green-900 p-3 lg:p-4">
                 <LoadingSpinner v-if="loading.isLoading('game')" />
                 <div v-else class="grid grid-cols-12 gap-4">
                     <div class="col-span-12 flex items-center justify-between">
@@ -129,13 +131,17 @@ const sliderStore = useSliderStore();
 const authStore = useAuthStore();
 const recentlyPlay = useRecentlyPlay();
 
-const name = computed(() => localeStore.getTranslate('name'))
-const recentlyPlayTitle = computed(() => localeStore.getTranslate('recentlyPlay'))
-const gameCategory = computed(() => localeStore.getTranslate('gameCategory'))
-const popularGame = computed(() => localeStore.getTranslate('popularGame'))
-const deposite = computed(() => localeStore.getTranslate('deposite'))
-const withdrow = computed(() => localeStore.getTranslate('withdrow'))
-const viewAll = computed(() => localeStore.getTranslate('viewAll'))
+const name = computed(() => localeStore.getTranslate('name'));
+const recentlyPlayTitle = computed(() => localeStore.getTranslate('recentlyPlay'));
+const gameCategory = computed(() => localeStore.getTranslate('gameCategory'));
+const popularGame = computed(() => localeStore.getTranslate('popularGame'));
+const deposite = computed(() => localeStore.getTranslate('deposite'));
+const withdrow = computed(() => localeStore.getTranslate('withdrow'));
+const viewAll = computed(() => localeStore.getTranslate('viewAll'));
+
+loading.start('recentlyPlay');
+loading.start('category');
+loading.start('game');
 
 onMounted(async () => {
     if(!sliderStore.sliders.length){
@@ -155,6 +161,10 @@ onMounted(async () => {
     if(authStore.getUser()?.id){
         authStore.recallUser();
     }
+
+    loading.stop('recentlyPlay');
+    loading.stop('category');
+    loading.stop('game');
 })
 
 useHead({

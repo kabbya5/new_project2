@@ -110,8 +110,6 @@
                     </div>
                 </div>
 
-                
-
                 <!-- Menu Options -->
                 <div class="space-y-3">
                     <NuxtLink to="profile/edit" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
@@ -138,6 +136,14 @@
                         <i class="fas fa-chevron-right text-gray-400"></i>
                     </NuxtLink>
 
+                    <NuxtLink to="/profile/betting" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-bars-staggered text-emerald-500 mr-3"></i>
+                            <span class="text-gray-800 dark:text-white"> Betting Records</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </NuxtLink>
+
                     <NuxtLink to="profile/changePassword" class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
                         <div class="flex items-center">
                             <i class="fas fa-shield-alt text-green-500 mr-3"></i>
@@ -153,77 +159,49 @@
                         </div>
                         <i class="fas fa-chevron-right text-gray-400"></i>
                     </div>
-                    
-                    
                 </div>
             </div>
 
             <div
-      v-if="openModal"
-      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-      @click.self="openModal = false"
-    >
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg max-w-sm w-full">
-        <h2 class="text-lg font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">
-          Share this link
-        </h2>
+              v-if="openModal"
+              class="fixed left-0 top-0 w-full h-screen bg-black/50 flex items-center justify-center z-50"
+              @click.self="openModal = false"
+            >
+              <div class="bg-white dark:bg-gray-800 px-2 py-3 rounded-2xl shadow-lg max-w-md w-full">
+                <h2 class="text-lg text-left font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">
+                  Share this link
+                </h2>
 
-        <div class="flex justify-center gap-4 flex-wrap">
-          <a
-            v-for="item in socials"
-            :key="item.id"
-            :href="generateShareUrl(item.id)"
-            target="_blank"
-            class="flex flex-col items-center gap-2 p-3 rounded-xl text-white w-20 hover:opacity-90 transition"
-            :class="{
-              'bg-blue-600': item.id === 'facebook',
-              'bg-sky-500': item.id === 'twitter',
-              'bg-blue-400': item.id === 'telegram',
-              'bg-green-500': item.id === 'whatsapp',
-              'bg-blue-500': item.id === 'messenger',
-            }"
-          >
-            <Icon :name="item.icon" size="24" />
-            <span class="text-sm">{{ item.label }}</span>
-          </a>
-        </div>
-
-        <!-- Close button -->
-        <button
-          @click="openModal = false"
-          class="mt-6 block w-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg py-2 hover:bg-gray-400 dark:hover:bg-gray-600 transition"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-
-            <!-- Bottom Navigation -->
-            <!-- <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg rounded-t-2xl">
-                <div class="flex justify-around p-3 max-w-md mx-auto">
-                    <a href="#" class="flex flex-col items-center text-purple-600 dark:text-purple-400">
-                        <i class="fas fa-clipboard-list text-lg"></i>
-                        <span class="text-xs mt-1">Betting</span>
-                    </a>
-                    <a href="#" class="flex flex-col items-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-dice text-lg"></i>
-                        <span class="text-xs mt-1">Casino</span>
-                    </a>
-                    <a href="#" class="flex flex-col items-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-sliders-h text-lg"></i>
-                        <span class="text-xs mt-1">Slots</span>
-                    </a>
-                    <a href="#" class="flex flex-col items-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-wallet text-lg"></i>
-                        <span class="text-xs mt-1">Deposit</span>
-                    </a>
-                    <a href="#" class="flex flex-col items-center text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-user text-lg"></i>
-                        <span class="text-xs mt-1">Profile</span>
-                    </a>
+                <div class="flex item-senter flex-wrap">
+                  <a 
+                    v-for="item in socials"
+                    :key="item.id"
+                    :href="generateShareUrl(item.id)"
+                    target="_blank"
+                    class="px-2 py-2 mr-2 flex flex-col items-center rounded-xl text-white hover:opacity-90 transition"
+                    :class="{
+                      'bg-blue-600': item.id === 'facebook',
+                      'bg-sky-500': item.id === 'twitter',
+                      'bg-blue-400': item.id === 'telegram',
+                      'bg-green-500': item.id === 'whatsapp',
+                      'bg-blue-500': item.id === 'messenger',
+                    }"
+                  >
+                    <i :class="item.icon" class="text-2xl"></i>
+                    <span class="text-sm">{{ item.label }}</span>
+                  </a>
                 </div>
-            </div> -->
+
+            <!-- Close button -->
+            <button
+              @click="openModal = false"
+              class="mt-6 block w-full bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg py-2 hover:bg-gray-400 dark:hover:bg-gray-600 transition"
+            >
+              Close
+            </button>
+          </div>
         </div>
+      </div>
     </div>
   </div>
 </template>

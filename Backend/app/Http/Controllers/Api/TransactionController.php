@@ -150,26 +150,32 @@ class TransactionController extends Controller
             ], 422);
         }
 
-        $user->balance = $user->balance - $amount;
-        $user->save();
-
         $order_sn = generate_random_key();
 
-        $transaction = Transaction::create([
-            'user_id' => $user->id,
-            'affiliate_refer_id' => $user->affiliate_refer_id,
-            'type' => 'withdraw',
-            'status' =>  'pending',
-            'provider' => strtoUpper($tradeType),
-            'order_sn' => $order_sn,
-            'remark'  => 'Pending Withdraw',
-            'amount' => $amount,
-        ]);
         try {
             $response = $this->lgpservice->payOutOrder($amount, $tradeType, $phone_number, $user,  $order_sn);
-            return response()->json($response);
+            if($response['status'] !== 0){
+                $transaction = Transaction::create([
+                    'user_id' => $user->id,
+                    'affiliate_refer_id' => $user->affiliate_refer_id,
+                    'type' => 'withdraw',
+                    'status' =>  'pending',
+                    'provider' => strtoUpper($tradeType),
+                    'order_sn' => $order_sn,
+                    'remark'  => 'Pending Withdraw',
+                    'amount' => $amount,
+                ]);
+
+                $user->balance = $user->balance - $amount;
+                $user->save();
+
+                return response()->json($response);
+            }
+
+            return response()->json(['error' => 'Withdraw request failed, try again'], 500);
+
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 404);
         }
     }
 
@@ -235,7 +241,11 @@ class TransactionController extends Controller
         $years = $request->year;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $user_id = $request->user_id;
+        $user_id = null;
+        if(auth()->user()->type == 'user'){
+            $user_id =  auth()->id();
+        }
+
         $status = $request->status;
 
         $from_date = $from_date

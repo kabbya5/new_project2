@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-slate-200/60 dark:bg-gray-700 shadow-xl">
+    <div class="flex flex-col bg-red-800  dark:bg-green-800 shadow-xl">
         <button @click="playGame(game.id)">
             <div class="w-full">
                 <NuxtImg :src="game.thumbnail ? game.thumbnail :game.image_url" :alt="game.english_name" class="w-full h-[120px] lg:h-full" />

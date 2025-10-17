@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BettingResource;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
+use App\Models\GameTransaction;
 use App\Services\GameService;
 use App\Traits\FileUploadTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -128,6 +131,56 @@ class GameController extends Controller
         return response()->json([
             'message' => 'Category stored successfully!',
             'game' => new GameResource($game),
+        ]);
+    }
+
+    public function gameRecords(Request $request){
+        $limit = $request->limit;
+        $month = $request->month;
+        $year = $request->year;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $user_id = null;
+        if(auth()->user()->type == 'user'){
+            $user_id =  auth()->id();
+        }
+
+        $from_date = $from_date
+            ? Carbon::parse($from_date)->format('Y-m-d')
+            : Carbon::now()->startOfMonth()->format('Y-m-d');
+
+        $to_date = $to_date
+            ? Carbon::parse($to_date)->format('Y-m-d')
+            : Carbon::now()->endOfMonth()->format('Y-m-d');
+
+        $data = GameTransaction::query()
+            ->when($user_id, function($query) use ($user_id){
+                $query->where('user_id', $user_id);
+            })
+            ->when($month, function($query) use ($month){
+                $query->whereMonth('created_at', $month);
+            })
+            ->when($year, function($query) use ($year){
+                $query->whereYear('created_at', $year);
+            })
+            ->when($from_date && $to_date, function($query) use ($from_date, $to_date){
+                $query->whereBetween('created_at', [$from_date, $to_date]);
+            })->when($from_date && !$to_date, function($query) use ($from_date){
+                $query->whereDate('created_at', '>=', $from_date);
+            })->when(!$from_date && $to_date, function($query) use ($to_date){
+                $query->whereDate('created_at', '<=', $to_date);
+            })
+            ->paginate($limit);
+
+
+        return response()->json([
+            'records' => BettingResource::collection($data),
+            'pagination' => [
+                'current_page' => $data->currentPage(),
+                'last_page'    => $data->lastPage(),
+                'per_page'     => $data->perPage(),
+                'total'        => $data->total(),
+            ]
         ]);
     }
 }

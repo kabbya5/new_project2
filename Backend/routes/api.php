@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\RecenlyPlayGameController;
 use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\WebhookController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/transactions', 'adminTransactions');
     });
 
+    Route::get('/betting/records',[GameController::class,'gameRecords']);
 });
 
 Route::get('/game/categories/index',[CategoryController::class, 'index']);

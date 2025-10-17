@@ -1,6 +1,6 @@
 <template>
   <div class="marquee">
-    <marquee behavior="scroll" direction="left" scrollamount="6" class="text-gray-700 dark:text-gray-300">
+    <marquee behavior="scroll" direction="left" scrollamount="6" class="text-gray-700 dark:text-white">
        {{ items.map(item => item.text).join(' • ') }}
     </marquee>
   </div>

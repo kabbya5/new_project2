@@ -62,7 +62,7 @@ class RecenlyPlayGameController extends Controller
     }
 
     public function playSports(){
-        $user_id = auth()->id;
+        $user_id = auth()->id();
         $data = $this->gameService->playSports($user_id);
         return $data;
     }

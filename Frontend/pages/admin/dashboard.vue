@@ -33,13 +33,57 @@
           <h3 class="font-[400] tracking-wide title-md"> Transaction History </h3>
         </div>
 
-        <!-- <div class="mt-3 w-full">
-          <LoadingSpinner v-if="loading.isLoading('top-seller')" />
+        <div class="mt-3 w-full">
+          <LoadingSpinner v-if="loading.isLoading('transaction')" />
           <div v-else>
-            <TablesTransactionTable />
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left">
+                <thead>
+                  <tr class="border-b dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                    <th scope="col" class="py-2 px-4">User</th>
+                    <th scope="col" class="py-2 px-4">Game</th>
+                    <th scope="col" class="py-2 px-4">Type</th>
+                    <th scope="col" class="py-2 px-4">Provider</th>
+                    <th scope="col" class="py-2 px-4 text-right">Bet</th>
+                    <th scope="col" class="py-2 px-4 text-right">Win</th>
+                  </tr>
+                </thead>
+
+                <tbody class="text-gray-800 dark:text-gray-200">
+                  <tr 
+                    v-for="(item, index) in bettingRecordStore.records" 
+                    :key="index" 
+                    class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                  >
+                    <td class="py-3 px-4">{{ item.user }}</td>
+                    <td class="py-3 px-4">{{ item.game }}</td>
+                    <td class="py-3 px-4">{{ item.game_type }}</td>
+                    <td class="py-3 px-4">{{ item.provider }}</td>
+                    <td class="py-3 px-4 text-right">{{ item.bet }}</td>
+                    <td class="py-3 px-4 text-right" :class="item.win > 50 ? 'text-green-500' : 'text-red-500'">
+                      {{ item.win }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div> -->
+        </div>
       </div>
+
+      <div class="col-span-12 lg:col-span-5 bg-white dark:bg-gray-800 p-3">
+        <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
+          <h3 class="font-[400] tracking-wide title-md"> Recently Transactions </h3>
+        </div>
+
+        <div class="mt-3 w-full">
+          <LoadingSpinner v-if="loading.isLoading('transaction')" />
+          <div v-else>
+            <TablesTopSeller  :transactions="transactionStore.transactions" />
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -50,15 +94,20 @@
     layout:'admin',
   });
 
-
   import { useLoadingStore } from '~/stores/loading';
   import { useTransactionStore } from '~/stores/transaction';
+  import { useBettingRecordStore } from '~/stores/bettingRecord';
 
   const loading = useLoadingStore();
   const transactionStore = useTransactionStore();
+  const bettingRecordStore = useBettingRecordStore();
 
   onMounted( async () =>{
-    await transactionStore.fetchTransaction();
+    await transactionStore.fetchTransaction(1,10,null,null);
+    await bettingRecordStore.fetchTransaction(
+      1,
+      10,
+    );
   });
     
 </script>

@@ -1,7 +1,7 @@
 <template>
 
-<footer class="bg-slate-200/60 dark:bg-gray-900">
-    <div v-if="route.path == '/'" class="my-4 container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4">
+<footer class="bg-red-800 bg-green-800">
+    <div v-if="route.path == '/'" class="my-4 container mx-auto bg-red-900 dark:bg-green-900 p-3 lg:p-4">
         <div class="flex flex-wrap item-center">
             <div class="pr-4 min-w-fit">
                 <h2 class="mb-2 text-sm font-semibold text-gray-900 uppercase dark:text-white border-b border-gray-200"> Affiliates Program </h2>
@@ -98,12 +98,42 @@
 
     <!-- bottom footer -->
 
-    <div v-if="!authStore.token && showLoginBody" class="fixed bottom-0 left-0 w-full bg-black z-50">
+    <div v-if="!authStore.token && showLoginBody" class="fixed bottom-0 left-0 w-full bg-red-900 dark:bg-green-900 z-50">
         <div class="flex md:hidden item-center justify-between">
             <NuxtLink class="text-center w-full text-white py-2 text-[16px] tracking-[1px]" 
                 v-for="(item,index) in responsiveNavItems" :key="index" :to="item.link"
                 :class="index == 0 ? 'bg-blue-800' : 'bg-green-800'"> 
                 {{ item[name] }}
+            </NuxtLink>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="v-else md:hidden fixed bottom-0 left-0 w-full bg-red-900 z-50 dark:bg-green-900 shadow-lg">
+        <div class="flex justify-around p-3 max-w-md mx-auto">
+            <NuxtLink to="/" class="flex flex-col items-center text-white">
+                <i class="fas fa-home text-lg"></i>
+                <span class="text-xs mt-1">Home</span>
+            </NuxtLink>
+
+            <NuxtLink to="/profile" class="flex flex-col items-center text-white">
+                <i class="fas fa-user text-lg"></i>
+                <span class="text-xs mt-1">Profile</span>
+            </NuxtLink>
+
+            <NuxtLink to="/profile/deposite" class="flex flex-col items-center text-white">
+                <i class="fas fa-wallet text-lg"></i>
+                <span class="text-xs mt-1">Deposit</span>
+            </NuxtLink>
+
+            <NuxtLink to="/profile/withdrow" class="flex flex-col items-center text-white">
+                <i class="fas fa-wallet text-lg"></i>
+                <span class="text-xs mt-1">Withdraw</span>
+            </NuxtLink>
+
+            <NuxtLink to="/profile/promotion" class="flex flex-col items-center text-white">
+                <i class="fa-solid fa-rectangle-ad"></i>
+                <span class="text-xs mt-1">Promotion</span>
             </NuxtLink>
         </div>
     </div>

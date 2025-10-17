@@ -130,8 +130,20 @@
     {
       name:'game',
       title:'Game',
-      icon:'fa-solid fa-user',
+      icon:'fa-solid fa-trophy',
       url:'/admin/game',
+    },
+    {
+      name:'transaction',
+      title:'Transaction',
+      icon:'fa-solid fa-wallet',
+      url:'/admin/transaction',
+    },
+    {
+      name:'Game Records',
+      title:'Game Records',
+      icon:'fa-solid fa-receipt',
+      url:'/admin/transaction/record',
     },
      {
       name: 'currency',
@@ -141,10 +153,10 @@
     },
 
     {
-      name: 'agent',
-      title: 'Agent',
+      name: 'Users',
+      title: 'Users',
       icon: 'fa-solid fa-user-secret',
-      url: '/admin/agent'
+      url: '/admin/user'
     },
   ])
   
