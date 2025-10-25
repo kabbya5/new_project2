@@ -5,12 +5,14 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CurrencyController;
 use App\Http\Controllers\Api\GameController;
+use App\Http\Controllers\Api\LabelController;
 use App\Http\Controllers\Api\MovingTextController;
 use App\Http\Controllers\Api\ProviderController;
 use App\Http\Controllers\Api\RecenlyPlayGameController;
 use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\WebhookController;
+use App\Http\Controllers\Api\UserMangeController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +64,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     });
 
     Route::get('/betting/records',[GameController::class,'gameRecords']);
+
+    Route::get('/all/users', [AdminDashboardController::class, 'allUser']);
 });
 
 Route::get('/game/categories/index',[CategoryController::class, 'index']);
@@ -69,6 +73,10 @@ Route::get('/game/providers/index',[ProviderController::class, 'index']);
 Route::get('game/category/providers/{slug}',[ProviderController::class,'categoryProviders']);
 Route::get('/games/index',[GameController::class, 'index']);
 Route::get('/sliders/index', [SliderController::class, 'index']);
+Route::get('/labels/index', [LabelController::class, 'index']);
+
+
+// Admin
 
 Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
 
@@ -113,5 +121,15 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
         Route::post('/texts/store', 'store');
         Route::put('/texts/update/{text}', 'update');
         Route::delete('texts/delete/{text}', 'destroy');
+    });
+
+    Route::controller(UserMangeController::class)->group(function(){
+        Route::get('find/user/{user}', 'findUser');
+        Route::post('update/user/{user}', 'update');
+    });
+
+    Route::controller(LabelController::class)->group(function(){
+        Route::post('/labels/store', 'store');
+        Route::put('/labels/update/{label}', 'update');
     });
 });

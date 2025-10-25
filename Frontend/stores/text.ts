@@ -6,7 +6,7 @@ export const useTextStore = defineStore('text', {
     state:() => ({
         texts: [] as any,
     }),
-
+    
     actions:{
         async index() {
             const loading = useLoadingStore(); 

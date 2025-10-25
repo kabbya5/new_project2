@@ -9,7 +9,7 @@ export const useGameStore = defineStore('game', {
     pagination: {
       current_page: 1,
       last_page: 1,
-      per_page: 1,
+      per_page: 48,
       total: 0,
     }
   }),

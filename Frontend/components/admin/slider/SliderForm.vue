@@ -1,7 +1,7 @@
 <template>
     <!-- Modal BackDrop  -->
 
-    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" >
+    <div class="fixed top-0 w-full left-0 bg-black/50 flex items-center justify-center z-50" >
         <div class="bg-white dark:bg-gray-800 rounded w-full max-w-[90%] max-h-[90%]" @click.stop style="overflow: auto;">
             <div class="bg-gray-300 dark:bg-gray-900 py-2 px-6 flex items-center justify-between">
                 <h2 class="text-xl font-bold">Add Slider</h2>

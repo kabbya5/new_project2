@@ -45,7 +45,7 @@
                         :class="fixedActiveSlug === category.slug ? 'text-green-800 font-bold border-green-700' : 'text-gray-200'"
                         >
                         
-                        <h2 class="text-[15px] ml-2 text-gray-700 dark:text-gray-200 lg:text-md font-semibold capitalize">
+                        <h2 class="text-[15px] ml-2 text-white lg:text-md font-semibold capitalize">
                             {{ category[name] }}
                         </h2>
                     </button>

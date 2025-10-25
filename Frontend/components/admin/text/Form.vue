@@ -1,7 +1,7 @@
 <template>
   <!-- Modal Backdrop -->
   <div
-    class="fixed inset-0 bg-black/50 flex items-top justify-center z-50"
+    class="fixed w-full top-8 left-0 bg-black/50 flex items-top justify-center z-50"
     @click="$emit('close')"
   >
     <div

@@ -1,21 +1,31 @@
 <template>
   <div class="container mx-auto pb-6 pt-1">
-    <div class="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-x-auto">
       <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
             <h1 class="font-semibold text-gray-800 dark:text-gray-100 text-center sm:text-left">
-                Transaction Records
+                Users
             </h1>
 
             <div class="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-2">
+                <input
+                    type="text"
+                    v-model="searchQuery"
+                    @keyup="search"
+                    class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Search by User name, Email, Phone"
+                />
+
                 <select
-                v-model="type"
-                @change="search"
-                class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                <option value="deposit">Deposit</option>
-                <option value="withdraw"> Withdraw </option>
-                <option value="all_transaction"> All </option>
+                  v-model="type"
+                  @change="search"
+                  class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                  <option value="user"> User </option>
+                  <option value="agent"> Agent </option>
+                  <option value=""> Admin </option>
+                  <option value="admin"> Admin </option>
+                  <option value="all"> All </option>
                 </select>
 
                 <input
@@ -46,83 +56,74 @@
 
 
       <!-- Table -->
-       <LoadingSpinner v-if="loading.isLoading('transaction')" />
+      <LoadingSpinner v-if="loading.isLoading('users')" />
 
       <div v-else class="overflow-x-auto">
-        <table class="min-w-full text-sm text-gray-700 dark:text-gray-200">
+        <table class="w-full text-sm text-gray-700 dark:text-gray-200">
           <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase text-xs font-semibold">
             <tr>
-              <th class="text-left px-6 py-3">Order #</th>
-              <th class="text-center px-6 py-3"> User </th>
-              <th class="text-center px-6 py-3">Type</th>
-              <th class="text-center px-6 py-3"> Created At </th>
-              <th class="text-right px-6 py-3"> Amount</th>
-              <th class="text-center px-6 py-3">  Status </th>
-              <th class="text-center px-6 py-3"> Provider</th>
-              <th class="text-left px-6 py-3"> Remark </th>
+              <th class="text-left px-6 py-3 w-fit"> User Name </th>
+              <th class="text-left px-6 py-3 w-fit"> Role </th>
+              <th class="text-center px-6 py-3 w-fit"> Refer Code </th>
+              <th class="text-center px-6 py-3 w-fit"> Refer Users </th>
+              <th class="text-right px-6 py-3 w-fit"> Balance </th>
+              <th class="text-center px-6 py-3 w-fit"> Phone </th>
+              <th class="text-center px-6 py-3 w-fit"> Email </th>
+              <th class="text-center px-6 py-3 w-fit"> Created At </th>
+              <th class="text-center px-6 py-3 w-fit"> Action </th>
             </tr>
           </thead>
 
           <tbody>
             <!-- Empty State -->
-            <tr v-if="!transactionStore.transactions.length">
+            <tr v-if="!userStore.users.length">
               <td colspan="5" class="text-center py-8 text-gray-500 dark:text-gray-400">
-                No transactions found 😔
+                No users found 😔
               </td>
             </tr>
 
             <!-- Table Rows -->
             <tr
-              v-for="(transaction, i) in transactionStore.transactions"
+              v-for="(user, i) in userStore.users"
               :key="i"
               class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
             >
               <td class="px-6 py-3 font-medium text-gray-800 dark:text-gray-100">
-                {{ transaction.order_sn }}
+                {{ user.user_name }}
               </td>
 
               <td class="px-6 py-3 font-medium text-gray-800 dark:text-gray-100">
-                {{ transaction.user_nane }}
+                {{ user.role }}
               </td>
 
               <td class="text-center px-6 py-3">
-                <span
-                  class="px-2 py-1 text-xs font-semibold rounded-full"
-                  :class="{
-                    'bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-200': transaction.type === 'deposit',
-                    'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200': transaction.type === 'withdraw',
-                    'bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-200': transaction.type === 'bonus'
-                  }"
-                >
-                  {{ transaction.type }}
-                </span>
+                  {{ user.refer_code}}
               </td>
               <td class="text-center px-6 py-3">
                 <span
                   class="px-2 py-1 text-xs font-semibold rounded-full">
-                  {{ transaction.created_time }}
+                  {{ user.refer_user }}
                 </span>
               </td>
 
               <td class="text-right px-6 py-3">
-                {{ transaction.amount.toLocaleString() }} <span class="uppercase"> {{authStore.user?.currency }}</span>
+                {{ user.balance }} <span class="uppercase"> {{user.currency }}</span>
               </td>
 
-              <td class="text-center px-6 py-3">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full" 
-                  :class="{
-                    'bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-200': transaction.status === 'pending',
-                    'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200': transaction.status === 'success',
-                    'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200': transaction.status === 'failed'
-                  }">{{ transaction.status }}</span>
-              </td>
+       
 
               <td class="text-center px-6 py-3">
-                {{ transaction.provider || '-' }}
+                {{ user.phone}}
               </td>
 
                <td class="text-left px-6 py-3">
-                {{ transaction.remark || '-' }}
+                {{ user.email }}
+              </td>
+               <td class="text-left px-6 py-3">
+                {{ user.created_at}}
+              </td>
+              <td class="text-left px-6 py-3">
+                  <NuxtLink :to="`/admin/user/${user?.id}`" class="bg-green-600 text-white transaction duration-300 hover:bg-green-800 text-white py-1 px-5 rounded-md"> Edit </NuxtLink>
               </td>
             </tr>
           </tbody>
@@ -142,56 +143,41 @@ definePageMeta({
 })
 
 import { useAuthStore } from '~/stores/auth';
-import { useTransactionStore } from '~/stores/transaction';
+import { useUserStore } from '~/stores/user';
 import { useLoadingStore } from '~/stores/loading';
 
-const transactionStore = useTransactionStore();
+const userStore = useUserStore();
 const authStore = useAuthStore();
 const loading = useLoadingStore();
-const currentPage = ref(transactionStore.pagination?.current_page);
-const totalPages = computed(() => transactionStore.pagination?.last_page ?? 1);
+const currentPage = ref(userStore.pagination?.current_page);
+const totalPages = computed(() => userStore.pagination?.last_page ?? 1);
 
 const today = new Date()
 
-// Get first and last day of current month
-function formatDate(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0'); // month is 0-indexed
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`; // YYYY-MM-DD
-}
-
-const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-const from_date = ref(formatDate(firstDay));
-const to_date = ref(formatDate(lastDay));
-const status = ref('all');
-const type = ref('all_transaction');
+const from_date = ref();
+const to_date = ref();
+const type = ref('all');
+const searchQuery = ref<null|string>(null);
 
 async function fetchPosts() {
-    await transactionStore.fetchTransaction(
+    await userStore.fetchUser(
         currentPage.value,
         30,
         type.value,
-        null,
-        null,
+        searchQuery.value,
         from_date.value,
         to_date.value,
-        status.value,
     );
 }
 
 const search = (async() => {
-    await transactionStore.fetchTransaction(
+    await userStore.fetchUser(
         currentPage.value,
         30,
         type.value,
-        null,
-        null,
+        searchQuery.value,
         from_date.value,
         to_date.value,
-        status.value,
     );
 })
 

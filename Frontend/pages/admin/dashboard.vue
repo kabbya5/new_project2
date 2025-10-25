@@ -30,7 +30,7 @@
 
       <div class="col-span-12 lg:col-span-7 bg-white dark:bg-gray-800 p-3">
         <div class="flex relative justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
-          <h3 class="font-[400] tracking-wide title-md"> Transaction History </h3>
+          <h3 class="font-[400] tracking-wide title-md"> Game History </h3>
         </div>
 
         <div class="mt-3 w-full">
@@ -73,13 +73,39 @@
 
       <div class="col-span-12 lg:col-span-5 bg-white dark:bg-gray-800 p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
-          <h3 class="font-[400] tracking-wide title-md"> Recently Transactions </h3>
+          <h3 class="font-[400] tracking-wide title-md"> Recently Users </h3>
         </div>
 
         <div class="mt-3 w-full">
           <LoadingSpinner v-if="loading.isLoading('transaction')" />
           <div v-else>
-            <TablesTopSeller  :transactions="transactionStore.transactions" />
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left">
+                <thead>
+                  <tr class="border-b dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                    <th scope="col" class="py-2 px-4">User</th>
+                    <th scope="col" class="py-2 px-4">Refer code</th>
+                    <th scope="col" class="py-2 px-4">Type</th>
+                    <th scope="col" class="py-2 px-4">Phone</th>
+                    <th scope="col" class="py-2 px-4 text-right">Balance</th>
+                  </tr>
+                </thead>
+
+                <tbody class="text-gray-800 dark:text-gray-200">
+                  <tr 
+                    v-for="(item, index) in userStore.users" 
+                    :key="index" 
+                    class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                  >
+                    <td class="py-3 px-4">{{ item.user_name }}</td>
+                    <td class="py-3 px-4">{{ item.refer_code }}</td>
+                    <td class="py-3 px-4">{{ item.role }}</td>
+                    <td class="py-3 px-4">{{ item.phone }}</td>
+                    <td class="py-3 px-4 text-right">{{ item.balance }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -97,17 +123,17 @@
   import { useLoadingStore } from '~/stores/loading';
   import { useTransactionStore } from '~/stores/transaction';
   import { useBettingRecordStore } from '~/stores/bettingRecord';
+  import { useUserStore } from '~/stores/user';
 
   const loading = useLoadingStore();
   const transactionStore = useTransactionStore();
   const bettingRecordStore = useBettingRecordStore();
+  const userStore = useUserStore();
 
   onMounted( async () =>{
     await transactionStore.fetchTransaction(1,10,null,null);
-    await bettingRecordStore.fetchTransaction(
-      1,
-      10,
-    );
+    await bettingRecordStore.fetchTransaction(1,10);
+    await userStore.fetchUser(1,10);
   });
     
 </script>

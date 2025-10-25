@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\Transaction;
 use App\Models\User;
 use BcMath\Number;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
@@ -42,4 +44,39 @@ class AdminDashboardController extends Controller
         ]);
     }
 
+    public function allUser(Request $request){
+
+        $limit = $request->limit;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $search = $request->search;
+        $type = $request->type;
+
+        $from_date = $from_date
+            ? Carbon::parse($from_date)->format('Y-m-d')
+            : null;
+
+        $to_date = $to_date
+            ? Carbon::parse($to_date)->format('Y-m-d')
+            : null;
+
+        $users = User::orderBy('id', 'desc')
+            ->when($from_date && $to_date, fn($q) => $q->whereBetween('created_at', [$from_date, $to_date]))
+            ->when($from_date && !$to_date, fn($q) => $q->whereDate('created_at', '>=', $from_date))
+            ->when(!$from_date && $to_date, fn($q) => $q->whereDate('created_at', '<=', $to_date))
+            ->when($search, function($q) use($search) {
+                $q->where(function($q2) use ($search) {
+                    $q2->where('user_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($type && $type != 'all', fn($q) => $q->where('role', $type))
+            ->paginate($limit, ['*'], 'page', $request->page);
+
+
+        return response()->json([
+            'users' => UserResource::collection($users),
+        ]);
+    }
 }
