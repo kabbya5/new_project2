@@ -23,7 +23,7 @@
                   >
                   <option value="user"> User </option>
                   <option value="agent"> Agent </option>
-                  <option value=""> Admin </option>
+                  <option value="affiliate"> Affiliate </option>
                   <option value="admin"> Admin </option>
                   <option value="all"> All </option>
                 </select>
@@ -102,7 +102,7 @@
               <td class="text-center px-6 py-3">
                 <span
                   class="px-2 py-1 text-xs font-semibold rounded-full">
-                  {{ user.refer_user }}
+                  {{ user.refer_users }}
                 </span>
               </td>
 

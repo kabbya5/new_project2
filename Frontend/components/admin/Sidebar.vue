@@ -1,17 +1,12 @@
 <template>
-    <div v-if="sidebar.isOpen" class="flex bg-white dark:bg-black" id="admin-sidebar">
+    <div v-if="sidebar.isOpen" class="h-full bg-white dark:bg-black" id="admin-sidebar">
         <!-- Sidebar -->
         <aside>
             <!-- Logo  -->
             <NuxtLink to="/admin/dashboard" class="flex justify-center items-center border-b border-gray-300 dark:border-gray-700 py-3">
-                <NuxtImg src="/logo.png" class="h-7" />
+                <NuxtImg src="/logo.png" class="h-5 md:h-7" />
             </NuxtLink>
     
-            <!-- Menu -->
-            <div class="text-xs px-3 py-2 uppercase text-gray-400 dark:text-gray-500">
-                Menu...
-            </div>
-
             <nav class="space-y-1 px-3 py-2">
                 <NuxtLink to="/" class="sidebar-link">
                     <div class="flex justify-between items-center">
@@ -25,10 +20,7 @@
 
                 <div class="sidebar-section mt-2">
                   <div v-for="link in navLinks" :key="link.name">
-                    <div
-                      class="menu flex justify-between items-center"
-                      @click="toggleDropdown(link.name)"
-                    >
+                    <div class="menu">
                       <NuxtLink :to="link.url" class="menu-item flex items-center w-full justify-between" active-class="text-blue-600 font-bold">
                         <span class="space-x-3 py-1">
                           <i :icon="link.icon" :class="link.icon" />
@@ -37,19 +29,47 @@
                       </NuxtLink>
                     </div>
                   </div>
-                </div>
 
+                  <div>
+                    <div class="menu">
+                      <button @click="logout" class="menu-item flex items-center w-full justify-between" active-class="text-blue-600 font-bold">
+                        <span class="space-x-3 py-1">
+                          <i class="fa-solid fa-right-from-bracket"></i>
+                          <span> Logout</span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
             </nav>
         </aside>
     </div>
 </template>
   
 <script setup lang="ts">
-  import { useSidebarTogglerStore } from '~/stores/sidebarToggler';
-  import SidebarToggler from './buttons/SidebarToggler.vue';
+  import {useAuthStore} from '~/stores/auth';
   const sidebar = useSidebarTogglerStore();
 
-  const showSidebar = ref(false)
+  const authStore = useAuthStore();
+  const {handleLogout} = authStore;
+
+  const updateWindowSize = () => {
+    if (window.innerWidth <= 1024) {
+      sidebar.close();
+    } else {
+      sidebar.open();
+    }
+  }
+
+  onMounted(() =>{
+    updateWindowSize();
+    window.addEventListener('resize', updateWindowSize);
+  });
+
+  onUnmounted(() =>{
+    window.removeEventListener('resize', updateWindowSize);
+  });
+
   const open = ref({
     auth: false,
     baseui: false,
@@ -68,7 +88,35 @@
     },
 
     {
-      name:'text',
+      name:'Transaction Number',
+      title:'Transaction Number',
+      icon:'fa-solid fa-ad',
+      url:'/admin/transaction/deposit-number',
+    },
+
+    {
+      name:'Promotion & Affiliate',
+      title:'Promotion & Affiliate',
+      icon:'fa-solid fa-text-width',
+      url:'/admin/promotion',
+    },
+
+    {
+      name:'Deposit',
+      title:'Deposit',
+      icon:'fa-solid fa-comments-dollar',
+      url:'/admin/transaction/deposit',
+    },
+
+    {
+      name:'Withdraw',
+      title:'withdraw',
+      icon:'fa-solid fa-coins',
+      url:'/admin/transaction/withdraw',
+    },
+
+    {
+      name:'Movine Text',
       title:'Moving Text',
       icon:'fa-solid fa-text-width',
       url:'/admin/text',
@@ -106,7 +154,7 @@
       icon:'fa-solid fa-receipt',
       url:'/admin/transaction/record',
     },
-     {
+    {
       name: 'currency',
       title: 'Currency',
       icon: 'fa-solid fa-coins',
@@ -121,13 +169,34 @@
     },
 
     {
-      name: 'Label',
-      title: 'label',
+      name: 'VIP Level',
+      title: 'VIP Level',
       icon: 'fa-solid fa-tag',
       url: '/admin/label'
     },
+
+    {
+      name: 'Agent',
+      title: 'Agent',
+      icon: 'fa-solid fa-user-group',
+      url: '/admin/agents',
+    },
+
+    {
+      name: 'Affiliate',
+      title: 'affiliate',
+      icon: 'fa-solid fa-users-line',
+      url: '/admin/affiliate'
+    },
   ])
   
+const router = useRouter();
+
+const logout = async () => {
+  await handleLogout();    
+  router.push('/');  
+}
+
 </script>
 
 <style scoped>
@@ -137,7 +206,8 @@
 }
 
 #admin-sidebar {
-  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px;
 }
 
 #admin-sidebar aside {

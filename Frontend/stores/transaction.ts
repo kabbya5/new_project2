@@ -23,6 +23,7 @@ export const useTransactionStore = defineStore("transaction", {
       from_date: string | null = null,
       to_date: string | null = null,
       status: string | null = null,
+      searchQuery:string |null = null,
     ) {
         this.loading = true;
         this.error = null;
@@ -36,6 +37,8 @@ export const useTransactionStore = defineStore("transaction", {
             if (month) query.month = month;
             if (from_date) query.from_date = from_date;
             if (to_date) query.to_date = to_date;
+            if (status) query.status = status;
+            if (searchQuery) query.searchQuery = searchQuery;
 
             const res: any = await useApiFetch("/transactions", {
                 method: "GET",
@@ -58,5 +61,98 @@ export const useTransactionStore = defineStore("transaction", {
             loading.stop('transaction');
         }
     },
+
+    async store(form:FormData):Promise<void>{
+      const loading = useLoadingStore(); 
+      loading.start('transaction');
+
+      try{
+        const res :any = await useApiFetch('/transactions/store',{
+          method:'POST',
+          body:form
+        });
+
+        if(res.transaction){
+            this.transactions.push(res.transaction);
+        }
+      }catch(error){
+        alert('Error storing transaction');
+      }finally{
+        loading.stop('transaction');
+      }
+    },
+
+    findTransaction(transaction_id: number) {
+      return this.transactions.find(transaction => transaction.id === transaction_id);
+    }, 
+
+    async update(transaction_id:number, form:FormData){
+      const loading = useLoadingStore(); 
+      loading.start('transaction');
+
+      if (form instanceof FormData) {
+        form.append('_method', 'PUT');
+      }
+
+      try{
+        const res :any = await useApiFetch('/transactions/update/'+transaction_id,{
+          method:'POST',
+          body:form
+        });
+
+        if(res.transaction){
+            const index = this.transactions.findIndex(t => t.id === transaction_id);
+            if (index !== -1) {
+                this.transactions[index] = res.transaction;
+            }
+        }
+      }catch(error){
+        alert('Error storing transaction');
+      }finally{
+        loading.stop('transaction');
+      }
+    },
+
+    async approval(transaction_id:number,){
+      const loading = useLoadingStore(); 
+      loading.start('transaction');
+
+      try{
+        const res :any = await useApiFetch('/transactions/approval/'+transaction_id,{
+          method:'POST',
+        });
+
+        if(res.transaction){
+            const index = this.transactions.findIndex(t => t.id === transaction_id);
+            if (index !== -1) {
+                this.transactions[index] = res.transaction;
+            }
+        }
+      }catch(error){
+        alert('Error storing transaction');
+      }finally{
+        loading.stop('transaction');
+      }
+    },
+
+    async delete(transaction_id: number) {
+      try {
+          const response: any = await useApiFetch(`/admin/transactions/delete/${transaction_id}`, {
+              method: 'DELETE',
+          });
+
+          if (response && response.success) {
+              // Remove the deleted text from state
+              this.transactions = this.transactions.filter(t => t.id !== transaction_id);
+              return true;
+          }
+
+          return false;
+      } catch (error) {
+          console.error(error);
+          return false;
+      }
+    }
   },
+  
 });

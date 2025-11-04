@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <AdminDashboardTopCard></AdminDashboardTopCard>
     <div class="rounded-xl shadow-sm grid grid-cols-12 gap-4">
       <!-- Summary Cards -->
@@ -51,7 +51,7 @@
 
                 <tbody class="text-gray-800 dark:text-gray-200">
                   <tr 
-                    v-for="(item, index) in bettingRecordStore.records" 
+                    v-for="(item, index) in bettingRecordStore.records.slice(0, 12)" 
                     :key="index" 
                     class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                   >
@@ -93,7 +93,7 @@
 
                 <tbody class="text-gray-800 dark:text-gray-200">
                   <tr 
-                    v-for="(item, index) in userStore.users" 
+                    v-for="(item, index) in userStore.users.slice(0, 12)" 
                     :key="index" 
                     class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
                   >

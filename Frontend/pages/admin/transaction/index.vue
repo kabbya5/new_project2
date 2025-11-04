@@ -16,6 +16,9 @@
                 <option value="deposit">Deposit</option>
                 <option value="withdraw"> Withdraw </option>
                 <option value="all_transaction"> All </option>
+                <option value="deposit">Deposit</option>
+                <option value="withdraw"> Withdraw </option>
+                <option value="all_transaction"> All </option>
                 </select>
 
                 <input

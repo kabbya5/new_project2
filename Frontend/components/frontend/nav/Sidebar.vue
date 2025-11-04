@@ -82,6 +82,14 @@ const navItems = [
     link: '/profile',
     icon: 'fa-solid fa-user-nurse'
   },
+
+  {
+    english_name: 'VIP Level',
+    bangla_name: 'ভিআইপি লেভেল',
+    hindi_name: 'वीआईपी स्तर',
+    link: '/profile/level',
+    icon: 'fa-solid fa-crown'
+  },
 ];
 
 const logoutNav = {

@@ -6,8 +6,6 @@
                     <th class="text-left py-1" style="min-width:160px"> User Name </th>
                     <th class="text-center py-1" style="min-width:100px"> Type </th>
                     <th class="text-right py-1" style="min-width:100px"> Amount </th>
-                    <th class="text-left py-1" style="min-width:100px"> Agent </th>
-                    <th class="text-left py-1" style="min-width:100px"> Refer </th>
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -21,13 +19,6 @@
 
                     <td class="text-right py-1">
                         {{ transaction.amount }}
-                    </td>
-
-                    <td class="text-left py-1" v-if="transaction.affiliat_amount> 0">
-                        {{ transaction.affiliat_agent}} ({{ transaction.affiliat_amount}})
-                    </td>
-                    <td class="text-left py-1" v-if="transaction.refer_amount > 0">
-                        {{ transaction.refer_user }} ({{ transaction.refer_amount}})
                     </td>
                 </tr>
             </tbody>

@@ -21,6 +21,7 @@ class LabelController extends Controller
             'min_bet' => 'required',
             'max_bet' => 'required',
             'daily_bonus' => 'required',
+            'deposit_bonus' => 'nullable|required',
         ]));
 
         return response()->json(['data' => new LableRsource($label)]);
@@ -32,7 +33,8 @@ class LabelController extends Controller
             'name' => 'required|string',
             'min_bet' => 'required',
             'max_bet' => 'required',
-            'daily_bonus' => 'required',
+            'daily_bonus' => 'nullable|required',
+            'deposit_bonus' => 'nullable|required',
         ]));
 
         return response()->json(['data' => new LableRsource($label)]);

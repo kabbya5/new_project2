@@ -6,7 +6,7 @@ export const useLabelStore = defineStore('label',{
     state:()=>({
         labels:[] as Label[],
     }),
-
+    
     actions:{
         async index(){
             const loading = useLoadingStore();
@@ -59,9 +59,9 @@ export const useLabelStore = defineStore('label',{
                 alert(error);
             }
         },
+
         findLabel(label_id: number): Label | undefined {
             return this.labels.find(label => label.id === label_id);
-        }
+        }, 
     },
-    
 });

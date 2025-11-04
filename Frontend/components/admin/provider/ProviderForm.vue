@@ -8,93 +8,94 @@
                 <button @click="$emit('close')" class="bg-red-500 w-[30px] h-[30px] rounded-full text-white"> <i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <form @submit.prevent="submitForm" class="p-6">
-                <div class="form-group mb-4">
-                    <label for="" class="text-lg"> Provider Id </label>
-                    <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                        placeholder="Provider Id" 
-                        v-model="form.provider_id"
-                          :class="errorStore.validationErrors.provider_id ? 'border-red-500' :'' ">
-                    
-                    <p v-if="errorStore.validationErrors.provider_id" class="text-red-500">  {{ errorStore.validationErrors.provider_id[0] }} </p>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="" class="text-lg"> English Name </label>
-                    <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                        placeholder="En Name" 
-                        v-model="form.english_name"
-                        :class="errorStore.validationErrors.english_name ? 'border-red-500' :'' ">
-                    
-                    <p v-if="errorStore.validationErrors.english_name" class="text-red-500">  {{ errorStore.validationErrors.english_name[0] }} </p>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="" class="text-lg"> Bangla Name </label>
-                    <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                        placeholder="Bangla Name" 
-                        v-model="form.bangla_name"
-                          :class="errorStore.validationErrors.bangla_name ? 'border-red-500' :'' ">
-                    
-                    <p v-if="errorStore.validationErrors.bangla_name" class="text-red-500">  {{ errorStore.validationErrors.bangla_name[0] }} </p>
-                </div>
-
-                
-                <div class="form-group mb-4">
-                    <label for="" class="text-lg"> Hindi Name </label>
-                    <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                        placeholder="Hindi Name" 
-                        v-model="form.hindi_name"
-                          :class="errorStore.validationErrors.hindi_name ? 'border-red-500' :'' ">
-                    
-                    <p v-if="errorStore.validationErrors.hindi_name" class="text-red-500">  {{ errorStore.validationErrors.hindi_name[0] }} </p>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="" class="text-lg"> Select Category </label>
-
-                    <Multiselect class="border dark:bg-gray-700 dark:text-white focus:outline-none"
-                        v-model="form.categories"
-                        :options="options"
-                        :multiple="true"
-                        :close-on-select="false"
-                        placeholder="Select Category"
-                        label="english_name"
-                        track-by="id"
-                    />
-
-                    <p v-if="errorStore.validationErrors.hindi_name" class="text-red-500">
-                        {{ errorStore.validationErrors.hindi_name[0] }}
-                    </p>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="" class="text-lg"> Position </label>
-                    <input type="number" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                        placeholder="Category Position " required
-                        v-model="form.position"
-                      :class="errorStore.validationErrors.position ? 'border-red-500' :'' ">
-                    
-                    <p v-if="errorStore.validationErrors.position" class="text-red-500">  {{ errorStore.validationErrors.position[0] }} </p>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="" class="text-lg"> Provider Image </label>
-                    <div class="flex">
-                        <input type="file" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
-                            placeholder="Enter Logo Path"
-                            @change="handelImageUpload" 
-                            :class="errorStore.validationErrors.image ? 'border-red-500' :'' ">
-
-                        <img v-if="imagePreview" :src="imagePreview" alt="" class="ml-2 mt-2 w-[40px] h-[40px]">
+            <form @submit.prevent="submitForm">
+                <div class="grid grid-cols-12 gap-4 p-6">    
+                    <div class="col-span-12 form-group">
+                        <label for="" class="text-lg"> Provider Id </label>
+                        <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                            placeholder="Provider Id" 
+                            v-model="form.provider_id"
+                            :class="errorStore.validationErrors.provider_id ? 'border-red-500' :'' ">
+                        
+                        <p v-if="errorStore.validationErrors.provider_id" class="text-red-500">  {{ errorStore.validationErrors.provider_id[0] }} </p>
                     </div>
-                    
-                    <p v-if="errorStore.validationErrors.image" class="text-red-500">  {{ errorStore.validationErrors.image[0] }} </p>
-                    
-                </div>
+                
+                    <div class="form-group col-span-12">
+                        <label for="" class="text-lg"> English Name </label>
+                        <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                            placeholder="En Name" 
+                            v-model="form.english_name"
+                            :class="errorStore.validationErrors.english_name ? 'border-red-500' :'' ">
+                        
+                        <p v-if="errorStore.validationErrors.english_name" class="text-red-500">  {{ errorStore.validationErrors.english_name[0] }} </p>
+                    </div>
 
-                <div class="flex justify-end">
-                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                    <div class="form-group col-span-12">
+                        <label for="" class="text-lg"> Bangla Name </label>
+                        <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                            placeholder="Bangla Name" 
+                            v-model="form.bangla_name"
+                            :class="errorStore.validationErrors.bangla_name ? 'border-red-500' :'' ">
+                        
+                        <p v-if="errorStore.validationErrors.bangla_name" class="text-red-500">  {{ errorStore.validationErrors.bangla_name[0] }} </p>
+                    </div>
+
+                    <div class="form-group col-span-12">
+                        <label for="" class="text-lg"> Hindi Name </label>
+                        <input type="text" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                            placeholder="Hindi Name" 
+                            v-model="form.hindi_name"
+                            :class="errorStore.validationErrors.hindi_name ? 'border-red-500' :'' ">
+                        
+                        <p v-if="errorStore.validationErrors.hindi_name" class="text-red-500">  {{ errorStore.validationErrors.hindi_name[0] }} </p>
+                    </div>
+
+                    <div class="form-group col-span-12">
+                        <label for="" class="text-lg"> Select Category </label>
+
+                        <Multiselect class="border dark:bg-gray-700 dark:text-white focus:outline-none"
+                            v-model="form.categories"
+                            :options="options"
+                            :multiple="true"
+                            :close-on-select="false"
+                            placeholder="Select Category"
+                            label="english_name"
+                            track-by="id"
+                        />
+
+                        <p v-if="errorStore.validationErrors.hindi_name" class="text-red-500">
+                            {{ errorStore.validationErrors.hindi_name[0] }}
+                        </p>
+                    </div>
+
+                    <div class="form-group col-span-12">
+                        <label for="" class="text-lg"> Position </label>
+                        <input type="number" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                            placeholder="Category Position " required
+                            v-model="form.position"
+                        :class="errorStore.validationErrors.position ? 'border-red-500' :'' ">
+                        
+                        <p v-if="errorStore.validationErrors.position" class="text-red-500">  {{ errorStore.validationErrors.position[0] }} </p>
+                    </div>
+
+                    <div class="form-group col-span-12">
+                        <label for="" class="text-lg"> Provider Image </label>
+                        <div class="flex">
+                            <input type="file" class="w-full border mt-2 px-2 py-1 dark:bg-gray-700 dark:text-white focus:outline-none" 
+                                placeholder="Enter Logo Path"
+                                @change="handelImageUpload" 
+                                :class="errorStore.validationErrors.image ? 'border-red-500' :'' ">
+
+                            <img v-if="imagePreview" :src="imagePreview" alt="" class="ml-2 mt-2 w-[40px] h-[40px]">
+                        </div>
+                        
+                        <p v-if="errorStore.validationErrors.image" class="text-red-500">  {{ errorStore.validationErrors.image[0] }} </p>
+                        
+                    </div>
+
+                    <div class="flex justify-en3 col-span-12">
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                    </div>
                 </div>
             </form>
         </div>

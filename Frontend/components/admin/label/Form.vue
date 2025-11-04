@@ -13,7 +13,7 @@
         class="modal-header bg-gray-300 dark:bg-gray-900 py-3 px-6 flex items-center justify-between rounded-t-lg"
       >
         <h2 class="text-xl font-bold text-gray-800 dark:text-white">
-          Label
+          VIP Level
         </h2>
         <button
           @click="$emit('close')"
@@ -27,7 +27,7 @@
       <form @submit.prevent="submitForm" class="p-6 space-y-6">
         <div class="form-group">
           <label for="text" class="text-lg font-semibold dark:text-white"
-            >Label Position</label
+            >Level Position</label
           >
           <input id="text" type="text" class="w-full border mt-2 px-3 py-2 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter Postion 1,2,3"
@@ -43,7 +43,7 @@
 
         <div class="form-group">
           <label for="text" class="text-lg font-semibold dark:text-white"
-            >Label Name </label
+            >Level Name </label
           >
           <input id="text" type="text" class="w-full border mt-2 px-3 py-2 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter name"
@@ -58,7 +58,7 @@
 
         <div class="form-group">
           <label for="text" class="text-lg font-semibold dark:text-white"
-            > Min Bet </label
+            > Min Deposit </label
           >
           <input id="text" type="text" class="w-full border mt-2 px-3 py-2 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter min bet"
@@ -73,7 +73,7 @@
 
         <div class="form-group">
           <label for="text" class="text-lg font-semibold dark:text-white"
-            > Max Bet </label
+            > Max Depoosit </label
           >
           <input id="text" type="text" class="w-full border mt-2 px-3 py-2 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter max bet"
@@ -89,6 +89,21 @@
 
         <div class="form-group">
           <label for="text" class="text-lg font-semibold dark:text-white"
+            > Deposit Bonus % </label
+          >
+          <input id="number" type="text" class="w-full border mt-2 px-3 py-2 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter daily bonus"
+            v-model="form.deposit_bonus" required
+            :class="errorStore.validationErrors.deposit_bonus? 'border-red-500' : ''"
+          />
+
+          <p v-if="errorStore.validationErrors.deposit_bonus" class="text-red-500 text-sm mt-1">
+            {{ errorStore.validationErrors.deposit_bonus[0] }}
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="text" class="text-lg font-semibold dark:text-white"
             > Daily Bonus </label
           >
           <input id="text" type="text" class="w-full border mt-2 px-3 py-2 rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -97,7 +112,7 @@
             :class="errorStore.validationErrors.daily_bonus? 'border-red-500' : ''"
           />
 
-          <p v-if="errorStore.validationErrors.position" class="text-red-500 text-sm mt-1">
+          <p v-if="errorStore.validationErrors.daily_bonus" class="text-red-500 text-sm mt-1">
             {{ errorStore.validationErrors.daily_bonus[0] }}
           </p>
         </div>
@@ -134,6 +149,7 @@
         min_bet: null,
         max_bet: null,
         daily_bonus: null,
+        deposit_bonus:null,
     });
 
     const submitForm = async() => {
@@ -144,7 +160,7 @@
             if (form.value.min_bet !== null) formData.append('min_bet', String(form.value.min_bet));
             if (form.value.max_bet !== null) formData.append('max_bet', String(form.value.max_bet));
             if (form.value.daily_bonus !== null) formData.append('daily_bonus', String(form.value.daily_bonus));
-                    
+             if (form.value.deposit_bonus !== null) formData.append('deposit_bonus', String(form.value.deposit_bonus));       
            if (props.text_id) {
                 await labelStore.update(props.text_id, formData);
             } else {

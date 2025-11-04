@@ -42,4 +42,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function refer_users(){
+        return $this->hasMany(User::class, 'other_refer_id');
+    }
+
+    public function affiliate_users(){
+        return $this->hasMany(User::class, 'affiliate_refer_id');
+    }
+
+
 }

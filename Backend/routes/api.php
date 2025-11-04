@@ -6,11 +6,14 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CurrencyController;
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\LabelController;
+use App\Http\Controllers\Api\ManualyTransactionController;
 use App\Http\Controllers\Api\MovingTextController;
+use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\ProviderController;
 use App\Http\Controllers\Api\RecenlyPlayGameController;
 use App\Http\Controllers\Api\SliderController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\TransactionNumberController;
 use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\UserMangeController;
 
@@ -22,7 +25,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::controller(GameController::class)->group(function(){
-     Route::get('/play/game/{game}', 'playGame');
+    Route::get('/play/game/{game}', 'playGame');
 });
 
 Route::controller(AuthController::class)->group(function(){
@@ -57,6 +60,11 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::controller(TransactionController::class)->group(function(){
         Route::post('/deposite', 'depostie');
         Route::post('/withdrow', 'withdrow');
+        Route::get('/user/take/bonus/{bonus}', 'takeBonus');
+        Route::post('/transactions/store', 'store');
+        Route::put('/transactions/update/{transaction}', 'update');
+        Route::delete('/admin/transactions/delete/{transaction}', 'delete');
+        Route::post('/transactions/approval/{transaction}', 'approval');
     });
 
     Route::controller(TransactionController::class)->group(function(){
@@ -66,6 +74,12 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('/betting/records',[GameController::class,'gameRecords']);
 
     Route::get('/all/users', [AdminDashboardController::class, 'allUser']);
+
+    Route::controller(ManualyTransactionController::class)->group(function(){
+        Route::post('/manualy/deposite', 'deposite_request');
+        Route::post('/manualy/deposit/store', 'store');
+        Route::post('/manualy/withdrow/store', 'withdrawStore');
+    });
 });
 
 Route::get('/game/categories/index',[CategoryController::class, 'index']);
@@ -74,7 +88,6 @@ Route::get('game/category/providers/{slug}',[ProviderController::class,'category
 Route::get('/games/index',[GameController::class, 'index']);
 Route::get('/sliders/index', [SliderController::class, 'index']);
 Route::get('/labels/index', [LabelController::class, 'index']);
-
 
 // Admin
 
@@ -103,6 +116,7 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
 
     Route::controller(AdminDashboardController::class)->group(function(){
         Route::get('/dashboard/top/content', 'topContent');
+        Route::post('/agent/add/balance/{user}', 'addBalance');
     });
 
     Route::controller(TransactionController::class)->group(function(){
@@ -131,5 +145,19 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
     Route::controller(LabelController::class)->group(function(){
         Route::post('/labels/store', 'store');
         Route::put('/labels/update/{label}', 'update');
+    });
+
+    Route::controller(TransactionNumberController::class)->group(function(){
+        Route::get('/deposit_numbers/index', 'index');
+        Route::post('/deposit_numbers/store', 'store');
+        Route::put('/deposit_numbers/update/{number}', 'update');
+        Route::delete('/deposit_numbers/delete/{number}', 'delete');
+    });
+
+    Route::controller(PromotionController::class)->group(function(){
+        Route::post('promotions/store', 'store');
+        Route::put('/promotions/update/{promotion}', 'update');
+        Route::delete('/promotions/delete/{promotion}', 'destroy');
+        Route::get('/promotions/index', 'index');
     });
 });

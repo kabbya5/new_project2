@@ -3,10 +3,10 @@
 
     <div class="bg-white dark:bg-gray-800 p-3">
         <div class="flex justify-between items-center">
-            <h2> Moving Text </h2>
+            <h2> VIP Level </h2>
       
             <div class="flex items-center">
-                <button @click="createUpdateModal()" class="primary-button px-3 py-[6px] bg-sky-500 text-white rounded-md"> Add Label </button>
+                <button @click="createUpdateModal()" class="primary-button px-3 py-[6px] bg-sky-500 text-white rounded-md"> Add Level </button>
             </div>
         </div>
 
@@ -25,11 +25,15 @@
                         </th>
 
                         <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                            Min Bet
+                            Min Deposit
                         </th>
 
                         <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                            Max Bet
+                            Max Deposit
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                            Deposit Bonus
                         </th>
 
                         <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -47,6 +51,7 @@
                             <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.position }}</td>
                             <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.min_bet }}</td>
                             <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.max_bet }}</td>
+                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.deposit_bonus }}</td>
                             <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.daily_bonus }}</td>
                             <td class="px-6 py-2  text-right text-sm font-medium">
                                 <button @click="createUpdateModal(label.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">

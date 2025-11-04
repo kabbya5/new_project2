@@ -15,7 +15,6 @@ class Transaction extends Model
     public function affiliat_agent(){
         return $this->belongsTo(User::class, 'affiliate_refer_id');
     }
-
     public function refer_user(){
         return $this->belongsTo(User::class, 'other_refer_id');
     }

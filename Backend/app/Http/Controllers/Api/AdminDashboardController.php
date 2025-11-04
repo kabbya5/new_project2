@@ -79,4 +79,13 @@ class AdminDashboardController extends Controller
             'users' => UserResource::collection($users),
         ]);
     }
+
+    public function addBalance(Request $request, User $user){
+        $amount = $request->amount;
+        $user->update([
+            'balance' => $user->balance + $amount,
+        ]);
+
+        return response()->json(['status' => 1], 200);
+    }
 }

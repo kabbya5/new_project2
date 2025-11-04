@@ -55,23 +55,24 @@ class AuthController extends Controller
             'affiliate_refer_id' => $affiliate_refer_id ?? null,
             'phone' => $request->phone_number,
             'password' => Hash::make($request->password),
+            'balance' => 20,
         ]);
 
-        // Transaction::crate([
-        //     'user_id' => $user->id,
-        //     'transaction_sn' => 'TXN'.time().rand(1000,9999),
-        //     'type' => 'bonus',
-        //     'amount' => 0.00,
-        //     'status' => 'success',
-        //     'provider' => 'System',
-        //     'remark' => 'Bonus for new user registration'
-        // ]);
+        Transaction::create([
+            'user_id' => $user->id,
+            'order_sn' => 'TXN'.time().rand(1000,9999),
+            'type' => 'bonus',
+            'amount' => 20.00,
+            'status' => 'success',
+            'provider' => 'System',
+            'remark' => 'Bonus for new user registration'
+        ]);
 
         $token = $user->createToken('authentication')->plainTextToken;
 
         return response()->json([
             'message' => 'User registred successfully',
-            'user' => $user,
+            'user' => new UserResource($user),
             'token'  => $token,
         ]);
 
@@ -231,7 +232,6 @@ class AuthController extends Controller
                 'token' => $token,
             ]);
         }
-
 
         return response()->json(['message' => 'Unauthorized'], 401);
     }

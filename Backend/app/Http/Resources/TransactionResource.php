@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,6 +19,8 @@ class TransactionResource extends JsonResource
         $affiliat_amount = Transaction::where('order_sn', $this->order_sn)->where('type', 'agent_bouns')->first();
         $refer_amount = Transaction::where('order_sn', $this->order_sn)->where('type', 'refer_bonus')->first();
 
+        $createdAt = Carbon::parse($this->created_at);
+
         return [
             'id' => $this->id,
             'user_nane' => $this->user->user_name,
@@ -25,13 +28,15 @@ class TransactionResource extends JsonResource
             'refer_user' => optional($this->refer_user)->user_name,
             'type' => $this->type,
             'amount' => $this->amount,
-            'affiliat_amount' =>  $affiliat_amount->amount ?? 0.00,
+            'affiliat_amount' =>  $affiliat_amount,
             'refer_amount' => $refer_amount->amount ?? 0.00,
             'provider' => $this->provider,
             'remark' => $this->remark,
             'order_sn' => $this->order_sn,
             'status' => $this->status,
             'created_time' => $this->created_at?->diffForHumans(),
+            'canDelete' => $createdAt->diffInDays(Carbon::now()) > 7 ? true :false,
+            'imamge_url' => $this->imamge_url ? asset('storage/'. $this->imamge_url)  : null,
         ];
     }
 }

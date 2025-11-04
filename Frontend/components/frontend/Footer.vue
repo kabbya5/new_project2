@@ -121,17 +121,17 @@
                 <span class="text-xs mt-1">Profile</span>
             </NuxtLink>
 
-            <NuxtLink to="/profile/deposite" class="flex flex-col items-center text-white">
+            <NuxtLink to="/profile/manual-deposit" class="flex flex-col items-center text-white">
                 <i class="fas fa-wallet text-lg"></i>
                 <span class="text-xs mt-1">Deposit</span>
             </NuxtLink>
 
-            <NuxtLink to="/profile/withdrow" class="flex flex-col items-center text-white">
+            <NuxtLink to="/profile/manual-withdrow" class="flex flex-col items-center text-white">
                 <i class="fas fa-wallet text-lg"></i>
                 <span class="text-xs mt-1">Withdraw</span>
             </NuxtLink>
 
-            <NuxtLink to="/profile/promotion" class="flex flex-col items-center text-white">
+            <NuxtLink to="/promotion" class="flex flex-col items-center text-white">
                 <i class="fa-solid fa-rectangle-ad"></i>
                 <span class="text-xs mt-1">Promotion</span>
             </NuxtLink>

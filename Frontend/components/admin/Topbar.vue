@@ -1,5 +1,5 @@
 <template>
-    <div id="admin-topbar" class="bg-white dark:bg-black h-[55px] flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
+    <div id="admin-topbar" class="bg-white dark:bg-black h-[54px] flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
         <div class="flex items-center">
             <AdminButtonsSidebarToggler/>
             <div class="flex pl-4">
