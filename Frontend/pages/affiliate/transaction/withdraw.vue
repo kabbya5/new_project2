@@ -1,18 +1,10 @@
 <template>
-  <AdminTransactionDeposit v-if="isModalOpen" :transactionId="currentId" :type="'deposit'" @close="isModalOpen=false"/>
+  <AgentTransactionForm v-if="isModalOpen" :transactionId="currentId" :type="'withdraw'" @close="isModalOpen=false"/>
   
   <div class="container mx-auto pb-6 pt-1">
     <div class="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
       <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
-            <div>
-                <button @click="isModalOpen = true"
-                    class="w-full sm:w-auto flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                    <span class="ml-1 sm:hidden md:block"> Create </span>
-                </button>
-            </div>
-
             <div class="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-2">
                 <input
                     type="text"
@@ -60,7 +52,7 @@
 
 
       <!-- Table -->
-      <LoadingSpinner v-if="loading.isLoading('transaction')" />
+       <LoadingSpinner v-if="loading.isLoading('transaction')" />
 
       <div v-else class="overflow-x-auto">
         <table class="w-full text-sm text-gray-700 dark:text-gray-200">
@@ -72,9 +64,7 @@
               <th class="text-right px-6 py-3"> Amount</th>
               <th class="text-center px-6 py-3">  Status </th>
               <th class="text-center px-6 py-3"> Provider</th>
-              <th class="text-left px-6 py-3"> Image </th>
               <th class="text-left px-6 py-3"> Remark </th>
-              <th class="text-left px-6 py-3"> Action </th>
             </tr>
           </thead>
 
@@ -123,26 +113,9 @@
               <td class="text-center px-6 py-3">
                 {{ transaction.provider || '-' }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600 dark:text-gray-300"> 
-                  <NuxtImg :src="transaction.image_url"  class="w-10"/>
-              </td>
 
                <td class="text-left px-6 py-3">
                 {{ transaction.remark || '-' }}
-              </td>
-
-              <td class="px-6 py-2  text-right text-sm font-medium">
-                  <button @click="createUpdateModal(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
-                      <i class="fa-solid fa-edit"></i>
-                  </button>
-
-                  <button v-if="transaction.status!=='success' && !transaction.agent_id" @click="approval(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
-                      <i class="fa-solid fa-check"></i>
-                  </button>
-
-                  <button v-if="transaction.canDelete && transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2 text-red-500 hover:text-red-200">
-                      <i class="fa-solid fa-trash"></i>
-                  </button>
               </td>
             </tr>
           </tbody>
@@ -157,8 +130,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['auth', 'admin'],
-  layout:'admin',
+  middleware: ['auth', 'affiliate'],
+  layout:'affiliate',
 })
 
 import { useAuthStore } from '~/stores/auth';
@@ -187,7 +160,7 @@ const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 const from_date = ref(formatDate(firstDay));
 const to_date = ref(formatDate(lastDay));
 const status = ref('all');
-const type = ref('deposit');
+const type = ref('withdraw');
 const searchQuery = ref<null|string>('');
 
 async function fetchPosts() {

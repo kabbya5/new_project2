@@ -13,12 +13,11 @@
                 @change="search"
                 class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                <option value="deposit">Deposit</option>
-                <option value="withdraw"> Withdraw </option>
-                <option value="all_transaction"> All </option>
-                <option value="deposit">Deposit</option>
-                <option value="withdraw"> Withdraw </option>
-                <option value="all_transaction"> All </option>
+                  <option value="deposit">Deposit</option>
+                  <option value="withdraw"> Withdraw </option>
+                  <option value="all_transaction"> All </option>
+                  <option value="bonus"> All Bonus </option>
+                
                 </select>
 
                 <input

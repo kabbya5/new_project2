@@ -67,29 +67,44 @@ const openCategorySlug = ref<null|string>(null)
 const providers = ref<Provider | null>(null)
 
 const navItems = [
-  {
-    english_name: 'Home',
-    bangla_name: 'হোম',
-    hindi_name: 'होम',
-    link: '/',
-    icon:'fa-solid fa-home',
-  },
+    {
+        english_name: 'Home',
+        bangla_name: 'হোম',
+        hindi_name: 'होम',
+        link: '/',
+        icon:'fa-solid fa-home',
+    },
 
-  {
-    english_name: 'Profile',
-    bangla_name: 'প্রোফাইল',
-    hindi_name: 'प्रोफ़ाइल',
-    link: '/profile',
-    icon: 'fa-solid fa-user-nurse'
-  },
+    {
+        english_name: 'Profile',
+        bangla_name: 'প্রোফাইল',
+        hindi_name: 'प्रोफ़ाइल',
+        link: '/profile',
+        icon: 'fa-solid fa-user-nurse'
+    },
 
-  {
-    english_name: 'VIP Level',
-    bangla_name: 'ভিআইপি লেভেল',
-    hindi_name: 'वीआईपी स्तर',
-    link: '/profile/level',
-    icon: 'fa-solid fa-crown'
-  },
+    {
+        english_name: 'VIP Level',
+        bangla_name: 'ভিআইপি লেভেল',
+        hindi_name: 'वीआईपी स्तर',
+        link: '/profile/level',
+        icon: 'fa-solid fa-crown'
+    },
+    {
+        english_name: 'Promotion',
+        bangla_name: 'প্রমোশন',
+        hindi_name: 'प्रमोशन',
+        link: '/promotion',
+        icon: 'fa-solid fa-bullhorn'
+    },
+
+    {
+        english_name: 'Affiliate',
+        bangla_name: 'অ্যাফিলিয়েট',
+        hindi_name: 'सहयोगी',
+        link: '/promotion/affiliate',
+        icon: 'fa-solid fa-handshake'
+    },
 ];
 
 const logoutNav = {

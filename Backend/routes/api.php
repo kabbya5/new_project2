@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AffiliateDashboardController;
 use App\Http\Controllers\Api\AdminDashboardController;
+use App\Http\Controllers\Api\AgentDashboardController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CurrencyController;
@@ -88,6 +90,24 @@ Route::get('game/category/providers/{slug}',[ProviderController::class,'category
 Route::get('/games/index',[GameController::class, 'index']);
 Route::get('/sliders/index', [SliderController::class, 'index']);
 Route::get('/labels/index', [LabelController::class, 'index']);
+Route::get('/promotions', [PromotionController::class, 'promotions']);
+Route::get('/promotions/{slug}',[PromotionController::class, 'show']);
+Route::get('/affiliate',[PromotionController::class, 'affiliate']);
+
+
+Route::middleware(['auth:sanctum','agent'])->prefix('agent')->group(function(){
+    Route::controller(AgentDashboardController::class)->group(function(){
+        Route::get('/top/content', 'topContent');
+        Route::get('/transactions/cart/current-month', 'transactionData');
+    });
+});
+
+Route::middleware(['auth:sanctum','affiliate'])->prefix('affiliate')->group(function(){
+    Route::controller(AffiliateDashboardController::class)->group(function(){
+        Route::get('dashboard/top/content','topContent');
+        Route::get('/transactions/cart/current-month','transactionData');
+    });
+});
 
 // Admin
 

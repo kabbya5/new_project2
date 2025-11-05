@@ -20,6 +20,18 @@
               <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
             </li>
 
+            <li v-if="authStore.getUser()?.role == 'admin'" class="nav-link" v-for="(item,index) in navItems" :key="index">
+              <NuxtLink :to="'/admin/dashboard'" class="nav-item text-gray-800 dark:text-gray-100">Dashboard</NuxtLink>
+            </li>
+
+            <li v-if="authStore.getUser()?.role == 'agent'" class="nav-link">
+              <NuxtLink :to="'/agent/dashboard'" class="nav-item text-gray-800 dark:text-gray-100">Dashboard</NuxtLink>
+            </li>
+
+            <li v-if="authStore.getUser()?.role == 'affiliate'" class="nav-link">
+              <NuxtLink :to="'/affiliate/dashboard'" class="nav-item text-gray-800 dark:text-gray-100"> Dashboard </NuxtLink>
+            </li>
+
             <li v-if="!authStore.token" class="nav-link" v-for="(item,index) in responsiveNavItems" :key="index">
               <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
             </li>
@@ -119,13 +131,6 @@ const navItems = [
     bangla_name: 'ক্যাটাগরি',
     hindi_name: 'कैटेगरी',
     link:'/category/slot'
-  },
-
-  {
-    english_name:'dashboard',
-    hindi_name: 'dashboard',
-    bangla_name: 'dashboard',
-    link:'/admin/dashboard'
   },
 ]
 

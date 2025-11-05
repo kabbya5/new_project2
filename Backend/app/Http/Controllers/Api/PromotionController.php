@@ -17,6 +17,27 @@ class PromotionController extends Controller
         return response()->json(['promotions' => PromotionResource::collection($promotions)]);
     }
 
+    public function promotions(){
+        $promotions = Promotion::where('status', 'active')->orderBy('id', 'desc')->where('type', 'promotion')->get();
+        return response()->json(['data' => PromotionResource::collection($promotions)]);
+    }
+
+    public function affiliate(){
+        $promotion = Promotion::where('status', 'active')->orderBy('id', 'desc')->where('type', 'affiliate')->first();
+
+        return response()->json([
+            'data' => new PromotionResource($promotion)
+        ]);
+    }
+
+    public function show($slug){
+        $promotion = Promotion::where('slug', $slug)->first();
+
+        return response()->json([
+            'data' => new PromotionResource($promotion)
+        ]);
+    }
+
     public function store(Request $request){
         $request->validate([
             'title' => 'required|string|max:255',

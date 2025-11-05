@@ -1,5 +1,5 @@
 <template>
-  <AdminTransactionDeposit v-if="isModalOpen" :transactionId="currentId" :type="'deposit'" @close="isModalOpen=false"/>
+  <AgentTransactionForm v-if="isModalOpen" :transactionId="currentId" :type="'withdraw'" @close="isModalOpen=false"/>
   
   <div class="container mx-auto pb-6 pt-1">
     <div class="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
@@ -60,7 +60,7 @@
 
 
       <!-- Table -->
-      <LoadingSpinner v-if="loading.isLoading('transaction')" />
+       <LoadingSpinner v-if="loading.isLoading('transaction')" />
 
       <div v-else class="overflow-x-auto">
         <table class="w-full text-sm text-gray-700 dark:text-gray-200">
@@ -72,7 +72,6 @@
               <th class="text-right px-6 py-3"> Amount</th>
               <th class="text-center px-6 py-3">  Status </th>
               <th class="text-center px-6 py-3"> Provider</th>
-              <th class="text-left px-6 py-3"> Image </th>
               <th class="text-left px-6 py-3"> Remark </th>
               <th class="text-left px-6 py-3"> Action </th>
             </tr>
@@ -123,9 +122,6 @@
               <td class="text-center px-6 py-3">
                 {{ transaction.provider || '-' }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-600 dark:text-gray-300"> 
-                  <NuxtImg :src="transaction.image_url"  class="w-10"/>
-              </td>
 
                <td class="text-left px-6 py-3">
                 {{ transaction.remark || '-' }}
@@ -136,11 +132,11 @@
                       <i class="fa-solid fa-edit"></i>
                   </button>
 
-                  <button v-if="transaction.status!=='success' && !transaction.agent_id" @click="approval(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                  <button v-if="transaction.status!=='success'" @click="approval(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
                       <i class="fa-solid fa-check"></i>
                   </button>
 
-                  <button v-if="transaction.canDelete && transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2 text-red-500 hover:text-red-200">
+                  <button v-if="transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2 text-red-500 hover:text-red-200">
                       <i class="fa-solid fa-trash"></i>
                   </button>
               </td>
@@ -157,8 +153,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['auth', 'admin'],
-  layout:'admin',
+  middleware: ['auth', 'agent'],
+  layout:'agent',
 })
 
 import { useAuthStore } from '~/stores/auth';
@@ -187,7 +183,7 @@ const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 const from_date = ref(formatDate(firstDay));
 const to_date = ref(formatDate(lastDay));
 const status = ref('all');
-const type = ref('deposit');
+const type = ref('withdraw');
 const searchQuery = ref<null|string>('');
 
 async function fetchPosts() {

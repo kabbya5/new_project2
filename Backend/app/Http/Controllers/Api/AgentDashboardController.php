@@ -3,38 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Models\Transaction;
-use App\Models\User;
-use BcMath\Number;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class AdminDashboardController extends Controller
+class AgentDashboardController extends Controller
 {
     public function topContent(){
         $currentMonth = now()->month;
         $previousMonth = now()->subMonth()->month;
+        $user_id = auth()->id();
 
-        $users = User::where('role', 'user')->whereMonth('created_at', $currentMonth)->get();
-        $previousMonthUsers =  User::where('role', 'user')->whereMonth('created_at', $previousMonth)->get();
-        $usersPercentage = percentance_calculator($users->count(), $previousMonthUsers->count());
-
-        $withdraws = Transaction::where('status', 'success')->where('type','withdraw')->whereMonth('created_at', $currentMonth)->sum('amount');
-        $previousMonthWithdraw = Transaction::where('status', 'success')->where('type','withdraw')->whereMonth('created_at', $previousMonth)->sum('amount');
+        $withdraws = Transaction::where('status', 'success')->where('agent_id', $user_id)->where('type','withdraw')->whereMonth('created_at', $currentMonth)->sum('amount');
+        $previousMonthWithdraw = Transaction::where('status', 'success')->where('agent_id', $user_id)->where('type','withdraw')->whereMonth('created_at', $previousMonth)->sum('amount');
         $withdrawPercentage = percentance_calculator($withdraws, $previousMonthWithdraw);
 
-        $deposites = Transaction::where('status', 'success')->where('type','deposit')->whereMonth('created_at', $currentMonth)->sum('amount');
-        $previousMonthDeposites = Transaction::where('status', 'success')->where('type','deposit')->whereMonth('created_at', $previousMonth)->sum('amount');
+        $deposites = Transaction::where('status', 'success')->where('agent_id', $user_id)->where('type','deposit')->whereMonth('created_at', $currentMonth)->sum('amount');
+        $previousMonthDeposites = Transaction::where('status', 'success')->where('agent_id', $user_id)->where('type','deposit')->whereMonth('created_at', $previousMonth)->sum('amount');
         $depositesPercentage = percentance_calculator($deposites, $previousMonthDeposites);
 
-        $profits = $deposites - $withdraws;
-        $previousMonthProfits = $previousMonthDeposites - $previousMonthWithdraw;
+        $profits = ($deposites * 0.05) + ($withdraws * 0.02);
+        $previousMonthProfits = ($previousMonthDeposites * 0.05) + ($previousMonthWithdraw * 0.02);
         $profitsPercentage = percentance_calculator($profits, $previousMonthProfits);
 
         return response()->json([
-            'users' => $users->count(),
-            'usersPercentage' => number_format($usersPercentage,2),
             'withdraws' => number_format($withdraws,2),
             'withdrawPercentage' => number_format($withdrawPercentage,2),
             'deposites' => number_format($deposites,2),
@@ -44,20 +37,34 @@ class AdminDashboardController extends Controller
         ]);
     }
 
+    public function transactionData(Request $request)
+    {
+
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        $data = DB::table('transactions')
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(CASE WHEN type = "deposit" THEN amount ELSE 0 END) as deposit'),
+                DB::raw('SUM(CASE WHEN type = "withdraw" THEN amount ELSE 0 END) as withdraw')
+            )
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->where('agent_id',auth()->id())
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date')
+            ->get();
+
+        return response()->json(['data' => $data]);
+    }
+
     public function allUser(Request $request){
 
-        $limit = 10;
+        $limit = $request->limit;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
         $search = $request->search;
         $type = $request->type;
-        $user_id = null;
-
-        $user = User::find(auth()->id());
-
-        if($user && $user->role == 'affiliate'){
-            $user_id = $user->id;
-        }
 
         $from_date = $from_date
             ? Carbon::parse($from_date)->format('Y-m-d')
@@ -77,31 +84,13 @@ class AdminDashboardController extends Controller
                     ->orWhere('phone', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
                 });
-            })->when($user_id,function($q) use($user_id){
-                $q->where('affiliate_refer_id', $user_id);
-            })->when($type && $type !== 'all',function($q) use($type){
-                $q->where('role', $type);
             })
+            ->when($type && $type != 'all', fn($q) => $q->where('role', $type))
             ->paginate($limit, ['*'], 'page', $request->page);
 
 
         return response()->json([
             'users' => UserResource::collection($users),
-            'pagination' => [
-                'current_page' => $users->currentPage(),
-                'last_page'    => $users->lastPage(),
-                'per_page'     => $users->perPage(),
-                'total'        => $users->total(),
-            ]
         ]);
-    }
-
-    public function addBalance(Request $request, User $user){
-        $amount = $request->amount;
-        $user->update([
-            'balance' => $user->balance + $amount,
-        ]);
-
-        return response()->json(['status' => 1], 200);
     }
 }

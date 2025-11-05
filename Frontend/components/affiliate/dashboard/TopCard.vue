@@ -110,7 +110,7 @@
 
     onMounted(async () => {
         try{
-            const response = await useApiFetch('admin/dashboard/top/content');
+            const response = await useApiFetch('affiliate/dashboard/top/content');
             if(response){
                 topContents.value = response;
             }

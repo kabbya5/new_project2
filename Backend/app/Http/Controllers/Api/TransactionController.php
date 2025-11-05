@@ -245,8 +245,9 @@ class TransactionController extends Controller
         $status = $request->status;
         $search = $request->searchQuery;
 
-        if(auth()->user()->type == 'user'){
+        if(auth()->user()->type != 'admin'){
             $user_id =  auth()->id();
+            $user_type = auth()->user()->role;
         }
 
         $from_date = $from_date
@@ -257,19 +258,35 @@ class TransactionController extends Controller
             ? Carbon::parse($to_date)->addDay()->format('Y-m-d')
             : Carbon::now()->endOfMonth()->addDay()->format('Y-m-d');
 
-        $data = Transaction::latest()
-            ->when($search, function($query) use ($search){
-                $query->where('order_sn', 'like', '%' . $search . '%')
+        $data = Transaction::query()
+            ->latest()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('order_sn', 'like', '%' . $search . '%')
                     ->orWhere('amount', $search);
+                });
             })
-            ->when($user_id, function($query) use ($user_id){
-                $query->where('user_id', $user_id);
+            ->when($user_id, function ($query) use ($user_id, $user_type) {
+                $query->where(function ($q) use ($user_id, $user_type) {
+                    if ($user_type === 'agent') {
+                        $q->where('user_id', $user_id)
+                        ->orWhere('agent_id', $user_id);
+                    } elseif ($user_type === 'affiliate') {
+                        $q->where('user_id', $user_id)
+                        ->orWhere('affiliate_refer_id', $user_id);
+                    } else {
+                        $q->where('user_id', $user_id);
+                    }
+                });
             })
             ->when($type, function($query) use ($type){
+
                 if($type == 'all_bonus'){
                     $query->whereIn('type',['bonus','refer_bonus']);
                 }elseif($type == 'all_transaction'){
                     $query->whereIn('type',['deposit','withdraw','agent_bouns', 'reduce_commission','refer_bonus','bonus', ]);
+                }elseif($type == 'bonus'){
+                    $query->whereIn('type',['agent_bouns','refer_bonus','bonus','reduce_commission']);
                 }else{
                     $query->where('type', $type);
                 }
@@ -359,6 +376,8 @@ class TransactionController extends Controller
             'amount' => 'required|numeric',
         ]);
 
+        $admin = User::find(auth()->id());
+
         $user = User::where('user_name', $request->user_name)->first();
 
         if (!$user) {
@@ -368,15 +387,30 @@ class TransactionController extends Controller
             ], 404);
         }
 
+        if ($admin->role == 'agent' && $admin->balance < $request->amount) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => [
+                    'amount' => ['Agent amount is less than the transaction amount.']
+                ]
+            ], 422);
+        }
+
         $transaction = Transaction::create([
             'user_id' => $user->id,
             'type' => $request->type,
             'order_sn' => $request->transaction_code,
             'amount' => $request->amount,
             'provider' => 'Custom',
-            'remark' => 'Custom Deposit',
+            'remark' => 'Custom Transaction',
             'status' => 'pending',
+            'agent_id' => $admin->role == 'agent' ? $admin->id : null,
         ]);
+
+        if($admin->role == 'agent'){
+            $admin->update(['balance' => $admin->balance - $request->amount]);
+            $transaction->update(['remark' => 'Transaction by agent']);
+        }
 
         return response()->json([
             'transaction' => new TransactionResource($transaction),
@@ -420,6 +454,13 @@ class TransactionController extends Controller
             return;
         }
 
+        if($transaction->agent_id > 0){
+            $agent = User::find($transaction->agent_id);
+            if($agent){
+                $agent->update(['balance' => $agent->balance + $transaction->amount]);
+            }
+        }
+
         $transaction->delete();
 
         return response()->json(['success' => 1]);
@@ -431,9 +472,6 @@ class TransactionController extends Controller
             $this->customDeposit($transaction);
         }else{
             $check = $this->customWithdraw($transaction);
-            if(!$check){
-                return response()->json(['error'],500);
-            }
         }
 
         $transaction->update(['status' => 'success']);
@@ -501,12 +539,28 @@ class TransactionController extends Controller
                 ]);
             }
         }
+
+        if($transaction->agent_id){
+            $agent = User::find($transaction->agent_id);
+            if($agent){
+                $bonus = $amount * 0.05;
+                Transaction::create([
+                    'user_id' => $agent->id,
+                    'type'    => 'bonus',
+                    'status'  => 'success',
+                    'provider' => $transaction->provider,
+                    'order_sn' => $transaction->order_sn,
+                    'remark'  => "Transaction bonus from {$user->user_name}",
+                    'amount'  => $bonus,
+                ]);
+
+                $agent->update(['balance' => $agent->balance + $bonus]);
+            }
+        }
     }
 
     private function customWithdraw($transaction){
         $amount = $transaction->amount;
-
-        $order_sn = $transaction->order_sn;
         $user = User::find($transaction->user_id);
 
         if($user->balance < $transaction->amount){
@@ -536,6 +590,24 @@ class TransactionController extends Controller
                     'provider' => strtoUpper($provider),
                     'order_sn' => $transaction->order_sn,
                     'remark'  => "Affiliate reduce commission from {$user->user_name} withdraw",
+                    'amount'  => $commission,
+                ]);
+            }
+        }
+
+        if ($transaction->agent_id) {
+            $agent = User::find($transaction->agent_id);
+            if ($agent) {
+                $commission = $amount * 0.03;
+                $agent->update(['balance' => $agent->balance + $commission]);
+
+                Transaction::create([
+                    'user_id' => $agent->id,
+                    'type'    => 'bonus',
+                    'status'  => 'success',
+                    'provider' => strtoUpper($provider),
+                    'order_sn' => $transaction->order_sn,
+                    'remark'  => "Agent withdraw bonus from {$user->user_name} withdraw",
                     'amount'  => $commission,
                 ]);
             }

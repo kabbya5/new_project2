@@ -18,4 +18,8 @@ class Transaction extends Model
     public function refer_user(){
         return $this->belongsTo(User::class, 'other_refer_id');
     }
+
+    public function agent(){
+        return $this->belongsTo(User::class, 'agent_id');
+    }
 }

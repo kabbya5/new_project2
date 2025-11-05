@@ -97,6 +97,10 @@ const handleLogin = async() =>{
             setUser(data.user);
             if(data.user.role == 'admin'){
                 await router.push('/admin/dashboard');
+            }else if(data.user.role == 'agent'){
+                await router.push('/agent/dashboard');
+            }else if(data.user.role == 'affiliate'){
+                await router.push('/affiliate/dashboard');
             }else{
                 await router.push('/');
             }

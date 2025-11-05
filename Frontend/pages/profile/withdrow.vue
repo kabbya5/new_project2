@@ -1,12 +1,14 @@
 <template>
     <div>
         
-        <div class="w-full h-full bg-slate-200/60 dark:bg-gray-900 flex items-center justify-center px-5 py-8">
-            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl w-full md:w-[450px] px-5 pt-3 pb-5">
-                <div class="flex items-center justify-between py-2 border-b border-gray-200">
-                    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                        Withdrow
+        <div class="w-full h-full bg-red-800 dark:bg-green-800 flex items-center justify-center px-5 py-8">
+            <div class="text-white bg-red-900 dark:bg-green-900 shadow-lg rounded-2xl w-full md:w-[450px] px-5 pt-3 pb-5">
+                <div class="flex justify-between items-center mb-3 border-b pb-2">
+                    <h1 class="text-2xl font-bold text-center text-white">
+                        Withdraw
                     </h1>
+
+                    <NuxtLink to="/profile/manual-withdrow" class="bg-green-500 text-white px-3 py-1 rounded-md"> Manual Withdraw (2%)</NuxtLink>
                 </div>
 
                 <div class="grid grid-cols-4 gap-2 mb-3 mt-4">

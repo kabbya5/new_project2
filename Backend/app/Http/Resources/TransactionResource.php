@@ -25,6 +25,7 @@ class TransactionResource extends JsonResource
             'id' => $this->id,
             'user_nane' => $this->user->user_name,
             'affiliat_agent' => optional($this->affiliat_agent)->user_name,
+            'agent' => optional($this->agent)->name,
             'refer_user' => optional($this->refer_user)->user_name,
             'type' => $this->type,
             'amount' => $this->amount,
@@ -36,7 +37,7 @@ class TransactionResource extends JsonResource
             'status' => $this->status,
             'created_time' => $this->created_at?->diffForHumans(),
             'canDelete' => $createdAt->diffInDays(Carbon::now()) > 7 ? true :false,
-            'imamge_url' => $this->imamge_url ? asset('storage/'. $this->imamge_url)  : null,
+            'image_url' => $this->image_url ? asset('storage/'. $this->image_url)  : null,
         ];
     }
 }

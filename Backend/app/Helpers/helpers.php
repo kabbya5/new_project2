@@ -19,7 +19,7 @@ if(!function_exists('percentance_calculator')){
         if($data2 > 0){
             $percentageChange = (($data1 - $data2) / $data2) * 100;
         } else {
-            $percentageChange = 100;
+            $percentageChange = 0;
         }
 
         return $percentageChange;

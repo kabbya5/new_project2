@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <AdminDashboardTopCard></AdminDashboardTopCard>
+    <AffiliateDashboardTopCard></AffiliateDashboardTopCard>
     <div class="rounded-xl shadow-sm grid grid-cols-12 gap-4">
       <!-- Summary Cards -->
       <div class="col-span-12 lg:col-span-7 bg-white dark:bg-gray-800 p-3">
@@ -10,7 +10,7 @@
 
         <!-- Revenue Chart -->
         <div class="pt-4">
-          <AdminChartsRevenueChart />
+          <AffiliateDashboardChart />
         </div>
       </div>
 
@@ -28,50 +28,7 @@
         </div>
       </div>
 
-      <div class="col-span-12 lg:col-span-7 bg-white dark:bg-gray-800 p-3">
-        <div class="flex relative justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
-          <h3 class="font-[400] tracking-wide title-md"> Game History </h3>
-        </div>
-
-        <div class="mt-3 w-full">
-          <LoadingSpinner v-if="loading.isLoading('transaction')" />
-          <div v-else>
-            <div class="overflow-x-auto">
-              <table class="min-w-full text-sm text-left">
-                <thead>
-                  <tr class="border-b dark:border-gray-700 text-gray-500 dark:text-gray-400">
-                    <th scope="col" class="py-2 px-4">User</th>
-                    <th scope="col" class="py-2 px-4">Game</th>
-                    <th scope="col" class="py-2 px-4">Type</th>
-                    <th scope="col" class="py-2 px-4">Provider</th>
-                    <th scope="col" class="py-2 px-4 text-right">Bet</th>
-                    <th scope="col" class="py-2 px-4 text-right">Win</th>
-                  </tr>
-                </thead>
-
-                <tbody class="text-gray-800 dark:text-gray-200">
-                  <tr 
-                    v-for="(item, index) in bettingRecordStore.records.slice(0, 12)" 
-                    :key="index" 
-                    class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
-                  >
-                    <td class="py-3 px-4">{{ item.user }}</td>
-                    <td class="py-3 px-4">{{ item.game }}</td>
-                    <td class="py-3 px-4">{{ item.game_type }}</td>
-                    <td class="py-3 px-4">{{ item.provider }}</td>
-                    <td class="py-3 px-4 text-right">{{ item.bet }}</td>
-                    <td class="py-3 px-4 text-right" :class="item.win > 50 ? 'text-green-500' : 'text-red-500'">
-                      {{ item.win }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-span-12 lg:col-span-5 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 bg-white dark:bg-gray-800 p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Recently Users </h3>
         </div>
@@ -86,7 +43,8 @@
                     <th scope="col" class="py-2 px-4">User</th>
                     <th scope="col" class="py-2 px-4">Refer code</th>
                     <th scope="col" class="py-2 px-4">Type</th>
-                    <th scope="col" class="py-2 px-4">Phone</th>
+                    <th scope="col" class="py-2 px-4"> Phone </th>
+                    <th scope="col" class="py-2 px-4"> Email </th>
                     <th scope="col" class="py-2 px-4 text-right">Balance</th>
                   </tr>
                 </thead>
@@ -101,6 +59,7 @@
                     <td class="py-3 px-4">{{ item.refer_code }}</td>
                     <td class="py-3 px-4">{{ item.role }}</td>
                     <td class="py-3 px-4">{{ item.phone }}</td>
+                    <td class="py-3 px-4">{{ item.email }}</td>
                     <td class="py-3 px-4 text-right">{{ item.balance }}</td>
                   </tr>
                 </tbody>
@@ -116,8 +75,8 @@
 
 <script setup lang="ts">
   definePageMeta({ 
-    middleware: ['admin'],
-    layout:'admin',
+    middleware: ['auth', 'affiliate'],
+    layout:'affiliate',
   });
 
   import { useLoadingStore } from '~/stores/loading';
@@ -133,10 +92,6 @@
   const authStore = useAuthStore();
 
   const router = useRouter();
-
-  if(authStore.user?.role != 'admin'){
-    router.push('/');
-  }
 
   onMounted( async () =>{
     await transactionStore.fetchTransaction(1,10,null,null);

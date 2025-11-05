@@ -1,25 +1,15 @@
 <template>
     <div class="grid grid-cols-12 gap-4 mb-4">
+
         <div class="col-span-6 lg:col-span-3 w-full">
             <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
                 <div class="flex items-center justify-between">
                     <!-- Left Content -->
                     <div>
-                        <p class="font-medium text-gray-500 dark:text-gray-400"> Users </p>
+                        <p class="font-medium text-gray-500 dark:text-gray-400"> Balance </p>
                         <p class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-user text-blue-500 ml-1"></i> {{ topContents?.users ?? 0 }}
+                            <i class="fa-solid  fa-money-bill-transfer text-blue-500 ml-1"></i>  {{ userBalance ?? 0 }}
                         </p>
-                    </div>
-
-                    <!-- Right Content -->
-                    <div>
-                        <span 
-                        :class="topContents?.usersPercentage >= 0 
-                            ? 'bg-green-100 text-green-600 dark:bg-green-200/20' 
-                            : 'bg-red-100 text-red-600 dark:bg-red-200/20'" 
-                        class="rounded-full px-3 py-1 text-sm font-semibold">
-                        {{ topContents?.usersPercentage >= 0 ? '+' : '' }}{{ topContents?.usersPercentage }}%
-                        </span>
                     </div>
                 </div>
             </div>
@@ -105,16 +95,20 @@
 
 
 <script setup lang="ts">
-
+    import {useAuthStore} from '~/stores/auth';
+    const authStore = useAuthStore();
+    const userBalance = computed(() => authStore.user?.balance ?? 0)
     const topContents = ref<Object>();
 
     onMounted(async () => {
         try{
-            const response = await useApiFetch('admin/dashboard/top/content');
+            const response = await useApiFetch('/agent/top/content');
             if(response){
                 topContents.value = response;
             }
+            
 
+            console.log('top', topContents.value);
         }catch(error){
             alert(error);
         }

@@ -1,15 +1,19 @@
 <template>
-  <div class="min-h-screen bg-slate-100 dark:bg-gray-900 py-4 px-4">
-    <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl px-6 pt-3 pb-6">
+  <div class="min-h-screen bg-red-800 dark:bg-green-800 py-4 px-4">
+    <div class="max-w-md mx-auto text-white bg-red-900 dark:bg-green-900 rounded-2xl shadow-xl px-6 pt-3 pb-6">
+      <div class="flex justify-between items-center mb-3 border-b pb-2">
+        <h1 class="text-2xl font-bold text-center text-white">
+          {{ deposite }}
+        </h1>
 
+        <NuxtLink to="/profile/manual-deposit" class="bg-green-500 text-white px-3 py-1 rounded-md"> Manual Deposite (5%)</NuxtLink>
+      </div>
       <!-- Title -->
-      <h1 class="text-2xl font-bold text-center mb-3 text-gray-800 dark:text-white">
-        {{ deposite }}
-      </h1>
+      
 
       <!-- Quick Select Balance -->
       <div class="mb-3">
-        <h2 class="text-[16px] font-medium mb-2 text-gray-700 dark:text-gray-300">
+        <h2 class="text-[16px] font-medium mb-2 text-white">
           {{selectBalance}}
         </h2>
         <div class="grid grid-cols-10 gap-2">
@@ -19,8 +23,8 @@
                     @click="depositAmount = amount"
                     class="w-full py-1 rounded-lg font-semibold border-2 
                         border-gray-300 dark:border-gray-600
-                        bg-slate-50 dark:bg-gray-700
-                        text-gray-800 dark:text-white
+                        bg-slate-50 
+                        text-gray-800 
                         hover:border-green-500 dark:hover:border-green-400
                         transition-all"
                 >
@@ -32,7 +36,7 @@
 
       <!-- Deposit Amount Input -->
       <div class="mb-3">
-        <label class="block text-[16px] font-medium mb-2 text-gray-700 dark:text-gray-300">
+        <label class="block text-[16px] font-medium mb-2 text-white">
           {{enterAmount}} <span class="uppercase"> ({{currency}}) </span>
         </label>
         <input 
@@ -46,12 +50,12 @@
                     border-gray-300 dark:border-gray-600
                     bg-white dark:bg-gray-700 focus:ring-2 focus:ring-green-500 outline-none"
             />
-        <p class="text-red-500 text-[13px] lg:text-[15px] mt-1"> {{ enterAmountText }} </p>
+        <p class="text-red-500 text-[13px] lg:text-[14px] mt-1"> {{ enterAmountText }} </p>
       </div>
 
       <!-- Payment Channel -->
         <div class="mb-3">
-            <h2 class="text-[16px] font-medium mb-3 text-gray-700 dark:text-gray-300">
+            <h2 class="text-[16px] font-medium mb-3 text-white">
                 {{selectPaymentChannel}}
             </h2>
 
@@ -61,9 +65,9 @@
                     class="cursor-pointer flex items-center justify-center py-2 px-2 rounded-xl 
                             border-2 transition-all
                             border-gray-300 dark:border-gray-600
-                            bg-slate-50 dark:bg-gray-700
+                            bg-slate-50 
                             hover:border-green-500 dark:hover:border-green-400
-                            text-gray-800 dark:text-white"
+                            text-gray-800"
                     :class="selectedChannel == channel.id ? 'border-green-500 dark:border-green-400' : ''"
                     >
                     <!-- Channel Logo -->

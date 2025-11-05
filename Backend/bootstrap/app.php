@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsAffiliate;
+use App\Http\Middleware\IsAgent;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => IsAdmin::class,
+            'agent' => IsAgent::class,
+            'affiliate' => IsAffiliate::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [

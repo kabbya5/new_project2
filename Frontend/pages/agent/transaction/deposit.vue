@@ -1,5 +1,5 @@
 <template>
-  <AdminTransactionDeposit v-if="isModalOpen" :transactionId="currentId" :type="'deposit'" @close="isModalOpen=false"/>
+  <AgentTransactionForm v-if="isModalOpen" :transactionId="currentId" :type="'deposit'" @close="isModalOpen=false"/>
   
   <div class="container mx-auto pb-6 pt-1">
     <div class="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
@@ -136,11 +136,11 @@
                       <i class="fa-solid fa-edit"></i>
                   </button>
 
-                  <button v-if="transaction.status!=='success' && !transaction.agent_id" @click="approval(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                  <button v-if="transaction.status!=='success'" @click="approval(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
                       <i class="fa-solid fa-check"></i>
                   </button>
 
-                  <button v-if="transaction.canDelete && transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2 text-red-500 hover:text-red-200">
+                  <button v-if="transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2 text-red-500 hover:text-red-200">
                       <i class="fa-solid fa-trash"></i>
                   </button>
               </td>
@@ -157,8 +157,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['auth', 'admin'],
-  layout:'admin',
+  middleware: ['auth', 'agent'],
+  layout:'agent',
 })
 
 import { useAuthStore } from '~/stores/auth';
@@ -241,7 +241,6 @@ const approval = async (id: number) => {
     if (!confirmed) return;
     await transactionStore.approval(id);
 };
-
 
 </script>
 
