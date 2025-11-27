@@ -9,12 +9,6 @@
                         </NuxtLink>
                     </li>
 
-                    <li v-if="authStore.token" class="py-3 px-4 border-b border-gray-600 w-full">
-                        <button @click="logout()" class="flex items-center">
-                           <i class="fa-solid fa-sign-out ml-1"></i>  <p class="ml-3"> {{ logoutNav[name] }} </p>
-                        </button>
-                    </li>
-
                     <li v-for="(category, index) in categoryStore.categories" :key="index"
                         class="py-3 px-4 border-b border-gray-600 w-full" :class="category.slug == openCategorySlug ? 'bg-gray-700' : ''">
                         <button @click="categoryProvider(category.slug)" class="flex items-center">
@@ -57,7 +51,7 @@ const categoryStore = useCategoryStore();
 const localeStore = useLocaleStore();
 const providerStore = useProviderStore();
 const authStore = useAuthStore();
-const {handleLogout} = authStore;
+
 
 const name = computed(() => localeStore.getTranslate('name'))
 const gameCategory = computed(() => localeStore.getTranslate('gameCategory'))
@@ -123,12 +117,4 @@ const categoryProvider = async(slug:string) =>{
     providers.value = await providerStore.findProviderByCategory(slug);
     openCategorySlug.value = slug;
 }
-
-const logout = async () => {
-  await handleLogout(); 
-  emit('close');        
-}
-
-
-
 </script>

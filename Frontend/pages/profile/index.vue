@@ -45,14 +45,26 @@
                 </div>
 
                 <!-- Wallet Info -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold text-white mb-3">Main Wallet</h3>
+                <div class="mb-2">
+                    <h3 class="text-md font-semibold text-white mb-3">Main Wallet</h3>
                     <div class="bg-red-800 dark:bg-green-800 rounded-lg px-2 py-2 mb-2">
                         <div class="flex justify-between">
                             <span class="text-whtie">Balance</span>
                             <div @click="recallBalance" class="cursor-pointer">
                               <span v-if="!showAmount" class="font-mono text-white">*****</span>
                               <span v-else class="font-mono text-white">{{ authStore.user?.balance }}</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="authStore.user?.turnover" class="mb-4">
+                    <div class="bg-red-800 dark:bg-green-800 rounded-lg px-2 py-2">
+                        <div class="flex justify-between">
+                            <span class="text-whtie"> Turn Over </span>
+                            <div class="cursor-pointer">
+                              <span  class="font-mono text-white">{{ authStore.user?.turnover}}</span>
                             </div>
                             
                         </div>
@@ -176,6 +188,14 @@
                         </div>
                         <i class="fas fa-chevron-right text-gray-400"></i>
                     </div>
+
+                    <button @click="logout()" class="inline-flex w-full items-center justify-between p-3 bg-red-800 dark:bg-green-800 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-green-500 mr-3"></i>
+                            <span class="text-white"> Logout </span>
+                        </div>
+                        <i class="fa-solid fa-sign-out text-gray-400"></i>
+                    </button>   
                 </div>
             </div>
 
@@ -252,6 +272,7 @@ import {useLabelStore} from '~/stores/label';
 
 const transactionStore = useTransactionStore();
 const authStore = useAuthStore();
+const {handleLogout} = authStore;
 const lableStore = useLabelStore();
 
 // Socials
@@ -317,6 +338,13 @@ const copyRefer = async () => {
     await navigator.clipboard.writeText(referralUrl.value)
     alert('Referral URL copied!')
   }
+}
+
+const router = useRouter();
+
+const logout = async () => {
+  await handleLogout(); 
+  router.push('/');   
 }
 </script>
 

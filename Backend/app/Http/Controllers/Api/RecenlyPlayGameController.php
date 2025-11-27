@@ -56,6 +56,8 @@ class RecenlyPlayGameController extends Controller
             $recentlyGame->load('game.provider', 'game.categories');
         }
 
+        return ['launch_url' => 'https://www.youtube.com/watch?v=HHctFjuNsE0', 'status' => 1];
+
         return $data;
 
        	return response()->json($data);

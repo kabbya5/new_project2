@@ -1,4 +1,5 @@
 <template>
+    <FrontendGameFullScreenIframe :visible="show" :url="gameUrl" @close="show=false" />
     <div class="flex flex-col bg-red-800  dark:bg-green-800 shadow-xl">
         <button @click="playGame(game.id)">
             <div class="w-full">
@@ -27,6 +28,9 @@ import { useAuthStore } from '~/stores/auth';
 const localeStore = useLocaleStore();
 const {getUser} = useAuthStore();
 
+const show = ref(false);
+const gameUrl = ref('');
+
 const props = defineProps({
     game: Object
 });
@@ -41,7 +45,8 @@ const playGame = async(id:number) =>{
     try{
       const response = await useApiFetch('/game/play/' + id);
         if (response.status === 1 && response.launch_url) {
-            window.location.href = response.launch_url;
+            gameUrl.value = response.launch_url;
+            show.value = true;
         } else {
             alert(response.msg || 'Failed to launch game try another game')
         }
@@ -56,5 +61,7 @@ const getRandomCategories = (categories: any[], count: number) => {
   const shuffled = [...categories].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 };
+
+
 
 </script>
