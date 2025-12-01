@@ -1,13 +1,13 @@
 <template>
     <div class="grid grid-cols-12 gap-4 mb-4">
         <div class="col-span-6 lg:col-span-3 w-full">
-            <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
+            <div class="bg p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
                 <div class="flex items-center justify-between">
                     <!-- Left Content -->
                     <div>
-                        <p class="font-medium text-gray-500 dark:text-gray-400"> Users </p>
-                        <p class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-user text-blue-500 ml-1"></i> {{ topContents?.users ?? 0 }}
+                        <p class="font-medium"> Users </p>
+                        <p class="mt-2 text-2xl font-bold">
+                            <i class="fa-solid fa-user ml-1"></i> {{ topContents?.users ?? 0 }}
                         </p>
                     </div>
 
@@ -26,13 +26,13 @@
         </div>
 
         <div class="col-span-6 lg:col-span-3 w-full">
-            <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
+            <div class="bg p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
                 <div class="flex items-center justify-between">
                     <!-- Left Content -->
                     <div>
-                        <p class="font-medium text-gray-500 dark:text-gray-400"> Deposits </p>
-                        <p class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-money-check-dollar text-blue-500 ml-1"></i> {{ topContents?.deposites ?? 0 }}
+                        <p class="font-medium"> Deposits </p>
+                        <p class="mt-2 text-2xl font-bold">
+                            <i class="fa-solid fa-money-check-dollar ml-1"></i> {{ topContents?.deposites ?? 0 }}
                         </p>
                     </div>
 
@@ -52,13 +52,13 @@
 
         
         <div class="col-span-6 lg:col-span-3 w-full">
-            <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
+            <div class="bg p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
                 <div class="flex items-center justify-between">
                     <!-- Left Content -->
                     <div>
-                        <p class="font-medium text-gray-500 dark:text-gray-400"> Withdraw </p>
-                        <p class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid  fa-money-bill-transfer text-blue-500 ml-1"></i> {{ topContents?.withdraws ?? 0 }}
+                        <p class="font-medium"> Withdraw </p>
+                        <p class="mt-2 text-2xl font-bold">
+                            <i class="fa-solid  fa-money-bill-transfer ml-1"></i> {{ topContents?.withdraws ?? 0 }}
                         </p>
                     </div>
 
@@ -77,13 +77,13 @@
         </div>
 
         <div class="col-span-6 lg:col-span-3 w-full">
-            <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
+            <div class="bg p-3 rounded-2xl shadow-md hover:shadow-lg transition duration-300">
                 <div class="flex items-center justify-between">
                     <!-- Left Content -->
                     <div>
-                        <p class="font-medium text-gray-500 dark:text-gray-400"> Profite </p>
-                        <p class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                            <i class="fa-solid fa-money-check-dollar text-blue-500 ml-1"></i> {{ topContents?.profits ?? 0 }}
+                        <p class="font-medium"> Profite </p>
+                        <p class="mt-2 text-2xl font-bold">
+                            <i class="fa-solid fa-money-check-dollar ml-1"></i> {{ topContents?.profits ?? 0 }}
                         </p>
                     </div>
 

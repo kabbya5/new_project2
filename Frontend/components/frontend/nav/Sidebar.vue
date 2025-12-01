@@ -1,6 +1,6 @@
 <template>
     <div class="fixed inset-0 bg-black/50 z-100" @click="$emit('close')">
-        <div class="w-fit bg-gray-800 text-white shadow-xl z-100" style="overflow: auto;" @click.stop>
+        <div class="w-fit side-menu shadow-xl z-100" style="overflow: auto;" @click.stop>
             <div class="flex overflow-auto h-screen">
                 <ul class="w-[180px] ">
                     <li v-for="(item,index) in navItems" :key="index" class="py-3 px-4 border-b border-gray-600 w-full">
@@ -21,9 +21,9 @@
                     </li>
                 </ul>
 
-                <ul v-if="openCategorySlug" class="w-[110px] bg-gray-700 border-l border-gray-600 overflow-auto">
+                <ul v-if="openCategorySlug" class="w-[110px] bg-card border-l border-gray-600 overflow-auto">
                     <li v-for="(provider, index) in providers" :key="index"
-                        class="py-3 px-4 border-b border-gray-600 w-full">
+                        class="py-3 px-4 border-b bg-card w-full">
                         <NuxtLink  :to="`/category/${openCategorySlug}/${provider.slug}`"  class="flex flex-col justify-center items-center">
                            <NuxtImg :src="provider.logo" class="w-auto h-[40px]" />  
                            <p class="text-[14px]"> {{ provider[name] }} </p>

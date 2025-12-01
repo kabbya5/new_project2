@@ -1,9 +1,9 @@
 <template>
-  <div class="container mx-auto pb-6 pt-1">
-    <div class="w-full max-w-5xl bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
+  <div class="pb-6 pt-4">
+    <div class="container mx-auto w-full max-w-5xl rounded-2xl shadow-lg overflow-hidden">
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
-        <h1 class="font-semibold text-gray-800 dark:text-gray-100 text-center sm:text-left">
+        <h1 class="font-semibold text-center sm:text-left">
             Bonus
         </h1>
 
@@ -49,8 +49,8 @@
        <LoadingSpinner v-if="loading.isLoading('transaction')" />
 
       <div v-else class="overflow-x-auto">
-        <table class="min-w-full text-sm text-gray-700 dark:text-gray-200">
-          <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase text-xs font-semibold">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100 dark:bg-gray-800 uppercase text-xs font-semibold">
             <tr>
               <th class="text-left px-6 py-3">Order #</th>
               <th class="text-center px-6 py-3">Type</th>
@@ -64,7 +64,7 @@
           <tbody>
             <!-- Empty State -->
             <tr v-if="!transactionStore.transactions.length">
-              <td colspan="5" class="text-center py-8 text-gray-500 dark:text-gray-400">
+              <td colspan="5" class="text-center py-8">
                 No transactions found 😔
               </td>
             </tr>
@@ -75,7 +75,7 @@
               :key="i"
               class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
             >
-              <td class="px-6 py-3 font-medium text-gray-800 dark:text-gray-100">
+              <td class="px-6 py-3 font-medium">
                 {{ transaction.order_sn }}
               </td>
 

@@ -1,9 +1,9 @@
 <template>
     <!-- Modal BackDrop  -->
 
-    <div class="fixed top-0 w-full left-0 bg-black/50 flex items-center justify-center z-50" >
-        <div class="bg-white dark:bg-gray-800 rounded w-full max-w-[90%] max-h-[90%]" @click.stop style="overflow: auto;">
-            <div class="bg-gray-300 dark:bg-gray-900 py-2 px-6 flex items-center justify-between">
+    <div class="fixed top-0 w-full left-0 bg-black/50 h-full flex items-center justify-center z-50" >
+        <div class="bg rounded w-full max-w-[90%] max-h-[90%]" @click.stop style="overflow: auto;">
+            <div class="bg-card py-2 px-6 flex items-center justify-between">
                 <h2 class="text-xl font-bold">Add Slider</h2>
                 <button @click="$emit('close')" class="bg-red-500 w-[30px] h-[30px] rounded-full text-white"> <i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -82,7 +82,7 @@
                     <div class="col-span-12">
                         <label class="text-lg mb-2 block">Slider Content</label>
                         <ClientOnly >
-                            <div class="admin-editor-wrapper">
+                            <div class="admin-editor-wrapper text-white">
                                 <AdminTextEditor v-model:content="form.slider_content" />
                                 <p v-if="errorStore.validationErrors.slider_content" class="text-red-500">
                                     {{ errorStore.validationErrors.slider_content[0] }}
@@ -91,7 +91,7 @@
                         </ClientOnly>
                         
                         
-                        <div class="my-4 px-2 border rounded bg-gray-50 dark:bg-gray-900">
+                        <div class="my-4 px-2 border rounded">
                             <h3 class="font-bold mb-2">Preview:</h3>
                             <div v-html="form.slider_content" class="w-full h-full"></div>
                         </div>

@@ -1,6 +1,6 @@
 <template> 
-    <div class="bg-slate-200/60 dark:bg-gray-900 py-4">
-        <div class="container mx-auto bg-white dark:bg-gray-800  p-3 lg:p-4">
+    <div class="py-4">
+        <div class="container mx-auto p-3 lg:p-4">
             <div class="flex items-center">
                 <NuxtLink to="/" class="text-sm uppercase"> Home <i class="fa-solid fa-chevron-right text-[13px] mr-1"></i> </NuxtLink>
                 <NuxtLink :to="`/category/${category}`" class="uppercase text-sm"> {{ category}} <i class="fa-solid fa-chevron-right text-[13px] mr-1"></i> </NuxtLink>
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
+        <div class="container mx-auto my-4 p-3 lg:p-4">
             <LoadingSpinner v-if="loading.isLoading('games')" />
             <div v-else class="grid grid-cols-12 gap-2 md:gap-4">
                 <div class="col-span-4 md:col-span-3 lg:col-span-2" 

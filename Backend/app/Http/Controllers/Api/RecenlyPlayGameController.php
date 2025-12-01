@@ -56,7 +56,7 @@ class RecenlyPlayGameController extends Controller
             $recentlyGame->load('game.provider', 'game.categories');
         }
 
-        return ['launch_url' => 'https://www.youtube.com/watch?v=HHctFjuNsE0', 'status' => 1];
+        return ['launch_url' => 'https:\/\/api.playfivers.com\/oneapi?url=https%3A%2F%2Fwbgame.uylci9ta.com%2Fsss%2F%3FssoKey%3Deb2d1c171a85ed2bbdfa899a6a3550daea675e03%26lang%3Den-US%26apiId%3D10106%26be%3Dmoc.at9iclyu.ipabewbw%26domain_gs%3Dat9iclyu%26domain_platform%3Dmoc.at9iclyu.mroftalp-tolsbw%26gameID%3D27%26gs%3Dmoc.at9iclyu.df-tolsbw%26legalLang%3Dtrue%26skin%3D1%26region%3Dna&game=TD_27&t=420a7426-ca22-42e4-9ae9-647391fb8591', 'status' => 1];
 
         return $data;
 

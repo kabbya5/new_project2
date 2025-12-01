@@ -1,16 +1,8 @@
 <template> 
-    <div class="container mx-auto bg-white dark:bg-gray-800 p-3 lg:p-4 mt-">
-        <LoadingSpinner v-if="loading.isLoading('category')" />
-        <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categorySlug"/>
-    </div>
-
-    <div class="container mx-auto my-4 bg-white dark:bg-gray-800 p-3 lg:p-4">
-        <LoadingSpinner v-if="loading.isLoading('category')" />
-        <div v-else class="grid grid-cols-12 gap-4">
-            <div class="col-span-4 lg:col-span-2" 
-                v-for="game in games" :key="game.id">
-                <FrontendGameCard :game="game" class="w-full"/>
-            </div>
+    <div class="pt-4">
+        <div class="container mx-auto p-3 lg:p-4 mt-">
+            <LoadingSpinner v-if="loading.isLoading('category')" />
+            <FrontendCategoryHorizontalCategory v-else :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categorySlug"/>
         </div>
     </div>
 </template>

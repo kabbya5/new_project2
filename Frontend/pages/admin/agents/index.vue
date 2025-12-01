@@ -1,7 +1,7 @@
 <template>
   <AdminAddBalance :show="openModal" :userId="selectedUserId" @close="openModal=false" />
   <div class="container mx-auto pb-6 pt-1">
-    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-x-auto">
+    <div class="rounded-2xl shadow-lg overflow-x-auto">
       <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
             <h1 class="font-semibold text-gray-800 dark:text-gray-100 text-center sm:text-left">

@@ -1,10 +1,10 @@
 <template>
-  <div id="navbar" class="fixed top-0 w-full z-100 bg-white dark:bg-black border border-gray-300 dark:border-gray-600 shadow-md dark:shadow-lg">
+  <div id="navbar" class="fixed top-0 w-full z-100 side-menu shadow-md dark:shadow-lg">
     <nav class="py-2 rounded container mx-auto">
       <div class="hidden md:flex justify-between items-center">
         <div class="flex-shrink-0 flex items-center px-2">
          
-          <button @click="toggleSidebar = !toggleSidebar" class="text-gray-900 dark:text-gray-100 hover:text-indigo-500 focus:outline-none">
+          <button @click="toggleSidebar = !toggleSidebar" class="hover hover-text focus:outline-none">
             <i class="fa-solid fa-bars text-[25px]"></i>
           </button>
             
@@ -17,27 +17,16 @@
         <div>
           <ul class="nav-items flex items-center space-x-4">
             <li class="nav-link" v-for="(item,index) in navItems" :key="index">
-              <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
+              <NuxtLink :to="item.link" class="nav-item">{{ item[name] }}</NuxtLink>
             </li>
 
-            <li v-if="authStore.getUser()?.role == 'admin'" class="nav-link" v-for="(item,index) in navItems" :key="index">
-              <NuxtLink :to="'/admin/dashboard'" class="nav-item text-gray-800 dark:text-gray-100">Dashboard</NuxtLink>
-            </li>
-
-            <li v-if="authStore.getUser()?.role == 'agent'" class="nav-link">
-              <NuxtLink :to="'/agent/dashboard'" class="nav-item text-gray-800 dark:text-gray-100">Dashboard</NuxtLink>
-            </li>
-
-            <li v-if="authStore.getUser()?.role == 'affiliate'" class="nav-link">
-              <NuxtLink :to="'/affiliate/dashboard'" class="nav-item text-gray-800 dark:text-gray-100"> Dashboard </NuxtLink>
-            </li>
-
+     
             <li v-if="!authStore.token" class="nav-link" v-for="(item,index) in responsiveNavItems" :key="index">
-              <NuxtLink :to="item.link" class="nav-item text-gray-800 dark:text-gray-100">{{ item[name] }}</NuxtLink>
+              <NuxtLink :to="item.link" class="nav-item">{{ item[name] }}</NuxtLink>
             </li>
 
             <li v-else class="nav-link" v-if="authStore.getUser()?.name">
-              <p class="text-gray-700 dark:text-white"> 
+              <p class=""> 
                 <i class="fa-solid fa-user"></i>
                 <span class="uppper ml-2 uppercase"> {{authStore.getUser()?.currency }} {{authStore.user?.balance }}</span>
               </p>
@@ -48,14 +37,6 @@
             </li>
 
             <li class="nav-link"><LangToggler /></li>
-
-            <li> 
-              <ThemToggler />
-            </li>
-
-            <li> 
-              <NotificationToggler />
-            </li>
             
           </ul>
         </div>
@@ -64,7 +45,7 @@
       <div class="px-3 flex justify-between md:hidden items-center">
           <ul class="nav-items flex items-center justify-between space-x-4 w-full">
             <li> 
-              <button @click="toggleSidebar = !toggleSidebar" class="text-gray-900 dark:text-gray-100 hover:text-indigo-500 focus:outline-none">
+              <button @click="toggleSidebar = !toggleSidebar" class="hover hover-text focus:outline-none">
                 <i class="fa-solid fa-bars text-[16px]"></i>
               </button>
             </li>
@@ -78,12 +59,12 @@
             <li>
               <ul class="flex space-x-2">
                 <li class="nav-link" v-if="authStore.getUser()?.name">
-                  <p class="text-gray-700 text-sm dark:text-white"> 
+                  <p class=""> 
                     <i class="fa-solid fa-user"></i>
                     <span class="uppper ml-2 uppercase"> {{authStore.getUser()?.currency }} {{userBalance}}</span>
                   </p>
                 </li>
-                <li class="nav-link"><ThemToggler /></li>
+
                 <li class="nav-link">
                   <FrontendMessenger />
                 </li>

@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto pb-6 pt-1">
-    <div class="w-full text-white max-w-5xl bg-red-900 dark:bg-green-900 rounded-2xl shadow-lg overflow-hidden">
+  <div class="pb-6 pt-4">
+    <div class="container mx-auto w-full text-white max-w-5xl rounded-2xl shadow-lg overflow-hidden">
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
         <h1 class="font-semibold text-center sm:text-left">
@@ -11,7 +11,7 @@
             <select
               v-model="type"
               @change="search"
-              class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-red-800 dark:bg-green-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
               <option value="deposit">Deposit</option>
               <option value="withdraw"> Withdraw </option>
@@ -22,7 +22,7 @@
             type="date"
             v-model="from_date"
             @change="search"
-            class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-red-800 dark:bg-green-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="From Date"
             />
 
@@ -30,7 +30,7 @@
             type="date"
             v-model="to_date"
             @change="search"
-            class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-red-800 dark:bg-green-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full sm:w-auto px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="To Date"
             />
 
@@ -50,7 +50,7 @@
 
       <div v-else class="overflow-x-auto">
         <table class="min-w-full text-sm">
-          <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase text-xs font-semibold">
+          <thead class="bg-card uppercase text-xs font-semibold">
             <tr>
               <th class="text-left px-6 py-3">Order #</th>
               <th class="text-center px-6 py-3">Type</th>
@@ -65,7 +65,7 @@
           <tbody>
             <!-- Empty State -->
             <tr v-if="!transactionStore.transactions.length">
-              <td colspan="5" class="text-center py-8 text-gray-500 dark:text-gray-400">
+              <td colspan="5" class="text-center py-8">
                 No transactions found 😔
               </td>
             </tr>
@@ -74,7 +74,7 @@
             <tr
               v-for="(transaction, i) in transactionStore.transactions"
               :key="i"
-              class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+              class="border-b border-gray-100"
             >
               <td class="px-6 py-3 font-medium">
                 {{ transaction.order_sn }}

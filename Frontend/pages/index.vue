@@ -3,56 +3,27 @@
     <LoadingSpinner v-if="loading.isLoading('slider')" />
     <FrontendHomeslider v-else :sliders="sliderStore.sliders"> </FrontendHomeslider>
     
-    <LoadingSpinner v-if="loading.isLoading('slider')" />
-    <div v-else class="my-4">
-        <div class="bg-red-800 dark:bg-green-800">
-            <div class="container mx-auto bg-red-900 dark:bg-green-900 px-3 lg:px-4">
-                <FrontendMovingText />
+    
+    <div class="my-4">
+        <div class="">
+            <div class="container bg mx-auto spx-3 lg:px-4">
+                <LoadingSpinner v-if="loading.isLoading('slider')" />
+                <FrontendMovingText v-else  />
             </div>
         </div>
     </div>
-    <!-- <div v-if="authStore.token">
-        <div class="bg-red-800 dark:bg-green-800 md:hidden py-1">
-            <div class="container mx-auto">
-                <div class="flex items-center justify-center space-x-4">
-                
-                <NuxtLink
-                    to="/profile/deposite"
-                    class="px-6 py-1 rounded-xl text-white font-semibold shadow-lg 
-                        bg-gradient-to-r from-green-500 to-green-600
-                        hover:from-green-600 hover:to-green-700 
-                        active:scale-95 transition-all duration-200
-                        dark:from-green-400 dark:to-green-500"
-                >
-                    {{ deposite }}
-                </NuxtLink>
-                <NuxtLink
-                    to="/profile/withdrow"
-                    class="px-6 py-1 rounded-xl text-white font-semibold shadow-lg
-                        bg-gradient-to-r from-red-500 to-red-600
-                        hover:from-red-600 hover:to-red-700
-                        active:scale-95 transition-all duration-200
-                        dark:from-red-400 dark:to-red-500"
-                >
-                    {{withdrow}}
-                </NuxtLink>
-                
-                </div>
-            </div>
-        </div>
 
-    </div> -->
 
     <div>
         <div class="py-2 lg:py-4">
             <!-- Category  -->
             <LoadingSpinner v-if="loading.isLoading('category')" />
-            <div v-else class="container mx-auto bg-red-900 dark:bg-green-900 p-3 lg:p-4">
+            <div v-else class="container mx-auto p-3 lg:p-4">
                 <FrontendCategoryHorizontalCategory :title="gameCategory" :categories="categoryStore.categories" :categorySlug="categoryStore.categories[0]?.slug"/>
             </div>
             
             <!-- Recently Play  -->
-            <div v-if="authStore.getUser()?.id" class="container mx-auto my-4 bg-red-900 dark:bg-green-900 p-3 lg:p-4">
+            <div v-if="authStore.getUser()?.id" class="container mx-auto my-4 p-3 lg:p-4">
                 <LoadingSpinner v-if="loading.isLoading('recentlyPlay')" />
                 <div v-else class="grid grid-cols-12 gap-4">
                     <div class="col-span-12 flex items-center justify-between">
@@ -82,7 +53,7 @@
 
             <!-- Popular Game  -->
 
-            <div class="container mx-auto my-4 bg-red-900 dark:bg-green-900 p-3 lg:p-4">
+            <div class="container mx-auto my-4 p-3 lg:p-4">
                 <LoadingSpinner v-if="loading.isLoading('game')" />
                 <div v-else class="grid grid-cols-12 gap-4">
                     <div class="col-span-12 flex items-center justify-between">

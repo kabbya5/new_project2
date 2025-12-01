@@ -3,7 +3,7 @@ import { useAuthStore } from '~/stores/auth'
 
 export default defineNuxtRouteMiddleware((to) => {
   const authStore = useAuthStore()
-  const token = authStore.getToken()
+  const token = authStore?.getToken()
 
   // guest routes
   const guestRoutes = ['/login', '/register']
@@ -20,7 +20,7 @@ export default defineNuxtRouteMiddleware((to) => {
     }
 
     // admin route guard
-    if (token && authStore.user && authStore.user.role !== 'admin' && to.path.startsWith('/admin')) {
+    if (token && authStore?.user && authStore?.user.role !== 'admin' && to.path.startsWith('/admin')) {
       return navigateTo('/')
     }
   }

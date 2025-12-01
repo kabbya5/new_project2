@@ -1,7 +1,7 @@
 <template>
     <AdminDepositNumberForm v-if="isModalOpen" :number_id="currentId" @close="isModalOpen=false"/>
 
-    <div class="bg-white dark:bg-gray-800 p-3">
+    <div class="bg p-3">
         <div class="flex justify-between items-center">
             <h2> Deposit Number </h2>
       
@@ -14,47 +14,47 @@
             <div class="overflow-x-auto w-full">
                 <LoadingSpinner v-if="loading.isLoading('deposit_number')" />
                 <table v-else class="divide-y min-w-full table-fixed divide-gray-200 dark:divide-gray-700 rounded-lg min-w-full">
-                    <thead class="bg-gray-100 dark:bg-gray-900">
+                    <thead class="bg-card">
                     <tr>
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             Owner Name
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             Provider
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             Transaction Type 
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             Phone Number 
                         </th>
 
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             Status
                         </th>
 
-                        <th  class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-right text-xs font-medium  uppercase tracking-wider">
                             Action
                         </th>
                     </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="bg divide-y divide-gray-200 dark:divide-gray-700">
                         <tr v-for="number in numberStore.deposit_numbers" :key="number.id">
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ number.owner_name }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ number.provider }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ number.transaction_type }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ number.phone_number }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ number.status }}</td>
+                            <td class="px-6 py-2  text-sm">{{ number.owner_name }}</td>
+                            <td class="px-6 py-2  text-sm">{{ number.provider }}</td>
+                            <td class="px-6 py-2  text-sm">{{ number.transaction_type }}</td>
+                            <td class="px-6 py-2  text-sm">{{ number.phone_number }}</td>
+                            <td class="px-6 py-2  text-sm">{{ number.status }}</td>
                             
                             <td class="px-6 py-2  text-right text-sm font-medium">
-                                <button @click="createUpdateModal(number.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <button @click="createUpdateModal(number.id)" class="ml-2">
                                     <i class="fa-solid fa-edit"></i>
                                 </button>
 
-                                <button @click="deleteNumber(number.id)" class="ml-2 text-red-500 hover:text-red-200">
+                                <button @click="deleteNumber(number.id)" class="ml-2 text-red-500">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </td>

@@ -2,8 +2,8 @@
     <!-- Modal BackDrop  -->
 
     <div class="fixed w-full top-8 left-0 bg-black/50 flex items-center justify-center z-50" @click="$emit('close')">
-        <div class="bg-white dark:bg-gray-800 rounded w-full max-w-md" @click.stop>
-            <div class="modal-header bg-gray-300 dark:bg-gray-900 py-2 px-6 flex items-center justify-between">
+        <div class="bg rounded w-full max-w-md" @click.stop>
+            <div class="modal-header bg-card py-2 px-6 flex items-center justify-between">
                 <h2 class="text-xl font-bold">Add Provider</h2>
                 <button @click="$emit('close')" class="bg-red-500 w-[30px] h-[30px] rounded-full text-white"> <i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -53,7 +53,7 @@
                     <div class="form-group col-span-12">
                         <label for="" class="text-lg"> Select Category </label>
 
-                        <Multiselect class="border dark:bg-gray-700 dark:text-white focus:outline-none"
+                        <Multiselect class="border focus:outline-none"
                             v-model="form.categories"
                             :options="options"
                             :multiple="true"

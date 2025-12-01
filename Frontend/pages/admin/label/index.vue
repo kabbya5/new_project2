@@ -1,7 +1,7 @@
 <template>
     <AdminLabelForm v-if="isModalOpen" :text_id="currentId" @close="isModalOpen=false"/>
 
-    <div class="bg-white dark:bg-gray-800 p-3">
+    <div class="bg p-3">
         <div class="flex justify-between items-center">
             <h2> VIP Level </h2>
       
@@ -13,48 +13,48 @@
         <div class="my-5">
             <div class="overflow-x-auto w-full">
                 <LoadingSpinner v-if="loading.isLoading('label')" />
-                <table v-else class="divide-y min-w-full table-fixed divide-gray-200 dark:divide-gray-700 rounded-lg min-w-full">
-                    <thead class="bg-gray-100 dark:bg-gray-900">
+                <table v-else class="divide-y min-w-full table-fixed rounded-lg min-w-full">
+                    <thead class="bg-card">
                     <tr>
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Name
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Position
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Min Deposit
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Max Deposit
                         </th>
 
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Deposit Bonus
                         </th>
 
-                        <th  class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Daily Bonus
                         </th>
 
-                        <th  class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th  class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
                             Action
                         </th>
                     </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-gray-200 ">
                         <tr v-for="label in labelStore.labels" :key="label.id">
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.name }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.position }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.min_bet }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.max_bet }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.deposit_bonus }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ label.daily_bonus }}</td>
+                            <td class="px-6 py-2  text-sm">{{ label.name }}</td>
+                            <td class="px-6 py-2  text-sm">{{ label.position }}</td>
+                            <td class="px-6 py-2  text-sm">{{ label.min_bet }}</td>
+                            <td class="px-6 py-2  text-sm">{{ label.max_bet }}</td>
+                            <td class="px-6 py-2  text-sm">{{ label.deposit_bonus }}</td>
+                            <td class="px-6 py-2  text-sm">{{ label.daily_bonus }}</td>
                             <td class="px-6 py-2  text-right text-sm font-medium">
-                                <button @click="createUpdateModal(label.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <button @click="createUpdateModal(label.id)" class="ml-2">
                                     <i class="fa-solid fa-edit"></i>
                                 </button>
                             </td>

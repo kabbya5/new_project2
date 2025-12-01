@@ -5,13 +5,13 @@
 </script>
 
 <template>
-  <div class="h-screen flex overflow-hidden bg-slate-200/60 dark:bg-gray-900 text-gray-900 dark:text-gray-300">
+  <div class="h-screen flex overflow-hidden">
     <!-- Sidebar (fixed height, scrollable if long) -->
     <AffiliateSidebar class="w-full h-full overflow-y-auto" />
 
     <!-- Main content area -->
     <div class="flex flex-col overflow-hidden w-full">
-      <AffiliateTopbar />
+      <!-- <AffiliateTopbar /> -->
 
       <!-- Scrollable page content -->
       <main class="flex overflow-y-auto p-4">

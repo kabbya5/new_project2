@@ -31,11 +31,13 @@ onMounted(() => {
 const RevenueCategories = computed(() => ({
   deposit: {
     name: 'Deposit',
-    color: theme.isDark ? '#3b82f6' : '#2563eb',
+    color: '#2563eb',     // text color
+    bgColor: '#dbeafe',   // light blue background
   },
   withdraw: {
     name: 'Withdraw',
-    color: theme.isDark ? '#ef4444' : '#dc2626',
+    color: '#ffffff',     // white text on red
+    bgColor: '#dc2626',   // red background
   },
 }))
 

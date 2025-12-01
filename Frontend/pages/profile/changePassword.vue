@@ -1,7 +1,7 @@
 <template>
     <div class="py-4 flex items-center justify-center w-full">
-        <div class="w-full max-w-[500px] bg-white dark:bg-gray-800 px-4 py-2 shadow-xl">
-            <div class="bg-white dark:bg-gray-800 border-b border-gray-300 pb-2">
+        <div class="w-full max-w-[500px] bg px-4 py-2 shadow-xl">
+            <div class="border-b border-gray-300 pb-2">
                 <h2 class="text-green-600 font-semibold text-xl tracking-[1.4px]"> {{ updatePassword }} </h2>
             </div>  
        
@@ -9,7 +9,7 @@
                 <form @submit.prevent="submit">
                   <div>
                     <div class="mb-4 relative">
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label class="block text-sm font-medium  mb-1">
                         {{ oldPassword }}
                       </label>
                       <input
@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="mb-4 relative">
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label class="block text-sm font-medium  mb-1">
                         {{ password }}
                       </label>
                       <input
@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="mb-4 relative">
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label class="block text-sm font-medium  mb-1">
                         {{ confirmPassword }}
                       </label>
                       <input

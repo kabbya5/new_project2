@@ -3,19 +3,19 @@
     <AgentDashboardTopCard></AgentDashboardTopCard>
     <div class="rounded-xl shadow-sm grid grid-cols-12 gap-4">
       <!-- Summary Cards -->
-      <div class="col-span-12 lg:col-span-7 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 lg:col-span-7 bg-red-900 p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Transactions </h3>
         </div>
 
         <!-- Revenue Chart -->
-        <div class="pt-4">
-          <AgentDashboardChart />
+        <div class="pt-4 text-white">
+          <AgentDashboardChart class="text-white" />
         </div>
       </div>
 
       <!-- Sales by Locations -->
-      <div class="col-span-12 lg:col-span-5 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 lg:col-span-5 bg-card p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Recently Transactions </h3>
         </div>

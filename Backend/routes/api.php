@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
     Route::controller(GameController::class)->group(function(){
         Route::post('/games/store', 'store');
         Route::put('/game/update/{game}', 'update');
+        Route::get('/game/balance', 'gameBalance');
     });
 
     Route::controller(SliderController::class)->group(function(){

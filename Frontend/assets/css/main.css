@@ -1,5 +1,4 @@
 @custom-variant dark (&:where(.dark, .dark *));
-
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "tailwindcss";
 
@@ -7,15 +6,95 @@
   --font-roboto: "Roboto", sans-serif; 
 }
 
-.dp__input {
-  background-color: transparent !important;
-  border: none !important;
+:root {
+  /* Base Color */
+  --body-color: #090909;
+  --menu-bar: #181818;
+  --base-color-dark: #5C0000;
+  --bg-light: #B22222;
+  --base-color-lighter: #E57373;
+
+  /* Body Gradient */
+  --body-gradient: linear-gradient(135deg, #5C0000, #8B0000);
+
+  /* Navbar */
+  --bg: #8B0000;
+  --text-color: #FFFFFF;
+  --navbar-hover-bg: #B22222;
+  --navbar-hover-text: #FFFFFF;
+
+  /* Sidebar */
+  --sidebar-bg: #181818;
+  --sidebar-hover-bg: #8B0000;
+
+  /* Buttons */
+  --btn-bg: #8B0000;
+  --hover-color: #E57373;
+
+  /* Other */
+  --running-text-bg: #B22222;
+  --category-bg-color: #8B0000;
+  --userpanel-color: #5C0000;
+}
+
+button, a {
+  cursor: pointer;
+}
+
+body {
+  background: var(--body-gradient);
+  color: #FFFFFF;
   font-family: var(--font-roboto);
-  color: #000; /* light mode text */
+}
+
+.side-menu {
+  background-color: var(--sidebar-bg);
+  color: var(--text-color);
+}
+
+#navbar {
+  border-bottom: 2px solid var(--base-color);
+  background-color: var(--bg);
+  color: var(--text-color);
+}
+
+.running-text {
+  background-color: var(--running-text-bg);
+}
+
+a:hover, button:hover {
+  color: var(--hover-color);
+}
+
+a {
+  color: var(--text-color);
+}
+
+.active-text{
+  color:var(--hover-color);
+}
+
+.bg, .container {
+  background-color: var(--bg);
+}
+
+.bg-card{
+  background-color: var(--bg-light);
+}
+
+.category {
+  background-color: var(--category-bg-color);
+}
+
+.userpanel, .admin-panel, .affiliate, .agent {
+  background-color: var(--userpanel-color);
 }
 
 
+.chart-text-white svg text {
+  fill: #ffffff !important;
+}
 
-button{
-  cursor: pointer;
+.chart-text-white {
+  color: #ffffff !important;
 }

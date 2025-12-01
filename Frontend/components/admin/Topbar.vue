@@ -1,5 +1,5 @@
 <template>
-    <div id="admin-topbar" class="bg-white dark:bg-black h-[54px] flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
+    <div id="admin-topbar" class="bg h-[54px] text-white flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
         <div class="flex items-center">
             <AdminButtonsSidebarToggler/>
             <div class="flex pl-4">
@@ -10,9 +10,9 @@
         </div>
         
         <div class="flex items-center space-x-3">
-            <AdminLangToggler />
-            <FrontendNavNotificationToggler  />
-            <FrontendNavThemToggler class="pr-2" />
+            <!-- <AdminLangToggler /> -->
+            <!-- <FrontendNavNotificationToggler  /> -->
+            <!-- <FrontendNavThemToggler class="pr-2" /> -->
         </div>
 
     </div>

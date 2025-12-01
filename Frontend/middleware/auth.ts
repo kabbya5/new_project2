@@ -3,7 +3,7 @@ import { useAuthStore } from '~/stores/auth'
 
 export default defineNuxtRouteMiddleware((to, from) => {
   const authStore = useAuthStore()
-  const token = authStore.getToken()
+  const token = authStore?.getToken()
 
   if (process.client) {
     // Guest allowed routes

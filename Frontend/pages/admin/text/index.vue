@@ -1,8 +1,8 @@
 <template>
     <AdminTextForm v-if="isModalOpen" :text_id="currentId" @close="isModalOpen=false"/>
 
-    <div class="bg-white dark:bg-gray-800 p-3">
-        <div class="flex justify-between items-center">
+    <div class="p-3">
+        <div class="bg px-3 py-2 flex justify-between items-center">
             <h2> Moving Text </h2>
       
             <div class="flex items-center">
@@ -13,29 +13,29 @@
         <div class="my-5">
             <div class="overflow-x-auto w-full">
                  <LoadingSpinner v-if="loading.isLoading('text')" />
-                <table v-else class="divide-y table-fixed divide-gray-200 dark:divide-gray-700 rounded-lg min-w-full">
-                    <thead class="bg-gray-100 dark:bg-gray-900">
+                <table v-else class="divide-y table-fixed divide-gray-200 rounded-lg min-w-full">
+                    <thead class="bg">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             text
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
                             Action
                         </th>
                     </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-gray-200">
                         <tr v-for="text in textStore.texts" :key="text.id">
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ text.text }}</td>
+                            <td class="px-6 py-2  text-sm">{{ text.text }}</td>
                            
 
                             <td class="px-6 py-2  text-right text-sm font-medium">
-                                <button @click="deleteText(text.id)" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
-                                    <i class="fa-solid fa-trash text-red-500"></i>
+                                <button @click="deleteText(text.id)" class="">
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
 
-                                <button @click="createUpdateModal(text.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <button @click="createUpdateModal(text.id)" class="ml-2 ">
                                     <i class="fa-solid fa-edit"></i>
                                 </button>
                             </td>

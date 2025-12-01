@@ -38,6 +38,28 @@ class GameService
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    public function getBalances() {
+        try {
+            $response = $this->client->get($this->config['api_url'].'/balances', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'query' => [
+                    'agentToken' => $this->config['agent_token'],
+                    'secretKey'  => $this->config['agent_secret_key'],
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return [
+                'status' => 0,
+                'data'   => [],
+                'msg'    => 'Error fetching balances: ' . $e->getMessage(),
+            ];
+        }
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     public function getGames($providerId = 61): array{
         try {
             $options = [
@@ -69,6 +91,27 @@ class GameService
     public function launchGame(Game $game, $user_id): array  {
         $user = User::find($user_id);
         $currency = Currency::where('currency_code',$user->currency)->first();
+        
+        if($game->provider_id == 3){
+            $data = [
+                'agentToken'    => $this->config['agent_token'],
+                'secretKey'    =>  $this->config['agent_secret_key'],
+                'user_code'     => $user->user_name, // $user_code,
+                'game_code'     => $game->game_code,
+                'game_original' => true,
+                "user_balance"  => $user->balance ? $user->balance / $currency->brl_rate : 0,
+                'lang'          => 'en',
+            ];
+
+            $result = BrightDataService::postJson(
+                $this->config['api_url'].'/game_launch',
+                $data,
+                'us' // Country code
+            );
+
+            // Method 2: With fallback
+            return $result;
+        }
 
         try {
             $response = $this->client->post($this->config['api_url'].'/game_launch', [

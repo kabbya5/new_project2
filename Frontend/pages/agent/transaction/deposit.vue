@@ -2,7 +2,7 @@
   <AgentTransactionForm v-if="isModalOpen" :transactionId="currentId" :type="'deposit'" @close="isModalOpen=false"/>
   
   <div class="container mx-auto pb-6 pt-1">
-    <div class="w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
+    <div class="w-full rounded-2xl shadow-lg overflow-hidden">
       <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
             <div>
@@ -63,8 +63,8 @@
       <LoadingSpinner v-if="loading.isLoading('transaction')" />
 
       <div v-else class="overflow-x-auto">
-        <table class="w-full text-sm text-gray-700 dark:text-gray-200">
-          <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase text-xs font-semibold">
+        <table class="w-full text-sm">
+          <thead class="bg-card uppercase text-xs font-semibold">
             <tr>
               <th class="text-left px-6 py-3">Transaction Code</th>
               <th class="text-center px-6 py-3"> User </th>
@@ -81,7 +81,7 @@
           <tbody>
             <!-- Empty State -->
             <tr v-if="!transactionStore.transactions.length">
-              <td colspan="5" class="text-center py-8 text-gray-500 dark:text-gray-400">
+              <td colspan="5" class="text-center py-8">
                 No transactions found 😔
               </td>
             </tr>
@@ -90,13 +90,13 @@
             <tr
               v-for="(transaction, i) in transactionStore.transactions"
               :key="i"
-              class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+              class="border-b transition"
             >
-              <td class="px-6 py-3 font-medium text-gray-800 dark:text-gray-100">
+              <td class="px-6 py-3 font-medium">
                 {{ transaction.order_sn }}
               </td>
 
-              <td class="px-6 py-3 font-medium text-gray-800 dark:text-gray-100">
+              <td class="px-6 py-3 font-medium">
                 {{ transaction.user_nane }}
               </td>
 
@@ -132,15 +132,15 @@
               </td>
 
               <td class="px-6 py-2  text-right text-sm font-medium">
-                  <button @click="createUpdateModal(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                  <button @click="createUpdateModal(transaction.id)" class="ml-2">
                       <i class="fa-solid fa-edit"></i>
                   </button>
 
-                  <button v-if="transaction.status!=='success'" @click="approval(transaction.id)" class="ml-2 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                  <button v-if="transaction.status!=='success'" @click="approval(transaction.id)" class="ml-2 ">
                       <i class="fa-solid fa-check"></i>
                   </button>
 
-                  <button v-if="transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2 text-red-500 hover:text-red-200">
+                  <button v-if="transaction.status == 'pending'" @click="deleteTransaction(transaction.id)" class="ml-2">
                       <i class="fa-solid fa-trash"></i>
                   </button>
               </td>

@@ -1,7 +1,7 @@
 <template>
     <div class="py-4 flex items-center justify-center w-full">
-        <div class="w-full max-w-[500px] bg-white dark:bg-gray-800 px-4 py-2 shadow-xl">
-            <div class="bg-white dark:bg-gray-800 border-b border-gray-300 pb-2">
+        <div class="w-full max-w-[500px] bg px-4 py-2 shadow-xl">
+            <div class="border-b border-gray-300 pb-2">
                 <h2 class="text-green-600 font-semibold text-xl tracking-[1.4px]"> {{updateProfile }} </h2>
             </div>  
        
@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">  {{ nameInput }}  </label>
+                        <label class="block text-sm font-medium mb-1">  {{ nameInput }}  </label>
                         <input v-model="signupForm.name" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {{ userName }} </label>
+                        <label class="block text-sm font-medium mb-1"> {{ userName }} </label>
                         <input v-model="signupForm.user_name" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required readonly
@@ -44,20 +44,20 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {{ currency }} </label>
+                        <label class="block text-sm font-medium mb-1"> {{ currency }} </label>
                         <input type="text" v-model="signupForm.currency" required readonly
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200">
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {{ phoneNumber }} </label>
+                        <label class="block text-sm font-medium mb-1"> {{ phoneNumber }} </label>
                         <input v-model="signupForm.phone_number" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {{ email }} ({{ optional }})</label>
+                        <label class="block text-sm font-medium mb-1"> {{ email }} ({{ optional }})</label>
                         <input v-model="signupForm.email" type="email" class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200" required 
                         :class="errorStore.validationErrors.email ? 'border-red-500' :'' ">
                         
