@@ -3,7 +3,7 @@
     <AdminDashboardTopCard></AdminDashboardTopCard>
     <div class="rounded-xl shadow-sm grid grid-cols-12 gap-4">
       <!-- Summary Cards -->
-      <div class="col-span-12 lg:col-span-7 bg-red-900 p-3">
+      <div class="col-span-12 lg:col-span-7 bg text-white p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Transactions </h3>
         </div>
@@ -115,7 +115,7 @@
 
 <script setup lang="ts">
   definePageMeta({ 
-    middleware: ['auth','admin'],
+    middleware: ['admin'],
     layout:'admin',
   });
 
@@ -132,10 +132,6 @@
   const authStore = useAuthStore();
 
   const router = useRouter();
-
-  if(authStore.user?.role != 'admin'){
-    router.push('/');
-  }
 
   onMounted( async () =>{
     await transactionStore.fetchTransaction(1,10,null,null);

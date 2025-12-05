@@ -7,6 +7,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Services\LPGService;
+use App\Services\OroPlayService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +17,12 @@ use Illuminate\Support\Facades\Hash;
 class TransactionController extends Controller
 {
     protected LPGService $lgpservice;
+    protected OroPlayService $oroplayService;
 
-    public function __construct(LPGService $lgpservice)
+    public function __construct(LPGService $lgpservice, OroPlayService $oroplayService)
     {
         $this->lgpservice = $lgpservice;
+        $this->oroplayService = $oroplayService;
     }
 
     public function depostie(Request $request){
@@ -238,17 +241,21 @@ class TransactionController extends Controller
         $limit = $request->limit;
         $type = $request->type;
         $month = $request->month;
-        $years = $request->year;
+        $years = null;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
         $user_id = null;
+        $user_type = null;
         $status = $request->status;
-        $search = $request->searchQuery;
+        $search = $request->searchQuery == 'all' ? null : $request->searchQuery;
+      
+      	
 
-        if(auth()->user()->type != 'admin'){
+        if(auth()->user()->role != 'admin'){
             $user_id =  auth()->id();
             $user_type = auth()->user()->role;
         }
+      
 
         $from_date = $from_date
             ? Carbon::parse($from_date)->format('Y-m-d')
@@ -312,7 +319,7 @@ class TransactionController extends Controller
             })
             ->paginate($limit);
 
-
+	
         return response()->json([
             'transactions' => TransactionResource::collection($data),
             'pagination' => [
@@ -482,6 +489,7 @@ class TransactionController extends Controller
     }
 
     public function customDeposit($transaction){
+
         $user = User::find($transaction->user_id);
         $affiliate_refer_id = $user->affiliate_refer_id ?? null;
         $other_refer_id = $user->other_refer_id ?? null;
@@ -504,6 +512,11 @@ class TransactionController extends Controller
             'amount'  => $custom_commission,
         ]);
 
+        $amount = $amount + $custom_commission;
+
+        $this->oroplayService->createUser($user->user_name);
+        $this->oroplayService->deposite($user->user_name,$amount,$transaction->order_sn);
+
         if ($affiliate_refer_id) {
             $affiliate = User::find($affiliate_refer_id);
             if ($affiliate) {
@@ -520,6 +533,8 @@ class TransactionController extends Controller
                     'amount'  => $commission,
                 ]);
             }
+            $this->oroplayService->createUser($affiliate->user_name);
+            $this->oroplayService->deposite($affiliate->user_name,$commission,$transaction->order_sn . 'QS');
         }
 
         if ($other_refer_id) {
@@ -538,6 +553,9 @@ class TransactionController extends Controller
                     'amount'  => $commission,
                 ]);
             }
+
+            $this->oroplayService->createUser($otherRefer->user_name);
+            $this->oroplayService->deposite($otherRefer->user_name,$commission,$transaction->order_sn . 'AQS');
         }
 
         if($transaction->agent_id){
@@ -555,6 +573,9 @@ class TransactionController extends Controller
                 ]);
 
                 $agent->update(['balance' => $agent->balance + $bonus]);
+
+                $this->oroplayService->createUser($agent->user_name);
+                $this->oroplayService->deposite($agent->user_name,$commission,$transaction->order_sn . 'AQS');
             }
         }
     }
@@ -572,6 +593,9 @@ class TransactionController extends Controller
         }
 
         $user->update(['balance' => $user->balance - $transaction->amount]);
+
+        $this->oroplayService->createUser($user->user_name);
+        $this->oroplayService->withdraw($user->user_name,$amount,$transaction->order_sn);
 
         $affiliate_refer_id = $user->affiliate_refer_id;
 
@@ -592,6 +616,10 @@ class TransactionController extends Controller
                     'remark'  => "Affiliate reduce commission from {$user->user_name} withdraw",
                     'amount'  => $commission,
                 ]);
+
+                $this->oroplayService->createUser($affiliate->user_name);
+                $this->oroplayService->withdraw($affiliate->user_name,$amount,$transaction->order_sn);
+
             }
         }
 
@@ -610,6 +638,10 @@ class TransactionController extends Controller
                     'remark'  => "Agent withdraw bonus from {$user->user_name} withdraw",
                     'amount'  => $commission,
                 ]);
+
+                $this->oroplayService->createUser($agent->user_name);
+                $this->oroplayService->withdrawall($agent->user_name,$amount,$transaction->order_sn);
+
             }
         }
 

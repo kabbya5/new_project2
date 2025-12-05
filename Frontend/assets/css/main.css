@@ -42,7 +42,7 @@ button, a {
 }
 
 body {
-  background: var(--body-gradient);
+  background: var(--body-color);
   color: #FFFFFF;
   font-family: var(--font-roboto);
 }
@@ -53,9 +53,12 @@ body {
 }
 
 #navbar {
-  border-bottom: 2px solid var(--base-color);
-  background-color: var(--bg);
+  border-bottom: 2px solid var(--sidebar-bg);
   color: var(--text-color);
+}
+
+#navbar .container{
+  background-color: transparent;
 }
 
 .running-text {

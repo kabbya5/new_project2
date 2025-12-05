@@ -1,41 +1,41 @@
 <template>
 
-<footer class="bg-red-800 dark:bg-green-800">
+<footer class="">
     <div v-if="route.path == '/'" class="my-4 container mx-auto bg-red-900 dark:bg-green-900 p-3 lg:p-4">
         <div class="flex flex-wrap item-center">
             <div class="pr-4 min-w-fit">
-                <h2 class="mb-2 text-sm font-semibold uppercase text-white border-b border-gray-200"> Affiliates Program </h2>
+                <h2 class="mb-2 text-[11px] uppercase text-white border-b border-gray-200"> Affiliates Program </h2>
             </div>
             <div class="pr-4 min-w-fit">
-                <h2 class="mb-2 text-sm font-semibold uppercase text-white border-b border-gray-200"> Responsible Gaming </h2>
+                <h2 class="mb-2 text-[11px] uppercase text-white border-b border-gray-200"> Responsible Gaming </h2>
             </div>
             <div class="pr-4 min-w-fit">
-                <h2 class="mb-2 text-sm font-semibold uppercase text-white border-b border-gray-200"> Security </h2>
+                <h2 class="mb-2 text-[11px] uppercase text-white border-b border-gray-200"> Security </h2>
             </div>
             <div class="pr-4 min-w-fit">
-                <h2 class="mb-2 text-sm font-semibold uppercase text-white border-b border-gray-200"> Privacy Policy </h2>  
+                <h2 class="mb-2 text-[11px] uppercase text-white border-b border-gray-200"> Privacy Policy </h2>  
             </div>
 
             <div class="pr-4 min-w-fit">
-                <h2 class="mb-2 text-sm font-semibold uppercase text-white border-b border-gray-200"> Frequently Asked Questions </h2>  
+                <h2 class="mb-2 text-[11px] uppercase text-white border-b border-gray-200"> Frequently Asked Questions </h2>  
             </div>
         </div>
         <div class="text-gray-500 my-6">
             <div class="flex justify-between">
                 <div class="col-san-1">
-                    <p class="text-md font-semibold text-white"> Gaming Licence </p>
-                    <p class="text-gray-200  my-1"> Playfiver  <br>
+                    <p class="text-[14px] text-white"> Gaming Licence </p>
+                    <p class="text-gray-200 text-[13px] my-1"> Playfiver  <br>
                         Anjouan Gaming
                     </p>
                 </div>
                 <div class="col-san-1">
-                    <p class="text-md font-semibold text-white "> Official Brand Partner </p>
-                    <p class="text-gray-200 font-sm my-1"> New City </p>
+                    <p class="text-[14px] text-white "> Official Brand Partner </p>
+                    <p class="text-gray-200 text-[13px]  font-sm my-1"> New City </p>
                 </div>
             </div>
             
-            <p class="text-gray-200 font-sm mt-6 mb-2"> 
-                <span class="text-green-500 font-semibold text-lg lg:text-xl"> Luckbuzz99 Bangladesh- Country's Premium Betting & Casino </span>
+            <p class="text-gray-200 text-[12px] font-sm mt-6 mb-2"> 
+                <span class="inline-block mb-2 text-white text-[14px] lg:text-lg"> Luckbuzz99 Bangladesh- Country's Premium Betting & Casino </span>
                 <br>
             
                 Every casino brand can declare that they are offering premium betting and features, 
@@ -90,7 +90,7 @@
 
             <div class="my-8 text-white">
                 <NuxtImg src="logo.png" class="w-32" />
-                <p class="my-1 text-md text-green-500"> Best online platform </p>
+                <p class="my-1 text-md text-white"> Best online platform </p>
                 © {{ new Date().getFullYear() }} Luckbuzz99. All rights reserved.
             </div>
         </div>

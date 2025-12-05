@@ -11,7 +11,7 @@
 
     <!-- Main content area -->
     <div class="flex flex-col overflow-hidden w-full">
-      <!-- <AffiliateTopbar /> -->
+      <AffiliateTopbar />
 
       <!-- Scrollable page content -->
       <main class="flex overflow-y-auto p-4">

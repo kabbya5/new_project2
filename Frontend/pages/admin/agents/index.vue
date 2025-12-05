@@ -4,8 +4,8 @@
     <div class="rounded-2xl shadow-lg overflow-x-auto">
       <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2 py-4 border-b border-gray-200 dark:border-gray-700 space-y-3 sm:space-y-0 sm:space-x-4">
-            <h1 class="font-semibold text-gray-800 dark:text-gray-100 text-center sm:text-left">
-                Users
+            <h1 class="font-semibold text-center sm:text-left">
+                Agent
             </h1>
 
             <div class="flex flex-col sm:flex-row sm:items-center w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-2">
@@ -48,8 +48,8 @@
       <LoadingSpinner v-if="loading.isLoading('users')" />
 
       <div v-else class="overflow-x-auto">
-        <table class="w-full text-sm text-gray-700 dark:text-gray-200">
-          <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase text-xs font-semibold">
+        <table class="w-full text-sm">
+          <thead class="bg-card uppercase text-xs font-semibold">
             <tr>
               <th class="text-left px-6 py-3 w-fit"> User Name </th>
               <th class="text-right px-6 py-3 w-fit"> Balance </th>
@@ -63,7 +63,7 @@
           <tbody>
             <!-- Empty State -->
             <tr v-if="!userStore.users.length">
-              <td colspan="5" class="text-center py-8 text-gray-500 dark:text-gray-400">
+              <td colspan="5" class="text-center py-8">
                 No users found 😔
               </td>
             </tr>
@@ -72,9 +72,9 @@
             <tr
               v-for="(user, i) in userStore.users"
               :key="i"
-              class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+              class="border-b border-gray-100"
             >
-              <td class="px-6 py-3 font-medium text-gray-800 dark:text-gray-100">
+              <td class="px-6 py-3 font-medium">
                 {{ user.user_name }}
               </td>
 

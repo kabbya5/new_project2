@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Rules\PhoneNumberVerificationRule;
+use App\Services\OroPlayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Services\TwilioService;
@@ -17,8 +18,9 @@ class AuthController extends Controller
 {
     use FileUploadTrait;
     private TwilioService $twilio;
+    protected OroPlayService $oroPlayService;
 
-    public function __construct(TwilioService $twilio) {
+    public function __construct(TwilioService $twilio, OroPlayService $oroPlayService) {
         $this->twilio = $twilio;
     }
 
@@ -57,6 +59,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'balance' => 20,
         ]);
+
+        $this->oroPlayService->createUser($request->user_name);
 
         Transaction::create([
             'user_id' => $user->id,
@@ -102,6 +106,8 @@ class AuthController extends Controller
             'image_url' => $imageUrl,
             'refer_code' => $user->refer_code ?? $refer_code,
         ]);
+
+        $this->oroPlayService->createUser($request->user_name);
 
         return response()->json([
             'message' => 'User registred successfully',

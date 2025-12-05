@@ -9,7 +9,7 @@ import Sidebar from '~/components/agent/Sidebar.vue';
 
     <!-- Main content area -->
     <div class="flex flex-col overflow-hidden w-full">
-      <!-- <AgentTopbar /> -->
+      <AgentTopbar />
 
       <!-- Scrollable page content -->
       <main class="flex overflow-y-auto p-4">

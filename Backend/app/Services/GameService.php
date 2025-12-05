@@ -12,11 +12,13 @@ class GameService
 {
     protected Client $client;
     protected array $config;
+    protected OroPlayService $oroPlayService;
 
-    public function __construct()
+    public function __construct(OroPlayService $oroPlayService)
     {
         $this->client = new Client();
         $this->config = config('services.game');
+        $this->oroPlayService = $oroPlayService;
     }
 
     public function getProviders(){
@@ -88,28 +90,18 @@ class GameService
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function launchGame(Game $game, $user_id): array  {
+    public function launchGame(Game $game, $user_id){
         $user = User::find($user_id);
         $currency = Currency::where('currency_code',$user->currency)->first();
         
         if($game->provider_id == 3){
             $data = [
-                'agentToken'    => $this->config['agent_token'],
-                'secretKey'    =>  $this->config['agent_secret_key'],
-                'user_code'     => $user->user_name, // $user_code,
-                'game_code'     => $game->game_code,
-                'game_original' => true,
-                "user_balance"  => $user->balance ? $user->balance / $currency->brl_rate : 0,
-                'lang'          => 'en',
+                'userCode'     => $user->user_name, // $user_code,
+                'gameCode'     => 1617,
             ];
 
-            $result = BrightDataService::postJson(
-                $this->config['api_url'].'/game_launch',
-                $data,
-                'us' // Country code
-            );
+            $result = $this->oroPlayService->launch_url($data);
 
-            // Method 2: With fallback
             return $result;
         }
 

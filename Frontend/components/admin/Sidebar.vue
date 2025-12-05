@@ -93,7 +93,9 @@ const navLinks = ref([
     open: false,
     children: [
       { title: "Slider", icon: "fa-regular fa-images", url: "/admin/slider" },
-      { title: "Moving Text", icon: "fa-solid fa-text-width", url: "/admin/text" }
+      { title: "Moving Text", icon: "fa-solid fa-text-width", url: "/admin/text" },
+      { title: "VIP", icon:'fa-solid fa-crown', url: "/admin/label", single: true },
+      { title: "Promotion Page", icon:'fa-solid fa-rectangle-ad', url: "/admin/promotion", single: true }
     ]
   },
   {
@@ -116,7 +118,8 @@ const navLinks = ref([
       { title: "Provider", icon: "fa-regular fa-bookmark", url: "/admin/provider" },
       { title: "Game", icon: "fa-solid fa-trophy", url: "/admin/game" },
       { title: "Game Records", icon: "fa-solid fa-receipt", url: "/admin/transaction/record" },
-      { title: "Game Balance", icon: "fa-solid fa-sack-dollar", url: "/admin/game-balance" }
+      { title: "Game Balance", icon: "fa-solid fa-sack-dollar", url: "/admin/game-balance" },
+      { title: "Currency", icon:'fa-solid fa-cent-sign', url: "/admin/currency"},
     ]
   },
   {
@@ -125,7 +128,7 @@ const navLinks = ref([
     open: false,
     children: [
       { title: "Users", icon: "fa-solid fa-user-secret", url: "/admin/user" },
-      { title: "VIP Level", icon: "fa-solid fa-tag", url: "/admin/label" }
+      // { title: "VIP Level", icon: "fa-solid fa-tag", url: "/admin/label" }
     ]
   },
   {
@@ -138,8 +141,6 @@ const navLinks = ref([
 
     ]
   },
-  { title: "VIP", url: "/admin/label", single: true },
-  { title: "Promotion Page", url: "/admin/promotion", single: true }
 ])
 
 /* ------------------- UTILS ------------------- */

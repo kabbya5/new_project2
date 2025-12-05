@@ -94,7 +94,6 @@ Route::get('/promotions', [PromotionController::class, 'promotions']);
 Route::get('/promotions/{slug}',[PromotionController::class, 'show']);
 Route::get('/affiliate',[PromotionController::class, 'affiliate']);
 
-
 Route::middleware(['auth:sanctum','agent'])->prefix('agent')->group(function(){
     Route::controller(AgentDashboardController::class)->group(function(){
         Route::get('/top/content', 'topContent');

@@ -11,7 +11,7 @@ import Topbar from '~/components/admin/Topbar.vue';
 
     <!-- Main content area -->
     <div class="flex flex-col overflow-hidden w-full">
-      <!-- <Topbar /> -->
+      <Topbar />
 
       <!-- Scrollable page content -->
       <main class="flex overflow-y-auto p-4">
