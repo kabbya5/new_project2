@@ -1,18 +1,18 @@
 <template>
   <div class="container mx-auto pb-6 pt-1">
     
-    <div class="bg-white dark:bg-gray-800 shadow-lg">
+    <div class="shadow-lg">
         <h2 class="px-2 py-2"> Update User </h2>
     </div>
 
     <div class="grid grid-cols-12 gap-4 mt-4">
-        <div class="col-span-12 lg:row-span-2 lg:col-span-7 p-3 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
+        <div class="col-span-12 lg:row-span-2 lg:col-span-7 p-3 bg-card shadow-lg rounded-2xl">
             <h2 class=""> Basice Information </h2>
 
             <form @submit.prevent="submit" class="mt-3">
                 <div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">  Name  </label>
+                        <label class="block text-sm font-medium mb-1">  Name  </label>
                         <input v-model="userForm.name" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required
@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> User Name </label>
+                        <label class="block text-sm font-medium mb-1"> User Name </label>
                         <input v-model="userForm.user_name" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required readonly
@@ -32,14 +32,14 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> Phone Number </label>
+                        <label class="block text-sm font-medium mb-1"> Phone Number </label>
                         <input v-model="userForm.phone_number" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> Email </label>
+                        <label class="block text-sm font-medium mb-1"> Email </label>
                         <input v-model="userForm.email" type="email" class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200" required 
                         :class="errorStore.validationErrors.email ? 'border-red-500' :'' ">
                         
@@ -51,13 +51,13 @@
             </form>
         </div>
 
-        <div class="col-span-12 lg:col-span-5 p-3 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
+        <div class="col-span-12 lg:col-span-5 p-3 bg-card shadow-lg rounded-2xl">
             <h2 class=""> Password and Security </h2>
 
             <form @submit.prevent="submit" class="mt-3">
                 <div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">  Password </label>
+                        <label class="block text-sm font-medium mb-1">  Password </label>
                         <input v-model="userForm.password" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required
@@ -71,13 +71,13 @@
             </form>
         </div>
 
-        <div class="col-span-12 lg:col-span-5 p-3 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
+        <div class="col-span-12 lg:col-span-5 p-3 bg-card shadow-lg rounded-2xl">
             <h2 class=""> Manage User </h2>
 
             <form @submit.prevent="submit" class="mt-3">
                 <div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">  Name  </label>
+                        <label class="block text-sm font-medium mb-1">  Name  </label>
                         <select v-model="userForm.role" type="text" 
                           class="w-full px-4 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           required

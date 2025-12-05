@@ -1,5 +1,5 @@
 <template>
-    <div v-if="sidebar.isOpen" class="h-full bg-white dark:bg-black" id="admin-sidebar">
+    <div v-if="sidebar.isOpen" class="h-full side-menu bg-white dark:bg-black" id="admin-sidebar">
         <!-- Sidebar -->
         <aside>
             <!-- Logo  -->

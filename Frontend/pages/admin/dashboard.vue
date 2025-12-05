@@ -3,19 +3,19 @@
     <AdminDashboardTopCard></AdminDashboardTopCard>
     <div class="rounded-xl shadow-sm grid grid-cols-12 gap-4">
       <!-- Summary Cards -->
-      <div class="col-span-12 lg:col-span-7 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 lg:col-span-7 bg text-white p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Transactions </h3>
         </div>
 
         <!-- Revenue Chart -->
         <div class="pt-4">
-          <AdminChartsRevenueChart />
+          <AdminChartsRevenueChart class="chart-text-white" />
         </div>
       </div>
 
       <!-- Sales by Locations -->
-      <div class="col-span-12 lg:col-span-5 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 lg:col-span-5 bg p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Recently Transactions </h3>
         </div>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="col-span-12 lg:col-span-7 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 lg:col-span-7 bg p-3">
         <div class="flex relative justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Game History </h3>
         </div>
@@ -39,7 +39,7 @@
             <div class="overflow-x-auto">
               <table class="min-w-full text-sm text-left">
                 <thead>
-                  <tr class="border-b dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                  <tr class="border-b border-gray-300">
                     <th scope="col" class="py-2 px-4">User</th>
                     <th scope="col" class="py-2 px-4">Game</th>
                     <th scope="col" class="py-2 px-4">Type</th>
@@ -49,18 +49,18 @@
                   </tr>
                 </thead>
 
-                <tbody class="text-gray-800 dark:text-gray-200">
+                <tbody class="">
                   <tr 
                     v-for="(item, index) in bettingRecordStore.records.slice(0, 12)" 
                     :key="index" 
-                    class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                    class="border-b transition-colors duration-200"
                   >
                     <td class="py-3 px-4">{{ item.user }}</td>
                     <td class="py-3 px-4">{{ item.game }}</td>
                     <td class="py-3 px-4">{{ item.game_type }}</td>
                     <td class="py-3 px-4">{{ item.provider }}</td>
                     <td class="py-3 px-4 text-right">{{ item.bet }}</td>
-                    <td class="py-3 px-4 text-right" :class="item.win > 50 ? 'text-green-500' : 'text-red-500'">
+                    <td class="py-3 px-4 text-right">
                       {{ item.win }}
                     </td>
                   </tr>
@@ -71,7 +71,7 @@
         </div>
       </div>
 
-      <div class="col-span-12 lg:col-span-5 bg-white dark:bg-gray-800 p-3">
+      <div class="col-span-12 lg:col-span-5 bg p-3">
         <div class="flex justify-between item-center border-b border-gray-200 dark:border-gray-700 pb-2">
           <h3 class="font-[400] tracking-wide title-md"> Recently Users </h3>
         </div>
@@ -82,7 +82,7 @@
             <div class="overflow-x-auto">
               <table class="min-w-full text-sm text-left">
                 <thead>
-                  <tr class="border-b dark:border-gray-700 text-gray-500 dark:text-gray-400">
+                  <tr class="border-b border-gray-300">
                     <th scope="col" class="py-2 px-4">User</th>
                     <th scope="col" class="py-2 px-4">Refer code</th>
                     <th scope="col" class="py-2 px-4">Type</th>
@@ -91,11 +91,11 @@
                   </tr>
                 </thead>
 
-                <tbody class="text-gray-800 dark:text-gray-200">
+                <tbody class="">
                   <tr 
                     v-for="(item, index) in userStore.users.slice(0, 12)" 
                     :key="index" 
-                    class="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+                    class="border-b dark:border-gray-800 hover-text transition-colors duration-200"
                   >
                     <td class="py-3 px-4">{{ item.user_name }}</td>
                     <td class="py-3 px-4">{{ item.refer_code }}</td>
@@ -109,7 +109,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -133,10 +132,6 @@
   const authStore = useAuthStore();
 
   const router = useRouter();
-
-  if(authStore.user?.role != 'admin'){
-    router.push('/');
-  }
 
   onMounted( async () =>{
     await transactionStore.fetchTransaction(1,10,null,null);

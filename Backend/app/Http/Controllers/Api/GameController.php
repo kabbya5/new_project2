@@ -23,6 +23,11 @@ class GameController extends Controller
         $this->gameService = $gameService;
     }
 
+    public function gameBalance(){
+        $res = $this->gameService->getBalances();
+        return response()->json($res);
+    }
+
 
     public function index(Request $request){
 

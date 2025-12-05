@@ -1,9 +1,9 @@
 <template>
     <!-- Modal BackDrop  -->
 
-    <div class="fixed left-0 w-full top-8 bg-black/50 flex items-center justify-center z-50" @click="$emit('close')">
-        <div class="bg-white dark:bg-gray-800 rounded w-full max-w-md" @click.stop>
-            <div class="bg-gray-300 dark:bg-gray-900 py-2 px-6 flex items-center justify-between">
+    <div class="fixed left-0 w-full top-0 h-full bg-black/50 flex items-center justify-center z-50" @click="$emit('close')">
+        <div class="bg rounded w-full max-w-md" @click.stop>
+            <div class="bg-card py-2 px-6 flex items-center justify-between">
                 <h2 class="text-xl font-bold">Add Category</h2>
                 <button @click="$emit('close')" class="bg-red-500 w-[30px] h-[30px] rounded-full text-white"> <i class="fa-solid fa-xmark"></i></button>
             </div>

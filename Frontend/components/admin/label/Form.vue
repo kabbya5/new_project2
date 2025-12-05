@@ -5,14 +5,14 @@
     @click="$emit('close')"
   >
     <div
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-lg mx-4 animate-fadeIn"
+      class="bg rounded-lg shadow-lg w-full max-w-lg mx-4 animate-fadeIn"
       @click.stop
     >
       <!-- Modal Header -->
       <div
-        class="modal-header bg-gray-300 dark:bg-gray-900 py-3 px-6 flex items-center justify-between rounded-t-lg"
+        class="modal-header bg-card py-3 px-6 flex items-center justify-between rounded-t-lg"
       >
-        <h2 class="text-xl font-bold text-gray-800 dark:text-white">
+        <h2 class="text-xl font-bold">
           VIP Level
         </h2>
         <button

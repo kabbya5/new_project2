@@ -1,7 +1,7 @@
 <template>
     <AdminCurrencyForm v-if="isModalOpen" :currency_id="currentId" @close="isModalOpen=false"/>
 
-    <div class="bg-white dark:bg-gray-800 p-3">
+    <div class="bg p-3">
         <div class="flex justify-between items-center">
             <h2> Currency </h2>
       
@@ -13,34 +13,34 @@
         <div class="my-5">
             <div class="overflow-x-auto w-full">
                  <LoadingSpinner v-if="loading.isLoading('currency')" />
-                <table v-else class="divide-y table-fixed divide-gray-200 dark:divide-gray-700 rounded-lg min-w-full">
-                    <thead class="bg-gray-100 dark:bg-gray-900">
+                <table v-else class="table-fixed rounded-lg min-w-full">
+                    <thead class="bg-card">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             Currency Code
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             English Name
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                             BRL Rate
                         </th>
                    
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium  uppercase tracking-wider">
                             Action
                         </th>
                     </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="">
                         <tr v-for="currency in currencyStore.currencies" :key="currency.id">
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ currency.currency_code }}</td>
-                            <td class="px-6 py-2 text-sm text-gray-900 dark:text-gray-100">{{ currency.english_name }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-600 dark:text-gray-300">{{ currency.brl_rate }}</td>
+                            <td class="px-6 py-2  text-sm">{{ currency.currency_code }}</td>
+                            <td class="px-6 py-2 text-sm">{{ currency.english_name }}</td>
+                            <td class="px-6 py-2  text-sm">{{ currency.brl_rate }}</td>
 
                             <td class="px-6 py-2  text-right text-sm font-medium">
-                                <button @click="createUpdateModal(currency.id)" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <button @click="createUpdateModal(currency.id)" class="">
                                     <i class="fa-solid fa-edit"></i>
                                 </button>
                             </td>

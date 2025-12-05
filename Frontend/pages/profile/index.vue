@@ -1,8 +1,7 @@
 
-
 <template>
   <div class="flex item-center justify-center py-4">
-    <div class="w-full md:w-[400px] bg-red-900 dark:bg-green-900">
+    <div class="w-full md:w-[400px] bg">
         <div class="">
             <!-- Header -->
             <div class="flex justify-between items-center mb-4 px-4 py-3 border-b border-gray-200 dark:border-gray-700">

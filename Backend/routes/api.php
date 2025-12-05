@@ -94,7 +94,6 @@ Route::get('/promotions', [PromotionController::class, 'promotions']);
 Route::get('/promotions/{slug}',[PromotionController::class, 'show']);
 Route::get('/affiliate',[PromotionController::class, 'affiliate']);
 
-
 Route::middleware(['auth:sanctum','agent'])->prefix('agent')->group(function(){
     Route::controller(AgentDashboardController::class)->group(function(){
         Route::get('/top/content', 'topContent');
@@ -126,6 +125,7 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
     Route::controller(GameController::class)->group(function(){
         Route::post('/games/store', 'store');
         Route::put('/game/update/{game}', 'update');
+        Route::get('/game/balance', 'gameBalance');
     });
 
     Route::controller(SliderController::class)->group(function(){

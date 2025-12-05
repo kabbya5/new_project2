@@ -3,18 +3,18 @@
     v-if="show"
     class="fixed top-12 left-0 w-full flex items-center justify-center bg-black/50 bg-opacity-50 z-50"
   >
-    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-96 p-6 relative">
+    <div class="bg-card rounded-2xl shadow-xl w-96 p-6 relative">
       <!-- Close Button -->
       <button
         @click="$emit('close')"
-        class="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+        class="absolute top-3 right-3 text-2xl"
       >
         ✕
       </button>
 
       <!-- Title -->
       <h2
-        class="text-xl font-bold mb-4 text-center text-gray-800 dark:text-gray-100"
+        class="text-xl font-bold mb-4 text-center"
       >
         Add Balance to Agent
       </h2>
@@ -23,14 +23,14 @@
       <form v-if="!confirming" @submit.prevent="confirmSubmit">
         <div class="mb-3">
           <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            class="block text-sm font-medium"
           >
             Amount
           </label>
           <input
             type="number"
             v-model="amount"
-            class="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full mt-1 px-3 py-2 text-gray-600 border border-gray-300 dark:border-gray-700 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter amount"
           />
         </div>
@@ -39,7 +39,7 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+            class="px-4 py-2 rounded-lg bg-white text-black"
           >
             Cancel
           </button>

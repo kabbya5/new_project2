@@ -12,11 +12,13 @@ class GameService
 {
     protected Client $client;
     protected array $config;
+    protected OroPlayService $oroPlayService;
 
-    public function __construct()
+    public function __construct(OroPlayService $oroPlayService)
     {
         $this->client = new Client();
         $this->config = config('services.game');
+        $this->oroPlayService = $oroPlayService;
     }
 
     public function getProviders(){
@@ -32,6 +34,28 @@ class GameService
                 'status' => 0,
                 'data'   => [],
                 'msg'    => 'Error fetching providers: ' . $e->getMessage(),
+            ];
+        }
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function getBalances() {
+        try {
+            $response = $this->client->get($this->config['api_url'].'/balances', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'query' => [
+                    'agentToken' => $this->config['agent_token'],
+                    'secretKey'  => $this->config['agent_secret_key'],
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return [
+                'status' => 0,
+                'data'   => [],
+                'msg'    => 'Error fetching balances: ' . $e->getMessage(),
             ];
         }
 
@@ -66,9 +90,20 @@ class GameService
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function launchGame(Game $game, $user_id): array  {
+    public function launchGame(Game $game, $user_id){
         $user = User::find($user_id);
         $currency = Currency::where('currency_code',$user->currency)->first();
+        
+        if($game->provider_id == 3){
+            $data = [
+                'userCode'     => $user->user_name, // $user_code,
+                'gameCode'     => 1617,
+            ];
+
+            $result = $this->oroPlayService->launch_url($data);
+
+            return $result;
+        }
 
         try {
             $response = $this->client->post($this->config['api_url'].'/game_launch', [

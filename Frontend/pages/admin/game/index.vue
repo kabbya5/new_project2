@@ -1,8 +1,8 @@
 <template>
     <AdminGameForm v-if="isModalOpen" :gameId="currentId" @close="isModalOpen=false"/>
 
-    <div class="bg-white dark:bg-gray-800 p-3">
-        <div class="flex justify-between items-center">
+    <div class="bg p-3">
+        <div class="bg flex justify-between items-center">
             <div class="flex justify-between items-center">
                 <div class="form-group">
                     <input type="text" v-model="search_game" placeholder="Search Game" class="border border-gray-200 px-3 py-1 dark:border-gray-200">
@@ -29,57 +29,57 @@
 
         <div class="my-5">
             <div class="overflow-x-auto w-full">
-                <table class="divide-y table-fixed divide-gray-200 dark:divide-gray-700 rounded-lg min-w-full">
-                    <thead class="bg-gray-100 dark:bg-gray-900">
+                <table class="divide-y table-fixed divide-gray-200  rounded-lg min-w-full">
+                    <thead class="bg-card">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Game Code
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             English Name
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Bangla Name
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Hindi Name
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Categories
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Provider
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             Image
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
                             Action
                         </th>
                     </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="bg divide-y divide-gray-200 dark:divide-gray-700">
                         <tr v-for="game in gameStore.games" :key="game.id">
-                            <td class="px-6 py-2  text-sm text-gray-900 dark:text-gray-100">{{ game.game_code }}</td>
-                            <td class="px-6 py-2 text-sm text-gray-900 dark:text-gray-100">{{ game.english_name }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-600 dark:text-gray-300">{{ game.bangla_name }}</td>
-                            <td class="px-6 py-2 text-sm text-gray-600 dark:text-gray-300"> {{ game.hindi_name }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-600 dark:text-gray-300"> 
+                            <td class="px-6 py-2  text-sm">{{ game.game_code }}</td>
+                            <td class="px-6 py-2 text-sm">{{ game.english_name }}</td>
+                            <td class="px-6 py-2  text-sm">{{ game.bangla_name }}</td>
+                            <td class="px-6 py-2 text-sm"> {{ game.hindi_name }}</td>
+                            <td class="px-6 py-2  text-sm"> 
                                 <span v-if="game.categories" v-for="category in game.categories" class="pr-2">
                                     {{ category.english_name }}
                                 </span>
                             </td>
-                            <td v-if="game.provider" class="px-6 py-4  text-sm text-gray-600 dark:text-gray-300"> 
+                            <td v-if="game.provider" class="px-6 py-4  text-sm"> 
                                 {{ game.provider.english_name }}</td>
-                            <td class="px-6 py-2  text-sm text-gray-600 dark:text-gray-300">
+                            <td class="px-6 py-2  text-sm">
                                 <NuxtImg :src="game.thumbnail ? game.thumbnail : game.image_url" :alt="game.english_name" class="w-7" />
                             </td>
                             <td class="px-6 py-2  text-right text-sm font-medium">
-                                <button @click="createUpdateModal(game.id)" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">
+                                <button @click="createUpdateModal(game.id)" class="">
                                     <i class="fa-solid fa-edit"></i>
                                 </button>
                             </td>

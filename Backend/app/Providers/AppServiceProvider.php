@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\GameTransaction;
 use App\Observers\TransactionObserver;
+use App\Services\OroPlayService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('GameService', function ($app) {
             return new \App\Services\GameService();
+        });
+
+        $this->app->singleton('OroPlayServi', function($app){
+            return new OroPlayService();
         });
     }
 

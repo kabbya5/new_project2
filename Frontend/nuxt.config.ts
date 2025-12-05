@@ -17,6 +17,16 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    routeRules: {
+      // Intercepts local calls starting with /server-proxy/ 
+      // and forwards them to the external API's base URL.
+      '/server-proxy/**': { 
+        proxy: 'api.playfivers.com**' 
+      }
+    }
+  },
+
   app: {
     head: {
       // 1️⃣ Put viewport meta first

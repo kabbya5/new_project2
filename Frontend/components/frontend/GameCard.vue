@@ -1,6 +1,6 @@
 <template>
     <FrontendGameFullScreenIframe :visible="show" :url="gameUrl" @close="show=false" />
-    <div class="flex flex-col bg-red-800  dark:bg-green-800 shadow-xl">
+    <div class="flex flex-col bg-card shadow-xl">
         <button @click="playGame(game.id)">
             <div class="w-full">
                 <NuxtImg :src="game.thumbnail ? game.thumbnail :game.image_url" :alt="game.english_name" class="w-full h-[120px] lg:h-full" />
@@ -8,9 +8,9 @@
         </button>
 
         <div class="flex flex-col p-2">
-           <button @click="playGame(game.id)" class="capitalize text-left text-[10px] md:text-[14px] font-semibold">{{ game[name] }}</button>
+           <!-- <button @click="playGame(game.id)" class="capitalize text-left text-[10px] md:text-[14px] font-semibold">{{ game[name] }}</button> -->
             <NuxtLink v-if="game.provider" :to="`/category/${'provider'}/${game.provider.slug}`" 
-                class="capitalize text-[10px] md:text-[14px] font-bold  text-green-400 dark:text-orange-600 mt-1"> {{ game.provider[name] }} </NuxtLink> 
+                class="capitalize text-[10px] md:text-[14px] text-green-400 dark:text-orange-600 mt-1"> {{ game.provider[name] }} </NuxtLink> 
             
             <!-- <div class="flex items-center flex-wrap mt-1">
                 <NuxtLink v-for="category in getRandomCategories(game.categories, 2)" :to="`/category/${category.slug}`" 

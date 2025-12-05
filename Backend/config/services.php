@@ -48,4 +48,10 @@ return [
         'secret_key' => env('PAYMENT_SECRET_KEY', 'tFjw42bi7G7xy6cAzgByIheSmRs0zorT'),
         'base_url'   => env('PAYMENT_BASE_URL', 'https://www.lg-pay.com/api'),
     ],
+
+    'oroplay' => [
+        'base_url' => env('OROPLAY_BASE_URL'),
+        'client_id' => env('OROPLAY_CLIENT_ID'),
+        'client_secret' => env('OROPLAY_CLIENT_SECRET'),
+    ],
 ];

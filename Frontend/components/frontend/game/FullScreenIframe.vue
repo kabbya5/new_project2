@@ -1,6 +1,6 @@
 <template>
     <div v-if="visible" class="fixed inset-0 z-100 bg-red-800">
-        <button @click="closeIframe" class="fixed top-4 right-4 z-100 bg-red-900 text-white"> X </button>
+        <button @click="closeIframe" class="fixed top-4 right-4 z-100 bg-red-900 px-4 py-2 rounded-full text-white"> X </button>
 
         <iframe
             ref="frame"
