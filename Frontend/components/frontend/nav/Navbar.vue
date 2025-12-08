@@ -9,7 +9,7 @@
           </button>
             
           <NuxtLink to="/" class="ml-10 -mt-1">
-             <NuxtImg class="w-[90px]" src="logo.png" />
+             <NuxtImg class="w-[210px]" src="logo.png" />
           </NuxtLink>
         </div>
 

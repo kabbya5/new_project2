@@ -8,7 +8,7 @@
         <div class="">
             <div class="container bg mx-auto spx-3 lg:px-4">
                 <LoadingSpinner v-if="loading.isLoading('slider')" />
-                <FrontendMovingText v-else  />
+                <FrontendMovingText/>
             </div>
         </div>
     </div>

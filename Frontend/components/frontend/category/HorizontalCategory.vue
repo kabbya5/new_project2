@@ -24,7 +24,7 @@
         </div>
 
         <div v-if="isFixed" class="fixed top-7 md:top-11 my-1 left-0 z-50 w-full bg-card">
-            <div class="overflow-x-auto scrollbar-hide pt-6" style="scrollbar-width: 0;">
+            <div class="overflow-x-auto scrollbar-hide pb-4 pt-6" style="scrollbar-width: 0;">
                 <div class="flex space-x-2 lg:space-x-4">
                     <button v-if="fixedActiveSlug && fixedActiveSlug != 'false'" style="min-width: fit-content;"
                         @click="openFixedProvider('false')"
@@ -36,33 +36,18 @@
                         </h2>
                     </button>
 
-                    <button style="min-width: fit-content;"
+                    <NuxtLink style="min-width: fit-content;"
                         v-for="category, in categories"
                         :id="category.slug"
                         :key="category.id"
-                        @click="openFixedProvider(category.slug)"
+                        :to="`/category/${category.slug}`"
+                        
                         class="flex w-full items-center justify-center px-1 transition hover:text-green-900 "
                         :class="fixedActiveSlug === category.slug ? 'text-green-800  border-green-700' : 'text-gray-200'"
                         >
                         
                         <h2 class="text-[15px] ml-2 text-white lg:text-md capitalize">
                             {{ category[name] }}
-                        </h2>
-                    </button>
-                </div>
-            </div>
-            <LoadingSpinner v-if="loading.isLoading('provider')" />
-            <div v-else class="grid grid-cols-12 gap-1 pb-4 px-2">
-                <div v-for="(provider, index) in fixedProviders" class="col-span-4 md:col-span-3 lg:col-span-2">
-                    <NuxtLink style="min-width: fit-content;"
-                        :key="index"
-                        class="flex flex-col bg md:flex-row w-full items-center justify-center px-2 py-2 transition hover:bg-gray-300 hover:dark:bg-gray-900 hover:dark:text-white"
-                        active-class=""
-                        :to="`/category/${activeSlug}/${provider.slug}`"
-                        >
-                        <!-- <img :src="provider.logo" :alt="provider.english_name" class="w-auto h-[40px]"> -->
-                        <h2 class="text-[13px] text-capitalize md:ml-2 lg:text-md capitalize">
-                            {{ provider[name] }}
                         </h2>
                     </NuxtLink>
                 </div>

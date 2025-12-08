@@ -109,7 +109,7 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="v-else md:hidden fixed bottom-0 left-0 w-full bg-red-900 z-50 dark:bg-green-900 shadow-lg">
+    <div class="v-else md:hidden fixed bottom-0 left-0 w-full side-menu shadow-lg">
         <div class="flex justify-around p-3 max-w-md mx-auto">
             <NuxtLink to="/" class="flex flex-col items-center text-white">
                 <i class="fas fa-home text-lg"></i>
