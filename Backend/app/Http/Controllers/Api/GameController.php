@@ -8,6 +8,7 @@ use App\Http\Resources\GameResource;
 use App\Models\Game;
 use App\Models\GameTransaction;
 use App\Services\GameService;
+use App\Services\OroPlayService;
 use App\Traits\FileUploadTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,14 +18,18 @@ class GameController extends Controller
     use FileUploadTrait;
 
     protected GameService $gameService;
+    protected OroPlayService $oroPlayService;
 
-    public function __construct(GameService $gameService)
+    public function __construct(GameService $gameService, OroPlayService $oroPlayService)
     {
         $this->gameService = $gameService;
+        $this->oroPlayService = $oroPlayService;
     }
 
     public function gameBalance(){
+        $balance = $this->oroPlayService->getAgentBalance();
         $res = $this->gameService->getBalances();
+        $res['data']['Jili'] = $balance['message'];
         return response()->json($res);
     }
 

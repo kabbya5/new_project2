@@ -18,9 +18,12 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\TransactionNumberController;
 use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\UserMangeController;
-
+use App\Http\Controllers\Api\WalletController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/balance', [WalletController::class, 'balance']);
+Route::post('/batch-transactions', [WalletController::class, 'batchTransactions']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -181,3 +184,5 @@ Route::middleware(['auth:sanctum','admin'])->prefix('admin')->group(function(){
         Route::get('/promotions/index', 'index');
     });
 });
+
+

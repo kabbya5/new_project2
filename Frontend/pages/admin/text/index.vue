@@ -1,7 +1,7 @@
 <template>
     <AdminTextForm v-if="isModalOpen" :text_id="currentId" @close="isModalOpen=false"/>
 
-    <div class="p-3">
+    <div class="p-3 bg">
         <div class="bg px-3 py-2 flex justify-between items-center">
             <h2> Moving Text </h2>
       
@@ -14,7 +14,7 @@
             <div class="overflow-x-auto w-full">
                  <LoadingSpinner v-if="loading.isLoading('text')" />
                 <table v-else class="divide-y table-fixed divide-gray-200 rounded-lg min-w-full">
-                    <thead class="bg">
+                    <thead class="bg-card">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                             text
